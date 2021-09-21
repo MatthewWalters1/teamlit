@@ -24,6 +24,11 @@ class Window(QMainWindow):
 
         self.setCentralWidget(centralWidget)
         
+    # Resize can adjust to expanding the window but the window cannot be sized down
+    def resizeEvent(self, event):
+        self.canvas.pixmap = self.canvas.pixmap.scaled(self.width() - 22, self.height() - 22)
+        self.canvas.setPixmap(self.canvas.pixmap)
+        self.canvas.resize(self.width(), self.height())
 
 class Canvas(QLabel):
     def __init__(self):
@@ -31,10 +36,10 @@ class Canvas(QLabel):
 
         self.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
-        # QPixmap is currently set to a fixed size
-        pixmap = QPixmap(1000, 500)
-        pixmap.fill(QColor("blue"))
-        self.setPixmap(pixmap)
+        # Initialize pixmap with a size and color
+        self.pixmap = QPixmap(1000, 500)
+        self.pixmap.fill(QColor("blue"))
+        self.setPixmap(self.pixmap)
 
 
 if __name__ == '__main__':
