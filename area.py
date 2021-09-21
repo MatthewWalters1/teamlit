@@ -7,7 +7,7 @@
 import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor, QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton
 
 class Window(QMainWindow):
     def __init__(self):
@@ -19,15 +19,26 @@ class Window(QMainWindow):
         centralLayout.setAlignment(Qt.AlignVCenter | Qt.AlignHCenter)
         centralWidget.setLayout(centralLayout)
 
+
+        self.buttonLayout = QHBoxLayout()
+
+        self.exitButton = QPushButton()
+        self.buttonLayout.addWidget(self.exitButton)
+
+        self.pauseButton = QPushButton()
+        self.buttonLayout.addWidget(self.pauseButton)
+
+        centralLayout.addLayout(self.buttonLayout)
+
+
         self.canvas = Canvas()
         centralLayout.addWidget(self.canvas)
 
         self.setCentralWidget(centralWidget)
         
+
     # Resize can adjust to expanding the window but the window cannot be sized down
     def resizeEvent(self, event):
-        self.canvas.pixmap = self.canvas.pixmap.scaled(self.width() - 22, self.height() - 22)
-        self.canvas.setPixmap(self.canvas.pixmap)
         self.canvas.resize(self.width(), self.height())
 
 class Canvas(QLabel):
@@ -39,6 +50,11 @@ class Canvas(QLabel):
         # Initialize pixmap with a size and color
         self.pixmap = QPixmap(1000, 500)
         self.pixmap.fill(QColor("blue"))
+        self.setPixmap(self.pixmap)
+
+
+    def resizeEvent(self, event):
+        self.pixmap = self.pixmap.scaled(self.width(), self.height())
         self.setPixmap(self.pixmap)
 
 
