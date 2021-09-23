@@ -24,11 +24,14 @@ class Window(QMainWindow):
 
         self.buttonLayout = QHBoxLayout()
 
-        self.exitButton = QPushButton()
-        self.buttonLayout.addWidget(self.exitButton)
-
         self.pauseButton = QPushButton()
+        self.pauseButton.setText("Pause")
         self.buttonLayout.addWidget(self.pauseButton)
+        
+        self.exitButton = QPushButton()
+        self.exitButton.setText("Exit")
+        self.exitButton.clicked.connect(self.exitClicked)
+        self.buttonLayout.addWidget(self.exitButton)
 
         centralLayout.addLayout(self.buttonLayout)
 
@@ -42,6 +45,11 @@ class Window(QMainWindow):
     # Resize can adjust to expanding the window but the window cannot be sized down
     def resizeEvent(self, event):
         self.canvas.resize(self.width(), self.height())
+
+
+    def exitClicked(self, event):
+        sys.exit(app)
+
 
 class Canvas(QLabel):
     def __init__(self):
