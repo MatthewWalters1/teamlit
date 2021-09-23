@@ -5,9 +5,9 @@
 '''
 
 import sys
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QColor, QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor, QPixmap
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton
 
 class Window(QMainWindow):
     def __init__(self):
@@ -16,7 +16,9 @@ class Window(QMainWindow):
         centralWidget = QWidget()
 
         centralLayout = QVBoxLayout()
-        centralLayout.setAlignment(Qt.AlignVCenter | Qt.AlignHCenter)
+
+        # PyQt5: centralLayout.setAlignment(Qt.AlignVCenter | Qt.AlignHCenter)
+
         centralWidget.setLayout(centralLayout)
 
 
@@ -45,7 +47,7 @@ class Canvas(QLabel):
     def __init__(self):
         super().__init__()
 
-        self.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+        #PyQt5: self.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
         # Initialize pixmap with a size and color
         self.pixmap = QPixmap(1000, 500)
