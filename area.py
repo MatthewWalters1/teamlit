@@ -7,7 +7,8 @@
 import sys
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QGraphicsItem
+import player
 
 class Window(QMainWindow):
     def __init__(self):
@@ -58,6 +59,8 @@ class Window(QMainWindow):
         centralWidget.setLayout(self.buttonLayout)
         self.setCentralWidget(centralWidget)
 
+        #here will be the scene for all the moving objects
+        self.scene = QGraphicsScene(-50, -50, 600, 600)
         
     def exitClicked(self, event):
         sys.exit(app)
