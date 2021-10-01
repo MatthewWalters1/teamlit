@@ -1,4 +1,5 @@
 import time
+import keyboard
 
 class GameTimer:
 
@@ -6,7 +7,6 @@ class GameTimer:
         self.timeLength = timeLength
         self.isPaused = False
         self.endGame = False
-        self.elapsedTime = 0
 
     def toggle_pause(self):
         if self.isPaused == True:
@@ -17,17 +17,39 @@ class GameTimer:
 
     def start_timer(self):
         startTime = time.time()
+        toggled = False
+
+        lastPrintedNumber = 0
+        elaspedTime = 0
+        addedTime = 0
         
         while True:
 
             if not self.isPaused:
-                self.elaspedTime = time.time() - startTime
+                elaspedTime = time.time() - startTime + addedTime
+                elaspedTime = round(elaspedTime, 2)
 
-                #Remove comment below if you want to test the timer but the comment just prints what the current timer is
-                #print(int(self.elaspedTime))
-                time.sleep(1)
+                difference = elaspedTime - lastPrintedNumber
+                if difference != 0:
+                    #Prints every 0.01 seconds and will print it only once
+                    format_float = "{:.2f}".format(elaspedTime)
+                    print(format_float)
+                    lastPrintedNumber = round(elaspedTime, 2)
+                    toggled = False
 
-                if self.elaspedTime >= self.timeLength:
+                endCal = self.timeLength - elaspedTime
+                if endCal <= 0:
+                    self.endGame = True
+
+                if keyboard.is_pressed("p") and toggled == False:
+                    #Pauses the program if you press p
+                    print("Paused!")
+                    toggled = True
+                    self.toggle_pause()
+                    time.sleep(0.25)
+
+                if keyboard.is_pressed("e"):
+                    #Ends the program if you press e
                     self.endGame = True
 
                 if self.endGame:
@@ -37,4 +59,13 @@ class GameTimer:
 
             else:
                 #Activate pause menu here
-                startTime = time.time() - self.elaspedTime
+                if keyboard.is_pressed("p"):
+                    self.toggle_pause()
+                    time.sleep(0.25)
+                    startTime = time.time()
+                    addedTime = elaspedTime
+                    print("Unpaused!")
+
+#To test just remove the comments below the number 5 indicates a 5 second time limit
+#gametime = GameTimer(5)
+#gametime.start_timer()
