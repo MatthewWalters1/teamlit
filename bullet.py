@@ -4,6 +4,7 @@
 from PyQt6.QtWidgets import QGraphicsScene, QApplication, QGraphicsView, QGraphicsItem, QGraphicsPixmapItem
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap, QPainter
+from player import *
 #right now the bullet item looks just like the player object, but once I see how the play area works and how to add items to it, I will 
 #work on this
 class bullet(QGraphicsItem):
@@ -16,3 +17,13 @@ class bullet(QGraphicsItem):
         #these will depend on how bullet generation works, so for now we won't do anything with them
         self.setX()
         self.setY()
+
+    def bulletEvents(self):
+        #collision with player
+        collision = self.collidingItems()
+
+        for item in collision:
+            if isinstance(item, player):
+                #need to finish score class
+                #edit score 
+                #edit health

@@ -4,6 +4,7 @@
 from PyQt6.QtWidgets import QGraphicsScene, QApplication, QGraphicsView, QGraphicsItem, QGraphicsPixmapItem
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap, QPainter
+
 class player(QGraphicsItem):
     def __init__(self):
         #not sure how exactly QGraphicsItems are initialized, so check on this
@@ -22,17 +23,24 @@ class player(QGraphicsItem):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Left:
             #change velocitiy
-            xVel = -20
+            xVel = -20 #may change if too fast/slow
             
         elif event.key() == Qt.Key_Right:
             #change velocity
-            xVel = 20
+            xVel = 20 #may change if too fast/slow
 
         elif event.key() == Qt.Key_Up:
             #change velocity
-            yVel = -20 #may change depending on where 0, 0 is
+            yVel = -20 #may change if too fast/slow
 
         elif event.key() == Qt.Key_Down:
             #change velocity
-            yVel = 20 #may change depending on where 0, 0 is
+            yVel = 20 #may change if too fast/slow
 
+
+##idea## score class
+class score(QGraphicsItem):
+    def __init__(self):
+        super.__init__(self)
+    
+        self.score = 0
