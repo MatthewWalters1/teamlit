@@ -1,5 +1,11 @@
 import time
 import keyboard
+import area
+import sys
+
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QColor
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QGraphicsItem
 
 class GameTimer:
 
@@ -48,6 +54,8 @@ class GameTimer:
                     self.toggle_pause()
                     time.sleep(0.25)
 
+                    #Open the pause menu here
+
                 if keyboard.is_pressed("e"):
                     #Ends the program if you press e
                     self.endGame = True
@@ -58,7 +66,6 @@ class GameTimer:
                     exit()
 
             else:
-                #Activate pause menu here
                 if keyboard.is_pressed("p"):
                     self.toggle_pause()
                     time.sleep(0.25)
@@ -67,5 +74,5 @@ class GameTimer:
                     print("Unpaused!")
 
 #To test just remove the comments below the number 5 indicates a 5 second time limit
-#gametime = GameTimer(5)
-#gametime.start_timer()
+gametime = GameTimer(5)
+gametime.start_timer()
