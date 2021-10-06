@@ -9,7 +9,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QGraphicsItem, QMessageBox
 import player
-import timer
+import test
 
 class Window(QMainWindow):
     def __init__(self):
@@ -59,6 +59,16 @@ class Window(QMainWindow):
         self.exitButton.clicked.connect(self.exitClicked)
         self.buttonLayout.addWidget(self.exitButton)
 
+        self.resumeButton = QPushButton()
+        self.resumeButton.setText("Resume")
+        self.resumeButton.setStyleSheet("background-color: lightGray;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 45 em;"
+                                        "max-width: 45 em;"
+                                        "padding: 6 px;")
+
         # Add the button layout to the widget and set the widget as the central widget
         self.centralLayout.addLayout(self.buttonLayout)
         centralWidget.setLayout(self.centralLayout)
@@ -73,15 +83,7 @@ class Window(QMainWindow):
         #if not self.gametime.isPaused:
         self.pauseMenu = QMessageBox()
         self.pauseMenu.setText("Paused")
-        self.resumeButton = QPushButton()
-        self.resumeButton.setText("Resume")
-        self.resumeButton.setStyleSheet("background-color: lightGray;"
-                                        "border-style: outset;"
-                                        "border-width: 1px;"
-                                        "border-color: black;"
-                                        "min-width: 45 em;"
-                                        "max-width: 45 em;"
-                                        "padding: 6 px;")
+        
         self.pauseMenu.addButton(self.resumeButton, QMessageBox.ButtonRole.DestructiveRole)
         #self.resumeButton.clicked.connect(self.gametime.toggle_pause)
         self.pauseExitButton = QPushButton()
@@ -111,6 +113,7 @@ class Window(QMainWindow):
     def exitClicked(self, event):
         sys.exit(app)
 
+'''
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
@@ -118,7 +121,7 @@ if __name__ == '__main__':
     window.show()
 
     app.exec()
-
+'''
 
     #self.gametime.start_timer()
 
