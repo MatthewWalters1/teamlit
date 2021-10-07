@@ -17,7 +17,11 @@ class Timer(QWidget): #Manages the game timer
         self.displayTime = QLabel('0') #Creates the label that the time will be printed on
         self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.displayTime.setStyleSheet("background-color: white;"
-                                        "color: black;")
+                                        "color: black;"
+                                        "min-width: 15 px;"
+                                        "max-width: 15 px;"
+                                        "min-height: 15 px;"
+                                        "max-height: 15 px;")
         self.timer = QTimer()
         layout = QVBoxLayout()
         
