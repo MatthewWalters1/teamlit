@@ -33,7 +33,6 @@ class Timer(QWidget): #Manages the game timer
 
     def startTimer(self):
         self.timer.start(1000)
-        self.timer2.start(10)
 
     def pauseTimer(self): #Pauses the timer
         self.timer.stop()
