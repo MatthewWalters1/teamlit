@@ -129,6 +129,7 @@ class Window(QGraphicsScene):
             self.pauseMenu.addButton(self.pauseExitButton, QMessageBox.ButtonRole.DestructiveRole)
             self.pauseMenu.setEscapeButton(self.resumeButton)
             self.pauseMenu.setStyleSheet("background-color: white;"
+                                        "color: black;"
                                         "padding: 6px;")
 
             # Adds pauseMenu to the center of the scene
