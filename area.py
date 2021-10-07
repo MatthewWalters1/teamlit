@@ -83,6 +83,9 @@ class Window(QGraphicsScene):
 
         self.addWidget(centralWidget)
 
+        self.player = player.player()
+        self.addItem(self.player)
+
         #self.gametime = timer.GameTimer(600)
         
     def pauseClicked(self, event):
@@ -119,6 +122,26 @@ class Window(QGraphicsScene):
     def exitClicked(self, event):
         sys.exit(app)
 
+    def keyPressEvent(self, event):
+        xVel = 0
+        yVel = 0
+        if event.key() == Qt.Key.Key_Left:
+            #change velocitiy
+            xVel = -25 #may change if too fast/slow
+            
+        elif event.key() == Qt.Key.Key_Right:
+            #change velocity
+            xVel = 25 #may change if too fast/slow
+
+        elif event.key() == Qt.Key.Key_Up:
+            #change velocity
+            yVel = -25 #may change if too fast/slow
+
+        elif event.key() == Qt.Key.Key_Down:
+            #change velocity
+            yVel = 25 #may change if too fast/slow
+
+        self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
 '''
 if __name__ == '__main__':
     app = QApplication(sys.argv)
