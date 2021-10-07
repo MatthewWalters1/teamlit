@@ -21,7 +21,8 @@ class Timer(QWidget): #Manages the game timer
                                         "min-width: 15 px;"
                                         "max-width: 15 px;"
                                         "min-height: 15 px;"
-                                        "max-height: 15 px;")
+                                        "max-height: 15 px;"
+                                        "padding: 3 px;")
         self.timer = QTimer()
         layout = QVBoxLayout()
         
