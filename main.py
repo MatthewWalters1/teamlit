@@ -18,8 +18,8 @@ class Timer(QWidget): #Manages the game timer
         self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.displayTime.setStyleSheet("background-color: white;"
                                         "color: black;"
-                                        "min-width: 15 px;"
-                                        "max-width: 15 px;"
+                                        "min-width: 40 px;"
+                                        "max-width: 40 px;"
                                         "min-height: 15 px;"
                                         "max-height: 15 px;"
                                         "padding: 3 px;")
