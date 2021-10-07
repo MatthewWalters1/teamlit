@@ -9,6 +9,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QPalette
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QGraphicsItem, QMessageBox
 import player
+import bullet
 
 class Window(QGraphicsScene):
     def __init__(self):
@@ -78,8 +79,14 @@ class Window(QGraphicsScene):
 
         self.addWidget(centralWidget)
 
+        #Add player to the screen
         self.player = player.player()
+        #self.player.setPos(self.width()/2-68, self.height()/2-68)
         self.addItem(self.player)
+
+        for i in range(5):
+            self.enemy = bullet.bullet()
+            self.addItem(self.enemy)
 
         #self.gametime = timer.GameTimer(600)
         
@@ -144,6 +151,17 @@ class Window(QGraphicsScene):
                 yVel = 25 #may change if too fast/slow
 
             self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
+            #self.enemy.setPos(self.enemy.x()+self.enemy.xVel, self.enemy.y()+self.enemy.yVel)
+
+            if self.player.x() > self.width()-118:
+                self.player.setPos(self.width()-118, self.player.y())
+            if self.player.x() < -50:
+                self.player.setPos(-50, self.player.y())
+            if self.player.y() > self.height()-118:
+                self.player.setPos(self.player.x(), self.height()-118)
+            if self.player.y() < 0:
+                self.player.setPos(self.player.x(), 0)
+            
 '''
 if __name__ == '__main__':
     app = QApplication(sys.argv)
