@@ -6,7 +6,7 @@
 
 import sys
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor, QPalette
+from PyQt6.QtGui import QColor, QPalette, QFont
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QGraphicsItem, QMessageBox
 import player
 import bullet
@@ -31,11 +31,15 @@ class Window(QGraphicsScene):
         # Add a pause button to the button layout
         self.pauseButton = QPushButton()
         self.pauseButton.setText("Pause")
+        self.pauseButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.pauseButton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
                                         "min-width: 40 em;"
+                                        "min-height: 15 em;"
+                                        "max-height: 15 em;"
                                         "max-width: 40 em;"
                                         "padding: 6 px;")
         self.pauseButton.clicked.connect(self.pauseClicked)                                
@@ -44,24 +48,32 @@ class Window(QGraphicsScene):
         # Add an exit button to the button layout
         self.exitButton = QPushButton()
         self.exitButton.setText("Exit")
+        self.exitButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.exitButton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
                                         "min-width: 40 em;"
                                         "max-width: 40 em;"
+                                        "min-height: 15 em;"
+                                        "max-height: 15 em;"
                                         "padding: 6 px;")
         self.exitButton.clicked.connect(self.exitClicked)
         self.buttonLayout.addWidget(self.exitButton)
 
         self.resumeButton = QPushButton()
         self.resumeButton.setText("Resume")
+        self.resumeButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.resumeButton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
-                                        "min-width: 45 em;"
-                                        "max-width: 45 em;"
+                                        "min-width: 50 em;"
+                                        "max-width: 50 em;"
+                                        "min-height: 15 em;"
+                                        "max-height: 15 em;"
                                         "padding: 6 px;")
 
         # Add the button layout to the widget and set the widget as the central widget
@@ -87,13 +99,14 @@ class Window(QGraphicsScene):
         for i in range(5):
             self.enemy = bullet.bullet()
             self.addItem(self.enemy)
-
-        #self.gametime = timer.GameTimer(600)
         
     def pauseClicked(self, event):
         if not self.isPaused:
             self.pauseMenu = QMessageBox()
             self.pauseMenu.setText("Paused")
+            self.pauseMenu.setFont(QFont("Times", 14, QFont.Weight.Medium))
+            self.pauseMenu.setStyleSheet("background-color: white;"
+                                        "color: black;")
             
             self.pauseMenu.addButton(self.resumeButton, QMessageBox.ButtonRole.DestructiveRole)
             self.resumeButton.clicked.connect(self.resumeClicked)
@@ -101,12 +114,16 @@ class Window(QGraphicsScene):
             # Adds an exit button to pauseMenu
             self.pauseExitButton = QPushButton()
             self.pauseExitButton.setText("Exit")
+            self.pauseExitButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
             self.pauseExitButton.setStyleSheet("background-color: lightGray;"
+                                            "color: black;"
                                             "border-style: outset;"
                                             "border-width: 1px;"
                                             "border-color: black;"
                                             "min-width: 45 em;"
                                             "max-width: 45 em;"
+                                            "min-height: 15 em;"
+                                            "max-height: 15 em;"
                                             "padding: 6 px;")
             self.pauseExitButton.clicked.connect(self.exitClicked)
             self.pauseMenu.addButton(self.pauseExitButton, QMessageBox.ButtonRole.DestructiveRole)

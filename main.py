@@ -7,7 +7,7 @@
 '''
 from PyQt6.QtWidgets import QGraphicsView, QWidget, QLabel, QApplication, QVBoxLayout
 from PyQt6.QtCore import QTimer, Qt
-from PyQt6.QtGui import QBrush, QColor
+from PyQt6.QtGui import QBrush, QColor, QFont
 import sys, area
 
 class Timer(QWidget): #Manages the game timer
@@ -15,6 +15,9 @@ class Timer(QWidget): #Manages the game timer
         super().__init__()
 
         self.displayTime = QLabel('0') #Creates the label that the time will be printed on
+        self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
+        self.displayTime.setStyleSheet("background-color: white;"
+                                        "color: black;")
         self.timer = QTimer()
         layout = QVBoxLayout()
         
