@@ -78,7 +78,7 @@ class Window(QGraphicsScene):
         centralWidget.setGeometry(-50, -50, 600, 100)
 
         centralWidgetPallette = centralWidget.palette()
-        centralWidgetPallette.setColor(QPalette.ColorRole.Window , QColor(173, 216, 230))
+        centralWidgetPallette.setColor(QPalette.ColorRole.Window , QColor(194, 197, 204))
         centralWidget.setPalette(centralWidgetPallette)
 
         self.addWidget(centralWidget)
@@ -153,5 +153,3 @@ if __name__ == '__main__':
 '''
 
     #self.gametime.start_timer()
-
-        
