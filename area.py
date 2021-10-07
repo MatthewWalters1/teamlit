@@ -93,12 +93,15 @@ class Window(QGraphicsScene):
 
         #Add player to the screen
         self.player = player.player()
-        #self.player.setPos(self.width()/2-68, self.height()/2-68)
+        self.player.setPos(self.width()/2-68, self.height()/2-68)
         self.addItem(self.player)
 
+        #Add enemies to the screen
+        self.enemyList = []
         for i in range(5):
             self.enemy = bullet.bullet()
             self.addItem(self.enemy)
+            self.enemyList.append(self.enemy)
         
     def pauseClicked(self, event):
         if not self.isPaused:
@@ -154,22 +157,21 @@ class Window(QGraphicsScene):
             yVel = 0
             if event.key() == Qt.Key.Key_Left:
                 #change velocitiy
-                xVel = -25 #may change if too fast/slow
+                xVel = -40 #may change if too fast/slow
                 
             elif event.key() == Qt.Key.Key_Right:
                 #change velocity
-                xVel = 25 #may change if too fast/slow
+                xVel = 40 #may change if too fast/slow
 
             elif event.key() == Qt.Key.Key_Up:
                 #change velocity
-                yVel = -25 #may change if too fast/slow
+                yVel = -40 #may change if too fast/slow
 
             elif event.key() == Qt.Key.Key_Down:
                 #change velocity
-                yVel = 25 #may change if too fast/slow
+                yVel = 40 #may change if too fast/slow
 
             self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
-            #self.enemy.setPos(self.enemy.x()+self.enemy.xVel, self.enemy.y()+self.enemy.yVel)
 
             if self.player.x() > self.width()-118:
                 self.player.setPos(self.width()-118, self.player.y())
@@ -179,6 +181,33 @@ class Window(QGraphicsScene):
                 self.player.setPos(self.player.x(), self.height()-118)
             if self.player.y() < 0:
                 self.player.setPos(self.player.x(), 0)
+            
+            for item in self.enemyList:
+                item.setPos(item.x()+item.xVel, item.y()+item.yVel)
+
+                collision = item.collidingItems()
+                for bang in collision:
+                    if isinstance(bang, type(self.player)):
+                        self.player.health -= 20
+                        self.enemyList.remove(item)
+                        self.removeItem(item)
+                        print("hit")
+                        if self.player.health <= 0:
+                            print("Game Over!")
+                            sys.exit()
+
+                if item.x() > self.width()-80:
+                    item.setPos(item.x()-80, item.y())
+                    item.xVel = -item.xVel
+                if item.x() < -50:
+                    item.setPos(-50, item.y())
+                    item.xVel = -item.xVel
+                if item.y() > self.height()-87:
+                    item.setPos(item.x(), self.height()-87)
+                    item.yVel = -item.yVel
+                if item.y() < 0:
+                    item.setPos(item.x(), 0)
+                    item.yVel = -item.yVel
             
 '''
 if __name__ == '__main__':

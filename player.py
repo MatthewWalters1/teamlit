@@ -9,6 +9,8 @@ class player(QGraphicsPixmapItem):
     def __init__(self):
         #not sure how exactly QGraphicsItems are initialized, so check on this
         super().__init__()
+
+        self.health = 100
         
         #test different start positions for when it is added to the play area
         self.setX(100)
