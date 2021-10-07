@@ -1,9 +1,9 @@
 import sys
 import area
-from PyQt6.QtWidgets import QWidget,QPushButton,QApplication,QListWidget,QGridLayout,QLabel
+from PyQt6.QtWidgets import QGraphicsView, QWidget,QPushButton,QApplication,QListWidget,QGridLayout,QLabel
 from PyQt6.QtCore import QTimer,QDateTime
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QBrush, QColor
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QGraphicsItem, QMessageBox
 
 class Timer(QWidget): #Manages the game timer
@@ -44,12 +44,18 @@ if __name__ == '__main__':
     window = area.Window()
     
     form=Timer()
-    window.centralLayout.addWidget(form)
+    window.buttonLayout.addWidget(form)
 
     window.pauseButton.clicked.connect(form.endTimer)
     window.resumeButton.clicked.connect(form.startTimer)
 
+    #window.setBackgroundBrush(QBrush(QColor(200, 0, 0)))
+
     form.show()
-    window.show()
+    view = QGraphicsView(window)
+
+    #view.setBackgroundBrush(QBrush(QColor(200, 0, 0)))
+
+    view.show()
 
     sys.exit(app.exec())

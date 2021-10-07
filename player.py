@@ -16,7 +16,7 @@ class player(QGraphicsItem):
         #this is the bounding rectangle of the player object in the graphics scene, and the image itself
         self.boundingRect(0, 0, 30, 30)
         self.ship = QPixmap()
-        self.ship.load("fighter.png")
+        self.ship.load("Images/fighter.png")
 
     def keyPressEvent(self, event):
         xVel = 0

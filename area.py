@@ -6,18 +6,17 @@
 
 import sys
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QColor
+from PyQt6.QtGui import QColor, QPalette
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QGraphicsItem, QMessageBox
 import player
-import test
 
-class Window(QMainWindow):
+class Window(QGraphicsScene):
     def __init__(self):
-        super().__init__()
+        super().__init__(-50, -50, 600, 600)
 
         # Specify the dimensions and background color of the window
-        self.setGeometry(100, 100, 400, 300)
-        self.setStyleSheet("background-color: blue")
+       # self.setGeometry(100, 100, 400, 300)
+        #self.setStyleSheet("background-color: blue")
         
 
         # Create a widget with a button layout at the top right of the window
@@ -72,10 +71,17 @@ class Window(QMainWindow):
         # Add the button layout to the widget and set the widget as the central widget
         self.centralLayout.addLayout(self.buttonLayout)
         centralWidget.setLayout(self.centralLayout)
-        self.setCentralWidget(centralWidget)
 
-        #here will be the scene for all the moving objects
-        self.scene = QGraphicsScene(-50, -50, 600, 600)
+        #Sets the size and then the color of a widget and in this case it is what we call the central widget
+        centralWidget.setFixedSize(600, 50)
+
+        centralWidget.setGeometry(-50, -50, 600, 100)
+
+        centralWidgetPallette = centralWidget.palette()
+        centralWidgetPallette.setColor(QPalette.ColorRole.Window , QColor(173, 216, 230))
+        centralWidget.setPalette(centralWidgetPallette)
+
+        self.addWidget(centralWidget)
 
         #self.gametime = timer.GameTimer(600)
         
