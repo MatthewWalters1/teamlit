@@ -21,7 +21,7 @@ class Window(QGraphicsScene):
         centralWidget = QWidget()
 
         self.centralLayout = QVBoxLayout()
-        self.centralLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        self.centralLayout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
         self.buttonLayout = QHBoxLayout()
 

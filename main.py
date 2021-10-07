@@ -26,6 +26,7 @@ class Timer(QWidget): #Manages the game timer
         self.timer = QTimer()
         layout = QVBoxLayout()
         
+        layout.setAlignment(Qt.AlignmentFlag.AlignVCenter) #Layout to display the timer
         layout.addWidget(self.displayTime)
         self.setLayout(layout)
 
