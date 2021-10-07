@@ -7,8 +7,8 @@ Project Description:
 
 Instructions for Use:
 
-* Our project doens't use any special repos  other than things in sys and PyQy6
-* Our project runs from main.py and everything else right where it needs to be
+* Our project doens't use any special repos  other than sys and PyQy6
+* Our project runs from main.py and everything else is right where it needs to be
 * To move the player use the arrow keys
 
 Notes:
