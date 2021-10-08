@@ -4,10 +4,10 @@
     Creates a resizable application window with two buttons
 '''
 
-import sys
-from PyQt6.QtCore import Qt
+import sys, random
+from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QColor, QPalette, QFont
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QGraphicsItem, QMessageBox
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QMessageBox
 import player
 import bullet
 
@@ -98,7 +98,7 @@ class Window(QGraphicsScene):
 
         #Add enemies to the screen
         self.enemyList = []
-        for i in range(5):
+        for i in range(random.randrange(4, 8)):
             self.enemy = bullet.bullet()
             self.addItem(self.enemy)
             self.enemyList.append(self.enemy)
@@ -151,6 +151,7 @@ class Window(QGraphicsScene):
     def exitClicked(self, event):
         sys.exit()
 
+
     def keyPressEvent(self, event):
         if not self.isPaused:
             xVel = 0
@@ -175,10 +176,13 @@ class Window(QGraphicsScene):
 
             if self.player.x() > self.width()-118:
                 self.player.setPos(self.width()-118, self.player.y())
+
             if self.player.x() < -50:
                 self.player.setPos(-50, self.player.y())
+
             if self.player.y() > self.height()-118:
                 self.player.setPos(self.player.x(), self.height()-118)
+
             if self.player.y() < 0:
                 self.player.setPos(self.player.x(), 0)
             
@@ -188,7 +192,7 @@ class Window(QGraphicsScene):
                 collision = item.collidingItems()
                 for bang in collision:
                     if isinstance(bang, type(self.player)):
-                        self.player.health -= 20
+                        self.player.health -= random.randrange(20, 40)
                         self.enemyList.remove(item)
                         self.removeItem(item)
                         print("hit")
@@ -196,25 +200,18 @@ class Window(QGraphicsScene):
                             print("Game Over!")
                             sys.exit()
 
-                if item.x() > self.width()-80:
-                    item.setPos(item.x()-80, item.y())
+                if item.x() > self.width()-70:
                     item.xVel = -item.xVel
-                if item.x() < -50:
-                    item.setPos(-50, item.y())
+                    item.setPos(self.width()-70, item.y())
+
+                if item.x() < -60:
                     item.xVel = -item.xVel
-                if item.y() > self.height()-87:
-                    item.setPos(item.x(), self.height()-87)
-                    item.yVel = -item.yVel
-                if item.y() < 0:
-                    item.setPos(item.x(), 0)
-                    item.yVel = -item.yVel
-            
-'''
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
+                    item.setPos(-60, item.y())
 
-    window = Window()
-    window.show()
+                if item.y() > self.height()-80:
+                    item.yVel = -item.yVel
+                    item.setPos(item.x(), self.height()-80)
 
-    app.exec()
-'''
+                if item.y() < -10:
+                    item.yVel = -item.yVel
+                    item.setPos(item.x(), -10)
