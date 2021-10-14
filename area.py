@@ -6,7 +6,7 @@
 
 import sys, random
 from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QColor, QPalette, QFont
+from PyQt6.QtGui import QColor, QPalette, QFont, QBrush
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QMessageBox
 import player
 import bullet
@@ -215,3 +215,6 @@ class Window(QGraphicsScene):
                 if item.y() < -10:
                     item.yVel = -item.yVel
                     item.setPos(item.x(), -10)
+
+    def updateBackground(self):
+        self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
