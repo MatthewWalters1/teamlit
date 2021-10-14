@@ -32,14 +32,17 @@ class Timer(QWidget): #Manages the game timer
         layout.addWidget(self.displayTime)
         self.setLayout(layout)
 
-        self.timer.timeout.connect(self.showTime) #Intializes the timer to 0 and starts the timer
-        self.timeLeft = 0
+        self.timer.timeout.connect(self.showTime) #Initializes the timer to 0 and starts the timer
+        self.time = 0
         self.startTimer()
 
+        # Millisecond-interval update timer for constantly refreshing the background and objects
+        self.updateTimer = QTimer()
+        self.updateTimer.start(1)
+
     def showTime(self):
-        time = self.timeLeft + 1
-        self.timeLeft = self.timeLeft + 1
-        self.displayTime.setText(str(time))
+        self.time += 1
+        self.displayTime.setText(str(self.time))
 
     def startTimer(self):
         self.timer.start(1000)
@@ -61,7 +64,12 @@ if __name__ == '__main__':
     window.buttonLayout.addWidget(form)
     window.pauseButton.clicked.connect(form.pauseTimer)
     window.resumeButton.clicked.connect(form.startTimer)
-    window.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
+
+    # Connects the update timer to the update functions of the background and objects of the window
+    for i in window.enemyList:
+        form.updateTimer.timeout.connect(i.update)
+    form.updateTimer.timeout.connect(window.player.update)
+    form.updateTimer.timeout.connect(window.updateBackground)
 
     view.show()
     form.show()
