@@ -14,5 +14,5 @@ class bullet(QGraphicsPixmapItem):
         #spawns bullet at a random location at the top going in a random direction
         self.setX(random.randrange(0, 600))
         self.setY(0)
-        self.xVel = random.randrange(10, 30)
-        self.yVel = random.randrange(20, 40)
+        self.xVel = random.randrange(10, 15)
+        self.yVel = random.randrange(15, 20)

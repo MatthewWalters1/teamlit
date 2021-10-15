@@ -40,6 +40,10 @@ class Timer(QWidget): #Manages the game timer
         self.updateTimer = QTimer()
         self.updateTimer.start(1)
 
+        #Timer for movement
+        self.movementTimer = QTimer()
+        self.movementTimer.start(100)
+
     def showTime(self):
         self.time += 1
         self.displayTime.setText(str(self.time))
@@ -70,6 +74,7 @@ if __name__ == '__main__':
         form.updateTimer.timeout.connect(i.update)
     form.updateTimer.timeout.connect(window.player.update)
     form.updateTimer.timeout.connect(window.updateBackground)
+    form.movementTimer.timeout.connect(window.updateMovement)
 
     view.show()
     form.show()
