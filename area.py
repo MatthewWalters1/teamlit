@@ -151,7 +151,6 @@ class Window(QGraphicsScene):
     def exitClicked(self, event):
         sys.exit()
 
-
     def keyPressEvent(self, event):
         if not self.isPaused:
             xVel = 0
@@ -174,6 +173,8 @@ class Window(QGraphicsScene):
 
             self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
 
+    def updateMovement(self):
+        if not self.isPaused:
             if self.player.x() > self.width()-118:
                 self.player.setPos(self.width()-118, self.player.y())
 
