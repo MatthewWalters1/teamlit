@@ -10,6 +10,7 @@ Instructions for Use:
 * Our project doens't use any special repos  other than sys and PyQy6
 * Our project runs from main.py and everything else is right where it needs to be
 * To move the player use the arrow keys
+* To shoot, press the space bar (right now, there is nothing to shoot at, but you are welcome to shoot anyway)
 
 Notes:
 
