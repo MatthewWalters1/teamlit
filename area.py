@@ -229,8 +229,9 @@ class Window(QGraphicsScene):
              
             for item in self.shotList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
-                if item.y() < -50:
+                if item.y() < -118:
                     self.shotList.remove(item)
+                    self.removeItem(item)
 
     def updateBackground(self):
         self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
