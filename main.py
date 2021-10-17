@@ -56,7 +56,13 @@ class Timer(QWidget): #Manages the game timer
 
     def endGame(self): #This denotes the game has ended and all options will now be displayed
         self.pauseTimer()
+        self.showScore()
         sys.exit()
+
+    def showScore(self): #gives the player a score based on the amount of time elapsed
+        self.score = self.time * 5
+        #once the endscreen is implemented, have a display somewhere on the endscreen for your score, similar to displayTime
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
