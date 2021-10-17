@@ -103,6 +103,9 @@ class Window(QGraphicsScene):
             self.addItem(self.enemy)
             self.enemyList.append(self.enemy)
         
+        #this is a list of bullets that the player shoots, it is added to on 'fireBullet'
+        self.shotList = []
+        
     def pauseClicked(self, event):
         if not self.isPaused:
             self.pauseMenu = QMessageBox()
@@ -150,7 +153,12 @@ class Window(QGraphicsScene):
 
     def exitClicked(self, event):
         sys.exit()
-
+    
+    def fireBullet(self, x, y):
+        self.shot = player.player_bullet(x, y)
+        self.addItem(self.shot)
+        self.shotList.append(self.shot)
+        
     def keyPressEvent(self, event):
         if not self.isPaused:
             xVel = 0
@@ -170,6 +178,9 @@ class Window(QGraphicsScene):
             elif event.key() == Qt.Key.Key_Down:
                 #change velocity
                 yVel = 40 #may change if too fast/slow
+            elif event.key() == Qt.Key.Key_Space:
+                #fire bullet
+                self.fireBullet(self.player.x(), self.player.y())
 
             self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
 
@@ -189,7 +200,6 @@ class Window(QGraphicsScene):
             
             for item in self.enemyList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
-
                 collision = item.collidingItems()
                 for bang in collision:
                     if isinstance(bang, type(self.player)):
@@ -216,6 +226,11 @@ class Window(QGraphicsScene):
                 if item.y() < -10:
                     item.yVel = -item.yVel
                     item.setPos(item.x(), -10)
+             
+            for item in self.shotList:
+                item.setPos(item.x()+item.xVel, item.y()+item.yVel)
+                if item.y() < -50:
+                    self.shotList.remove(item)
 
     def updateBackground(self):
         self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
