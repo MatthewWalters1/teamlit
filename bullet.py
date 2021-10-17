@@ -6,13 +6,13 @@ from PyQt6.QtGui import QPixmap
 import random
 
 class bullet(QGraphicsPixmapItem):
-    def __init__(self):
+    def __init__(self, x_pos, y_pos, image_name, x_vel, y_vel):
         super().__init__()
 
-        self.setPixmap(QPixmap("Images/beam1.png"))
+        self.setPixmap(QPixmap(image_name))
 
         #spawns bullet at a random location at the top going in a random direction
-        self.setX(random.randrange(0, 600))
-        self.setY(0)
-        self.xVel = random.randrange(10, 15)
-        self.yVel = random.randrange(15, 20)
+        self.setX(x_pos)
+        self.setY(y_pos)
+        self.xVel = x_vel
+        self.yVel = y_vel

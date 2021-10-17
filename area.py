@@ -99,7 +99,7 @@ class Window(QGraphicsScene):
         #Add enemies to the screen
         self.enemyList = []
         for i in range(random.randrange(4, 8)):
-            self.enemy = bullet.bullet()
+            self.enemy = bullet.bullet(random.randrange(0, 600), 0, "Images/beam1.png", random.randrange(10, 15), random.randrange(15, 20))
             self.addItem(self.enemy)
             self.enemyList.append(self.enemy)
         
@@ -155,7 +155,7 @@ class Window(QGraphicsScene):
         sys.exit()
     
     def fireBullet(self, x, y):
-        self.shot = player.player_bullet(x, y)
+        self.shot = bullet.bullet(x, y, "Images/beam2.png", 0, -30)
         self.addItem(self.shot)
         self.shotList.append(self.shot)
         
