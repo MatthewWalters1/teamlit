@@ -10,6 +10,7 @@ from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QBrush, QColor, QFont
 import sys
 import area
+import endscreen
 
 class Timer(QWidget): #Manages the game timer
     def __init__(self):
@@ -26,6 +27,7 @@ class Timer(QWidget): #Manages the game timer
                                         "padding: 3 px;")
         self.displayTime.setTextFormat(Qt.TextFormat.PlainText)
         self.timer = QTimer()
+        self.endButtonPressed = False
         layout = QVBoxLayout()
         
         layout.setAlignment(Qt.AlignmentFlag.AlignVCenter) #Layout to display the timer
@@ -48,6 +50,9 @@ class Timer(QWidget): #Manages the game timer
         self.time += 1
         self.displayTime.setText(str(self.time))
 
+        if self.time >= 1:
+            self.endGame()
+
     def startTimer(self):
         self.timer.start(1000)
 
@@ -56,8 +61,12 @@ class Timer(QWidget): #Manages the game timer
 
     def endGame(self): #This denotes the game has ended and all options will now be displayed
         self.pauseTimer()
+        self.close()
         self.showScore()
-        sys.exit()
+        QApplication.closeAllWindows()
+
+        self.endScreen = endscreen.EndWindow()
+        self.endScreen.show()
 
     def showScore(self): #gives the player a score based on the amount of time elapsed
         self.score = self.time * 5

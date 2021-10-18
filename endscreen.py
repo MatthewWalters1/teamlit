@@ -14,11 +14,16 @@ class EndWindow(QMainWindow):
 
         centralwidget = QWidget()
         self.buttonLayout = QHBoxLayout()
+        self.mainLayout = QVBoxLayout()
 
-        self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
+        self.mainLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
+
+        self.titleLabel = QLabel("Game Over!")
+        self.titleLabel.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
 
         self.resumebutton = QPushButton()
-        self.resumebutton.setText("Resume")
+        self.resumebutton.setText("Main Menu")
         self.resumebutton.setStyleSheet("background-color: lightGray;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
@@ -51,18 +56,17 @@ class EndWindow(QMainWindow):
         self.exitbutton.clicked.connect(self.exitClicked)
         self.buttonLayout.addWidget(self.exitbutton)
 
-        centralwidget.setLayout(self.buttonLayout)
+        self.mainLayout.setContentsMargins(0,0,0,0)
+        self.mainLayout.setSpacing(20)
+
+        self.mainLayout.addWidget(self.titleLabel)
+        self.mainLayout.addLayout(self.buttonLayout)
+
+
+        centralwidget.setLayout(self.mainLayout)
         self.setCentralWidget(centralwidget)
 
         self.scene = QGraphicsScene(-50, -50, 600, 600)
 
     def exitClicked(self, event):
-        sys.exit(app)
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-
-    window = PauseWindow()
-    window.show()
-
-    app.exec()
+        sys.exit()
