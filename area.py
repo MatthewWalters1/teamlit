@@ -153,9 +153,13 @@ class Window(QGraphicsScene):
 
     def exitClicked(self, event):
         sys.exit()
-    
+
+    #here, use x and y to determine the position the bullet will start at
     def fireBullet(self, x, y):
-        self.shot = bullet.bullet(x, y, "Images/beam2.png", 0, -30)
+        self.shot = bullet.bullet(x + 3, y, "Images/beam2.png", 0, -30)
+        self.addItem(self.shot)
+        self.shotList.append(self.shot)
+        self.shot = bullet.bullet(x + 39, y, "Images/beam2.png", 0, -30)
         self.addItem(self.shot)
         self.shotList.append(self.shot)
         
@@ -178,6 +182,7 @@ class Window(QGraphicsScene):
             elif event.key() == Qt.Key.Key_Down:
                 #change velocity
                 yVel = 40 #may change if too fast/slow
+
             elif event.key() == Qt.Key.Key_Space:
                 #fire bullet
                 self.fireBullet(self.player.x(), self.player.y())
