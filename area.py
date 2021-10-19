@@ -1,15 +1,17 @@
 '''
     area.py
     teamlit
-    Creates a resizable application window with two buttons
+    Creates a play window with two buttons (Pause and Exit), a player object, enemy bullets, and player bullets.
+    The pause menu for the pause button is also implemented and includes four buttons (Resume, Main Menu, Restart, and Exit).
 '''
 
 import sys, random
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QColor, QPalette, QFont, QBrush
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QMessageBox
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QMessageBox, QApplication
 import player
 import bullet
+import windowmanager
 
 class Window(QGraphicsScene):
     def __init__(self):
@@ -70,8 +72,8 @@ class Window(QGraphicsScene):
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
-                                        "min-width: 50 em;"
-                                        "max-width: 50 em;"
+                                        "min-width: 55 em;"
+                                        "max-width: 55 em;"
                                         "min-height: 15 em;"
                                         "max-height: 15 em;"
                                         "padding: 6 px;")
@@ -108,14 +110,52 @@ class Window(QGraphicsScene):
         
     def pauseClicked(self, event):
         if not self.isPaused:
+            # Creates a message box to hold buttons to click when the game is paused
             self.pauseMenu = QMessageBox()
             self.pauseMenu.setText("Paused")
             self.pauseMenu.setFont(QFont("Times", 14, QFont.Weight.Medium))
             self.pauseMenu.setStyleSheet("background-color: white;"
-                                        "color: black;")
+                                         "color: black;"
+                                         "padding: 6px;")
             
+            # Adds the resume button to the pause menu
             self.pauseMenu.addButton(self.resumeButton, QMessageBox.ButtonRole.DestructiveRole)
             self.resumeButton.clicked.connect(self.resumeClicked)
+            self.pauseMenu.setEscapeButton(self.resumeButton)
+
+            # Adds a main menu button to the pause menu
+            self.menuButton = QPushButton()
+            self.menuButton.setText("Main Menu")
+            self.menuButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
+            self.menuButton.setStyleSheet("background-color: lightGray;"
+                                          "color: black;"
+                                          "border-style: outset;"
+                                          "border-width: 1px;"
+                                          "border-color: black;"
+                                          "min-width: 70 em;"
+                                          "max-width: 70 em;"
+                                          "min-height: 15 em;"
+                                          "max-height: 15 em;"
+                                          "padding: 6 px;")
+            self.menuButton.clicked.connect(self.menuClicked)
+            self.pauseMenu.addButton(self.menuButton, QMessageBox.ButtonRole.DestructiveRole)
+
+            # Adds a restart button to the pause menu
+            self.restartButton = QPushButton()
+            self.restartButton.setText("Restart")
+            self.restartButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
+            self.restartButton.setStyleSheet("background-color: lightGray;"
+                                             "color: black;"
+                                             "border-style: outset;"
+                                             "border-width: 1px;"
+                                             "border-color: black;"
+                                             "min-width: 50 em;"
+                                             "max-width: 50 em;"
+                                             "min-height: 15 em;"
+                                             "max-height: 15 em;"
+                                             "padding: 6 px;")
+            self.restartButton.clicked.connect(self.restartClicked)
+            self.pauseMenu.addButton(self.restartButton, QMessageBox.ButtonRole.DestructiveRole)
 
             # Adds an exit button to pauseMenu
             self.pauseExitButton = QPushButton()
@@ -133,23 +173,33 @@ class Window(QGraphicsScene):
                                             "padding: 6 px;")
             self.pauseExitButton.clicked.connect(self.exitClicked)
             self.pauseMenu.addButton(self.pauseExitButton, QMessageBox.ButtonRole.DestructiveRole)
-            self.pauseMenu.setEscapeButton(self.resumeButton)
-            self.pauseMenu.setStyleSheet("background-color: white;"
-                                        "color: black;"
-                                        "padding: 6px;")
 
-            # Adds pauseMenu to the center of the scene
-            centerX = int(self.sceneRect().center().x())
-            centerY = int(self.sceneRect().center().y())
-            self.pauseMenu.setGeometry(centerX - 50, centerY - 50, 100, 100)
+
             self.addWidget(self.pauseMenu)
 
             self.isPaused = True
                 
             self.pauseMenu.open()
+
+            # Moves pauseMenu to the center of the scene
+            centerX = int(self.sceneRect().center().x())
+            centerY = int(self.sceneRect().center().y())
+            self.pauseMenu.move(centerX - self.pauseMenu.width()/2, centerY - self.pauseMenu.width()/2)
     
     def resumeClicked(self, event):
         self.isPaused = False
+
+    def restartClicked(self, event):
+        QApplication.closeAllWindows()
+
+        self.newWindow = windowmanager.MainMenuWindow()
+        self.newWindow.startGame()
+
+    def menuClicked(self, event):
+        QApplication.closeAllWindows()
+
+        self.newWindow = windowmanager.MainMenuWindow()
+        self.newWindow.show()
 
     def exitClicked(self, event):
         sys.exit()
