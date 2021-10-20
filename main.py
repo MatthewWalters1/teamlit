@@ -48,7 +48,7 @@ class Timer(QWidget): #Manages the game timer
         self.time += 1
         self.displayTime.setText(str(self.time))
 
-        if self.time >= 5: #Game will call end game after 5 seconds
+        if self.time >= 100: #Game will call end game after 5 seconds
             self.endGame()
 
     def startTimer(self):
@@ -61,9 +61,8 @@ class Timer(QWidget): #Manages the game timer
         self.pauseTimer()
         self.close()
         self.showScore()
+        #windowmanager.window.isPaused = True
         QApplication.closeAllWindows()
-
-        area.Window().isPaused = True
 
         self.windowmanager = windowmanager.EndWindow()
         self.windowmanager.show()

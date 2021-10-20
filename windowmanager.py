@@ -3,11 +3,18 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 
+windowSizeOpenHeight = 1080
+windowSizeOpenWidth = 600
+windowStartLocationX = 600
+windowStartLocationY = 0
+
+mainWindow = area.Window()
+
 class EndWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setGeometry(100, 100, 400, 300) #Set window size and color
+        self.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight) #Set window size and color
         palette = self.palette()
         palette.setColor(QPalette.ColorRole.Window, QColor(173, 216, 230))
         self.setPalette(palette)
@@ -82,7 +89,8 @@ class MainMenuWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setGeometry(100, 100, 400, 300) #Set window size and color
+        self.window = area.Window()
+        self.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight) #Set window size and color
         palette = self.palette()
         palette.setColor(QPalette.ColorRole.Window, QColor(173, 216, 230))
         self.setPalette(palette)
@@ -150,20 +158,22 @@ class MainMenuWindow(QMainWindow):
     def startGame(self):
         QApplication.closeAllWindows()
 
-        self.window = area.Window()
         self.form = main.Timer()
-        self.view = QGraphicsView(self.window)
+        self.view = QGraphicsView(mainWindow)
 
-        self.window.buttonLayout.addWidget(self.form)
-        self.window.pauseButton.clicked.connect(self.form.pauseTimer)
-        self.window.resumeButton.clicked.connect(self.form.startTimer)
+        mainWindow.buttonLayout.addWidget(self.form)
+        mainWindow.pauseButton.clicked.connect(self.form.pauseTimer)
+        mainWindow.resumeButton.clicked.connect(self.form.startTimer)
 
         # Connects the update timer to the update functions of the background and objects of the window
-        for i in self.window.enemyList:
+        for i in mainWindow.enemyList:
             self.form.updateTimer.timeout.connect(i.update)
-        self.form.updateTimer.timeout.connect(self.window.player.update)
-        self.form.updateTimer.timeout.connect(self.window.updateBackground)
-        self.form.movementTimer.timeout.connect(self.window.updateMovement)
+
+        self.form.updateTimer.timeout.connect(mainWindow.player.update)
+        self.form.updateTimer.timeout.connect(mainWindow.updateBackground)
+        self.form.movementTimer.timeout.connect(mainWindow.updateMovement)
+
+        self.view.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight)
 
         self.view.show()
         self.form.show()
