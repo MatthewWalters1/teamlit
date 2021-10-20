@@ -8,8 +8,6 @@ windowSizeOpenWidth = 600
 windowStartLocationX = 600
 windowStartLocationY = 0
 
-mainWindow = area.Window()
-
 class EndWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -159,19 +157,19 @@ class MainMenuWindow(QMainWindow):
         QApplication.closeAllWindows()
 
         self.form = main.Timer()
-        self.view = QGraphicsView(mainWindow)
+        self.view = QGraphicsView(self.window)
 
-        mainWindow.buttonLayout.addWidget(self.form)
-        mainWindow.pauseButton.clicked.connect(self.form.pauseTimer)
-        mainWindow.resumeButton.clicked.connect(self.form.startTimer)
+        self.window.buttonLayout.addWidget(self.form)
+        self.window.pauseButton.clicked.connect(self.form.pauseTimer)
+        self.window.resumeButton.clicked.connect(self.form.startTimer)
 
         # Connects the update timer to the update functions of the background and objects of the window
-        for i in mainWindow.enemyList:
+        for i in self.window.enemyList:
             self.form.updateTimer.timeout.connect(i.update)
 
-        self.form.updateTimer.timeout.connect(mainWindow.player.update)
-        self.form.updateTimer.timeout.connect(mainWindow.updateBackground)
-        self.form.movementTimer.timeout.connect(mainWindow.updateMovement)
+        self.form.updateTimer.timeout.connect(self.window.player.update)
+        self.form.updateTimer.timeout.connect(self.window.updateBackground)
+        self.form.movementTimer.timeout.connect(self.window.updateMovement)
 
         self.view.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight)
 
