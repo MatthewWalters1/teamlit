@@ -85,7 +85,7 @@ class Window(QGraphicsScene):
         #Sets the size and then the color of a widget and in this case it is what we call the central widget
         centralWidget.setFixedSize(600, 50)
 
-        centralWidget.setGeometry(-50, -210, 600, 100)
+        centralWidget.setGeometry(-50, -270, 600, 100)
 
         centralWidgetPallette = centralWidget.palette()
         centralWidgetPallette.setColor(QPalette.ColorRole.Window , QColor(194, 197, 204))

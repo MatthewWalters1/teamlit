@@ -3,10 +3,10 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 
-windowSizeOpenHeight = 1080
+windowSizeOpenHeight = 1055
 windowSizeOpenWidth = 600
 windowStartLocationX = 540
-windowStartLocationY = 0
+windowStartLocationY = 25
 
 class EndWindow(QMainWindow):
     def __init__(self):
@@ -68,7 +68,7 @@ class EndWindow(QMainWindow):
         self.mainLayout.addWidget(self.titleLabel)
         self.mainLayout.addLayout(self.buttonLayout)
 
-
+        self.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
         centralwidget.setLayout(self.mainLayout)
         self.setCentralWidget(centralwidget)
 
@@ -144,7 +144,7 @@ class MainMenuWindow(QMainWindow):
         self.mainLayout.addWidget(self.titleLabel)
         self.mainLayout.addLayout(self.buttonLayout)
 
-
+        self.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
         centralwidget.setLayout(self.mainLayout)
         self.setCentralWidget(centralwidget)
 
@@ -172,6 +172,7 @@ class MainMenuWindow(QMainWindow):
         self.form.movementTimer.timeout.connect(self.window.updateMovement)
 
         self.view.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight)
+        self.view.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
 
         self.view.show()
         self.form.show()
