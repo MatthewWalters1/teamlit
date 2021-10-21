@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import *
 
 windowSizeOpenHeight = 1080
 windowSizeOpenWidth = 600
-windowStartLocationX = 600
+windowStartLocationX = 540
 windowStartLocationY = 0
 
 class EndWindow(QMainWindow):
