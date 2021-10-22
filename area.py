@@ -5,6 +5,7 @@
     The pause menu for the pause button is also implemented and includes four buttons (Resume, Main Menu, Restart, and Exit).
 '''
 
+from math import isqrt
 import sys, random
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtGui import QColor, QPalette, QFont, QBrush
@@ -95,18 +96,12 @@ class Window(QGraphicsScene):
 
         #Add player to the screen
         self.player = player.player()
-        self.player.setPos(self.width()/2-68, self.height()/2-68)
+        self.player.setPos(self.width()/2-68, self.height()-100)
         self.addItem(self.player)
-
-        #Add enemies to the screen
-        self.enemyList = []
-        for i in range(random.randrange(4, 8)):
-            self.enemy = bullet.bullet(random.randrange(0, 600), 0, "Images/beam1.png", random.randrange(10, 15), random.randrange(15, 20))
-            self.addItem(self.enemy)
-            self.enemyList.append(self.enemy)
         
         #this is a list of bullets that the player shoots, it is added to on 'fireBullet'
         self.shotList = []
+        self.enemyList = []
         
     def pauseClicked(self, event):
         if not self.isPaused:
@@ -204,6 +199,11 @@ class Window(QGraphicsScene):
     def exitClicked(self, event):
         sys.exit()
 
+    def spawnEnemy(self):
+        self.enemy = bullet.bullet(random.randrange(0, 600), 0, "Images/beam1.png", random.randrange(10, 15), random.randrange(15, 20))
+        self.addItem(self.enemy)
+        self.enemyList.append(self.enemy)
+
     #here, use x and y to determine the position the bullet will start at
     def fireBullet(self, x, y):
         self.shot = bullet.bullet(x + 3, y, "Images/beam2.png", 0, -30)
@@ -221,44 +221,45 @@ class Window(QGraphicsScene):
                 #change velocitiy
                 xVel = -40 #may change if too fast/slow
                 
-            elif event.key() == Qt.Key.Key_Right:
+            if event.key() == Qt.Key.Key_Right:
                 #change velocity
                 xVel = 40 #may change if too fast/slow
 
-            elif event.key() == Qt.Key.Key_Up:
+            if event.key() == Qt.Key.Key_Up:
                 #change velocity
                 yVel = -40 #may change if too fast/slow
 
-            elif event.key() == Qt.Key.Key_Down:
+            if event.key() == Qt.Key.Key_Down:
                 #change velocity
                 yVel = 40 #may change if too fast/slow
 
-            elif event.key() == Qt.Key.Key_Space:
+            if event.key() == Qt.Key.Key_Space:
                 #fire bullet
                 self.fireBullet(self.player.x(), self.player.y())
 
             self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
 
-    def updateMovement(self):
-        if not self.isPaused:
+
             if self.player.x() > self.width()-118:
                 self.player.setPos(self.width()-118, self.player.y())
 
             if self.player.x() < -50:
                 self.player.setPos(-50, self.player.y())
 
-            if self.player.y() > self.height()-118:
-                self.player.setPos(self.player.x(), self.height()-118)
+            if self.player.y() > self.height()-30:
+                self.player.setPos(self.player.x(), self.height()-30)
 
             if self.player.y() < 0:
                 self.player.setPos(self.player.x(), 0)
-            
+
+    def updateMovement(self):
+        if not self.isPaused:  
             for item in self.enemyList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
                 collision = item.collidingItems()
                 for bang in collision:
                     if isinstance(bang, type(self.player)):
-                        self.player.health -= random.randrange(20, 40)
+                        self.player.health -= random.randrange(15, 25)
                         self.enemyList.remove(item)
                         self.removeItem(item)
                         print("hit")
@@ -274,9 +275,9 @@ class Window(QGraphicsScene):
                     item.xVel = -item.xVel
                     item.setPos(-60, item.y())
 
-                if item.y() > self.height()-80:
+                if item.y() > self.height()+10:
                     item.yVel = -item.yVel
-                    item.setPos(item.x(), self.height()-80)
+                    item.setPos(item.x(), self.height()+10)
 
                 if item.y() < -10:
                     item.yVel = -item.yVel
