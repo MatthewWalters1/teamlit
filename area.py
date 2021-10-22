@@ -173,7 +173,7 @@ class Window(QGraphicsScene):
 
             self.addWidget(self.pauseMenu)
 
-            self.isPaused = True
+            main.globalIsPaused = True
                 
             self.pauseMenu.open()
 
