@@ -73,6 +73,7 @@ class EndWindow(QMainWindow):
         self.setCentralWidget(centralwidget)
 
         self.scene = QGraphicsScene(-50, -50, 600, 600)
+        main.globalIsPaused = True
 
     def exitClicked(self):
         sys.exit()

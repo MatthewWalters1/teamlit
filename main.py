@@ -10,6 +10,8 @@ from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QFont
 import sys, windowmanager, area
 
+globalIsPaused = False
+
 class Timer(QWidget): #Manages the game timer
     def __init__(self):
         super().__init__()

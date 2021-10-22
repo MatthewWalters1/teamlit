@@ -13,6 +13,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGra
 import player
 import bullet
 import windowmanager
+import main
 
 class Window(QGraphicsScene):
     def __init__(self):
@@ -253,6 +254,9 @@ class Window(QGraphicsScene):
                 self.player.setPos(self.player.x(), 0)
 
     def updateMovement(self):
+
+        self.isPaused = main.globalIsPaused
+
         if not self.isPaused:  
             for item in self.enemyList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
@@ -265,7 +269,8 @@ class Window(QGraphicsScene):
                         print("hit")
                         if self.player.health <= 0:
                             QApplication.closeAllWindows()
-
+                            
+                            main.globalIsPaused = True
                             self.windowmanager = windowmanager.EndWindow()
                             self.windowmanager.show()
 
