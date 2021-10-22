@@ -166,7 +166,10 @@ class MainMenuWindow(QMainWindow):
         # Connects the update timer to the update functions of the background and objects of the window
         for i in self.window.enemyList:
             self.form.updateTimer.timeout.connect(i.update)
+        for i in self.window.shotList:
+            self.form.updateTimer.timeout.connect(i.update)
 
+        self.form.timer.timeout.connect(self.window.spawnEnemy) #currently not able to stop spawning enemies
         self.form.updateTimer.timeout.connect(self.window.player.update)
         self.form.updateTimer.timeout.connect(self.window.updateBackground)
         self.form.movementTimer.timeout.connect(self.window.updateMovement)
