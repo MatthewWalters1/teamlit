@@ -102,7 +102,10 @@ class Window(QGraphicsScene):
         
         #this is a list of bullets that the player shoots, it is added to on 'fireBullet'
         self.shotList = []
+        #this is a list of enemy ships that will be along the top of the screen
         self.enemyList = []
+        #this is a list of bullets that the enemies shoot at the player
+        self.projectileList = []
         
     def pauseClicked(self, event):
         if not main.globalIsPaused:
@@ -203,9 +206,10 @@ class Window(QGraphicsScene):
         sys.exit()
 
     def spawnEnemy(self):
-        self.enemy = bullet.bullet(random.randrange(0, 600), 0, "Images/beam1.png", random.randrange(10, 15), random.randrange(15, 20))
-        self.addItem(self.enemy)
-        self.enemyList.append(self.enemy)
+        if (len(self.enemyList) < 6):
+            self.enemy = bullet.ship(random.randrange(0, 600), 0, "Images/enemy.png", random.randrange(15, 20), 0)
+            self.addItem(self.enemy)
+            self.enemyList.append(self.enemy)
 
     #here, use x and y to determine the position the bullet will start at
     def fireBullet(self, x, y):
@@ -258,6 +262,9 @@ class Window(QGraphicsScene):
     def updateMovement(self):
         if not main.globalIsPaused:  
             for item in self.enemyList:
+                item.shot += 1
+                if item.shot > 20:
+                        item.shot = 0
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
                 collision = item.collidingItems()
                 for bang in collision:
@@ -284,17 +291,27 @@ class Window(QGraphicsScene):
                     item.setPos(-60, item.y())
 
                 if item.y() > self.height()+10:
-                    item.yVel = -item.yVel
-                    item.setPos(item.x(), self.height()+10)
+                    self.enemyList.remove(item)
+                    self.removeItem(item)
 
                 if item.y() < -10:
                     item.yVel = -item.yVel
                     item.setPos(item.x(), -10)
+
+                if item.shot == item.reload:
+                    self.p = bullet.bullet(item.x() + 4, item.y(), "Images/beam3.png", 0, 30)
+                    self.addItem(self.p)
+                    self.projectileList.append(self.p)
              
             for item in self.shotList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
                 if item.y() < -118:
                     self.shotList.remove(item)
+                    self.removeItem(item)
+            for item in self.projectileList:
+                item.setPos(item.x() + item.xVel, item.y() + item.yVel)
+                if item.y() > self.height() - 100:
+                    self.projectileList.remove(item)
                     self.removeItem(item)
 
     def updateBackground(self):

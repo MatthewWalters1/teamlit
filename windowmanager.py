@@ -172,7 +172,7 @@ class MainMenuWindow(QMainWindow):
         for i in self.window.shotList:
             self.form.updateTimer.timeout.connect(i.update)
 
-        self.form.timer.timeout.connect(self.window.spawnEnemy) #currently not able to stop spawning enemies
+        self.form.timer.timeout.connect(self.window.spawnEnemy)
         self.form.updateTimer.timeout.connect(self.window.player.update)
         self.form.updateTimer.timeout.connect(self.window.updateBackground)
         self.form.movementTimer.timeout.connect(self.window.updateMovement)
