@@ -264,8 +264,10 @@ class Window(QGraphicsScene):
                         self.removeItem(item)
                         print("hit")
                         if self.player.health <= 0:
-                            print("Game Over!")
-                            sys.exit()
+                            QApplication.closeAllWindows()
+
+                            self.windowmanager = windowmanager.EndWindow()
+                            self.windowmanager.show()
 
                 if item.x() > self.width()-70:
                     item.xVel = -item.xVel
