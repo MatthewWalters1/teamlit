@@ -156,6 +156,8 @@ class MainMenuWindow(QMainWindow):
 
     def startGame(self):
         QApplication.closeAllWindows()
+        
+        main.globalIsPaused = False
 
         self.form = main.Timer()
         self.view = QGraphicsView(self.window)

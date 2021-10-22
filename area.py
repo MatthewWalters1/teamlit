@@ -19,7 +19,7 @@ class Window(QGraphicsScene):
     def __init__(self):
         super().__init__(-50, -50, 600, 600)
 
-        self.isPaused = False
+        main.globalIsPaused = True
 
         # Create a widget with a button layout at the top right of the window
         centralWidget = QWidget()
@@ -105,7 +105,7 @@ class Window(QGraphicsScene):
         self.enemyList = []
         
     def pauseClicked(self, event):
-        if not self.isPaused:
+        if not main.globalIsPaused:
             # Creates a message box to hold buttons to click when the game is paused
             self.pauseMenu = QMessageBox()
             self.pauseMenu.setText("Paused")
@@ -183,19 +183,21 @@ class Window(QGraphicsScene):
             self.pauseMenu.move(centerX - self.pauseMenu.width()/2, centerY - self.pauseMenu.width()/2)
     
     def resumeClicked(self, event):
-        self.isPaused = False
+        main.globalIsPaused = False
 
     def restartClicked(self, event):
-        QApplication.closeAllWindows()
-
         self.newWindow = windowmanager.MainMenuWindow()
         self.newWindow.startGame()
+
+        self.deleteSelf()
 
     def menuClicked(self, event):
         QApplication.closeAllWindows()
 
         self.newWindow = windowmanager.MainMenuWindow()
         self.newWindow.show()
+
+        self.deleteSelf()
 
     def exitClicked(self, event):
         sys.exit()
@@ -215,7 +217,7 @@ class Window(QGraphicsScene):
         self.shotList.append(self.shot)
         
     def keyPressEvent(self, event):
-        if not self.isPaused:
+        if not main.globalIsPaused:
             xVel = 0
             yVel = 0
             if event.key() == Qt.Key.Key_Left:
@@ -254,10 +256,7 @@ class Window(QGraphicsScene):
                 self.player.setPos(self.player.x(), 0)
 
     def updateMovement(self):
-
-        self.isPaused = main.globalIsPaused
-
-        if not self.isPaused:  
+        if not main.globalIsPaused:  
             for item in self.enemyList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
                 collision = item.collidingItems()
@@ -273,6 +272,8 @@ class Window(QGraphicsScene):
                             main.globalIsPaused = True
                             self.windowmanager = windowmanager.EndWindow()
                             self.windowmanager.show()
+
+                            self.deleteSelf()
 
                 if item.x() > self.width()-70:
                     item.xVel = -item.xVel
@@ -298,3 +299,12 @@ class Window(QGraphicsScene):
 
     def updateBackground(self):
         self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
+
+    def deleteSelf(self):
+        for i in self.views():
+            i.close()
+        for i in self.items():
+            self.removeItem(i)
+        self.clear()
+        self.deleteLater()
+
