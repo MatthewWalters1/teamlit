@@ -22,10 +22,10 @@ class Window(QGraphicsScene):
         main.globalIsPaused = True
 
         # Create a widget with a button layout at the top right of the window
-        centralWidget = QWidget()
+        topWidget = QWidget()
 
-        self.centralLayout = QVBoxLayout()
-        self.centralLayout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        self.topLayout = QVBoxLayout()
+        self.topLayout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
 
         self.buttonLayout = QHBoxLayout()
 
@@ -80,20 +80,20 @@ class Window(QGraphicsScene):
                                         "max-height: 15 em;"
                                         "padding: 6 px;")
 
-        # Add the button layout to the widget and set the widget as the central widget
-        self.centralLayout.addLayout(self.buttonLayout)
-        centralWidget.setLayout(self.centralLayout)
+        # Add the button layout to the widget and set the widget as the top widget
+        self.topLayout.addLayout(self.buttonLayout)
+        topWidget.setLayout(self.topLayout)
 
-        #Sets the size and then the color of a widget and in this case it is what we call the central widget
-        centralWidget.setFixedSize(600, 50)
+        #Sets the size and then the color of a widget and in this case it is what we call the top widget
+        topWidget.setFixedSize(600, 50)
 
-        centralWidget.setGeometry(-50, -270, 600, 100)
+        topWidget.setGeometry(-50, -270, 600, 100)
 
-        centralWidgetPallette = centralWidget.palette()
-        centralWidgetPallette.setColor(QPalette.ColorRole.Window , QColor(194, 197, 204))
-        centralWidget.setPalette(centralWidgetPallette)
+        topWidgetPallette = topWidget.palette()
+        topWidgetPallette.setColor(QPalette.ColorRole.Window , QColor(194, 197, 204))
+        topWidget.setPalette(topWidgetPallette)
 
-        self.addWidget(centralWidget)
+        self.addWidget(topWidget)
 
         #Add player to the screen
         self.player = player.player()
