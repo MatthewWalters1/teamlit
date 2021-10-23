@@ -31,4 +31,4 @@ class ship(QGraphicsPixmapItem):
 
         #this counts to a random number 0,3 before shooting a bullet at the player
         self.shot = 0
-        self.reload = random.randrange(1,20)
+        self.reload = random.randrange(4,20)

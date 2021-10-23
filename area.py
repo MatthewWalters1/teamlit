@@ -207,7 +207,7 @@ class Window(QGraphicsScene):
 
     def spawnEnemy(self):
         if (len(self.enemyList) < 6):
-            self.enemy = bullet.ship(random.randrange(0, 600), 0, "Images/enemy.png", random.randrange(15, 20), 0)
+            self.enemy = bullet.ship(random.randrange(0, 600), 0, "Images/enemy.png", random.randrange(-3,3), 0)
             self.addItem(self.enemy)
             self.enemyList.append(self.enemy)
 
@@ -263,7 +263,7 @@ class Window(QGraphicsScene):
         if not main.globalIsPaused:  
             for item in self.enemyList:
                 item.shot += 1
-                if item.shot > 20:
+                if item.shot > item.reload:
                         item.shot = 0
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
                 collision = item.collidingItems()
@@ -299,20 +299,48 @@ class Window(QGraphicsScene):
                     item.setPos(item.x(), -10)
 
                 if item.shot == item.reload:
-                    self.p = bullet.bullet(item.x() + 4, item.y(), "Images/beam3.png", 0, 30)
+                    self.p = bullet.bullet(item.x() + 16, item.y(), "Images/beam3.png", 0, 30)
                     self.addItem(self.p)
                     self.projectileList.append(self.p)
              
             for item in self.shotList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
+                # -118 is the current limit, this could change
                 if item.y() < -118:
                     self.shotList.remove(item)
                     self.removeItem(item)
+                    continue
+                collision = item.collidingItems()
+                for bang in collision:
+                    # this is easier than isinstance, and it works
+                    if bang in self.enemyList:
+                        self.shotList.remove(item)
+                        self.removeItem(item)
+                        self.enemyList.remove(bang)
+                        self.removeItem(bang)
+                        # you have to break, in case it collided with multiple enemies, since it will try to remove the bullet twice
+                        break
+
             for item in self.projectileList:
                 item.setPos(item.x() + item.xVel, item.y() + item.yVel)
-                if item.y() > self.height() - 100:
+                if item.y() > self.height() + 10:
                     self.projectileList.remove(item)
                     self.removeItem(item)
+                collision = item.collidingItems()
+                for bang in collision:
+                    if isinstance(bang, type(self.player)):
+                        self.player.health -= random.randrange(15, 25)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        print("hit")
+                        if self.player.health <= 0:
+                            QApplication.closeAllWindows()
+                            
+                            main.globalIsPaused = True
+                            self.windowmanager = windowmanager.EndWindow()
+                            self.windowmanager.show()
+
+                            self.deleteSelf()
 
     def updateBackground(self):
         self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
