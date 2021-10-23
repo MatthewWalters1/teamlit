@@ -207,7 +207,11 @@ class Window(QGraphicsScene):
 
     def spawnEnemy(self):
         if (len(self.enemyList) < 6):
-            self.enemy = bullet.ship(random.randrange(0, 600), 0, "Images/enemy.png", random.randrange(-3,3), 0)
+            self.enemyType = random.randrange(0,2)
+            if self.enemyType == 0:
+                self.enemy = bullet.ship(random.randrange(0, 600), 0, "Images/enemy.png", random.randrange(-3,3), 0)
+            elif self.enemyType == 1:
+                self.enemy = bullet.ship(random.randrange(120, 480), 0, "Images/enemy2.png", 0, 10)
             self.addItem(self.enemy)
             self.enemyList.append(self.enemy)
 
