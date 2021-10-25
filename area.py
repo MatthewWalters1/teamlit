@@ -19,6 +19,9 @@ class Window(QGraphicsScene):
     def __init__(self):
         super().__init__(-50, -50, 600, 600)
 
+        #this is your score, it gets added to when the player kills an enemy ship
+        self.score = 0
+
         main.globalIsPaused = True
 
         # Create a widget with a button layout at the top right of the window
@@ -209,9 +212,9 @@ class Window(QGraphicsScene):
         if (len(self.enemyList) < 6):
             self.enemyType = random.randrange(0,2)
             if self.enemyType == 0:
-                self.enemy = bullet.ship(random.randrange(0, 600), 0, "Images/enemy.png", random.randrange(-3,3), 0, 1)
+                self.enemy = bullet.ship(random.randrange(0, 600), 0, "Images/enemy.png", random.randrange(-10, 10), 0, 1)
             elif self.enemyType == 1:
-                self.enemy = bullet.ship(random.randrange(120, 480), 0, "Images/enemy2.png", 0, 10, 3)
+                self.enemy = bullet.ship(random.randrange(120, 480), -118, "Images/enemy2.png", 0, 10, 3)
             self.addItem(self.enemy)
             self.enemyList.append(self.enemy)
 
@@ -264,7 +267,8 @@ class Window(QGraphicsScene):
                 self.player.setPos(self.player.x(), 0)
 
     def updateMovement(self):
-        if not main.globalIsPaused:  
+        if not main.globalIsPaused: 
+            self.score += 1 
             for item in self.enemyList:
                 item.shot += 1
                 if item.shot > item.reload:
@@ -298,7 +302,7 @@ class Window(QGraphicsScene):
                     self.enemyList.remove(item)
                     self.removeItem(item)
 
-                if item.y() < -10:
+                if item.y() < -118:
                     item.yVel = -item.yVel
                     item.setPos(item.x(), -10)
 
@@ -322,10 +326,11 @@ class Window(QGraphicsScene):
                         self.shotList.remove(item)
                         self.removeItem(item)
                         if bang.health == 0:
+                            self.score += bang.points
                             self.enemyList.remove(bang)
                             self.removeItem(bang)
                             # you have to break, in case it collided with multiple enemies, since it will try to remove the bullet twice
-                            break
+                        break
 
             for item in self.projectileList:
                 item.setPos(item.x() + item.xVel, item.y() + item.yVel)
@@ -352,6 +357,7 @@ class Window(QGraphicsScene):
         self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
 
     def deleteSelf(self):
+        print(str(self.score))
         for i in self.views():
             i.close()
         for i in self.items():
