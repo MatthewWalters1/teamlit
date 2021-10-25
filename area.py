@@ -209,9 +209,9 @@ class Window(QGraphicsScene):
         if (len(self.enemyList) < 6):
             self.enemyType = random.randrange(0,2)
             if self.enemyType == 0:
-                self.enemy = bullet.ship(random.randrange(0, 600), 0, "Images/enemy.png", random.randrange(-3,3), 0)
+                self.enemy = bullet.ship(random.randrange(0, 600), 0, "Images/enemy.png", random.randrange(-3,3), 0, 1)
             elif self.enemyType == 1:
-                self.enemy = bullet.ship(random.randrange(120, 480), 0, "Images/enemy2.png", 0, 10)
+                self.enemy = bullet.ship(random.randrange(120, 480), 0, "Images/enemy2.png", 0, 10, 3)
             self.addItem(self.enemy)
             self.enemyList.append(self.enemy)
 
@@ -318,12 +318,14 @@ class Window(QGraphicsScene):
                 for bang in collision:
                     # this is easier than isinstance, and it works
                     if bang in self.enemyList:
+                        bang.health -= 1
                         self.shotList.remove(item)
                         self.removeItem(item)
-                        self.enemyList.remove(bang)
-                        self.removeItem(bang)
-                        # you have to break, in case it collided with multiple enemies, since it will try to remove the bullet twice
-                        break
+                        if bang.health == 0:
+                            self.enemyList.remove(bang)
+                            self.removeItem(bang)
+                            # you have to break, in case it collided with multiple enemies, since it will try to remove the bullet twice
+                            break
 
             for item in self.projectileList:
                 item.setPos(item.x() + item.xVel, item.y() + item.yVel)

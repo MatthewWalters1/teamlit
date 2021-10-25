@@ -18,11 +18,11 @@ class bullet(QGraphicsPixmapItem):
         self.yVel = y_vel
 
 class ship(QGraphicsPixmapItem):
-    def __init__(self, x_pos, y_pos, image_name, x_vel, y_vel):
+    def __init__(self, x_pos, y_pos, image_name, x_vel, y_vel, health):
         super().__init__()
 
         self.setPixmap(QPixmap(image_name))
-
+        self.health = health
         #spawns an enemy ship that will move at the speeds/directions given
         self.setX(x_pos)
         self.setY(y_pos)
