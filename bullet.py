@@ -18,17 +18,18 @@ class bullet(QGraphicsPixmapItem):
         self.yVel = y_vel
 
 class ship(QGraphicsPixmapItem):
-    def __init__(self, x_pos, y_pos, image_name, x_vel, y_vel, health):
+    def __init__(self, x_pos, y_pos, shipType, x_vel, y_vel, health):
         super().__init__()
+
+        self.shipType = shipType
+        if self.shipType == 'a':
+            image_name = "Images/enemy2.png"
+        elif self.shipType == 'b':
+            image_name = "Images/enemy.png"
 
         self.setPixmap(QPixmap(image_name))
 
         self.once = 1
-        self.shipType = 'b'
-        if image_name == "Images/enemy2.png":
-            self.shipType = 'a'
-        # else:
-        #     self.shipType = 'b'
         self.health = health
         self.points = health * 20
         #spawns an enemy ship that will move at the speeds/directions given

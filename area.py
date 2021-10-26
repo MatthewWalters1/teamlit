@@ -216,9 +216,9 @@ class Window(QGraphicsScene):
         if (len(self.enemyList) < self.intensity):
             self.enemyType = random.randrange(0,2)
             if self.enemyType == 0:
-                self.enemy = bullet.ship(random.randrange(0, 600), -300, "Images/enemy.png", 0, 20, 1)
+                self.enemy = bullet.ship(random.randrange(0, 600), -300, 'b', 0, 20, 1)
             elif self.enemyType == 1:
-                self.enemy = bullet.ship(random.randrange(120, 480), -300, "Images/enemy2.png", 0, 10, 3)
+                self.enemy = bullet.ship(random.randrange(120, 480), -300, 'a', 0, 10, 3)
             self.addItem(self.enemy)
             self.enemyList.append(self.enemy)
 
