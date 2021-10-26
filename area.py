@@ -21,6 +21,10 @@ class Window(QGraphicsScene):
 
         #this is your score, it gets added to when the player kills an enemy ship
         self.score = 0
+        # intensity controls the number of enemy ships on screen at once, it goes up over time
+        self.intensity = 3
+        # elapsed is how you measure when to increase intensity
+        self.elapsed = 0
 
         main.globalIsPaused = True
 
@@ -209,7 +213,7 @@ class Window(QGraphicsScene):
         sys.exit()
 
     def spawnEnemy(self):
-        if (len(self.enemyList) < 6):
+        if (len(self.enemyList) < self.intensity):
             self.enemyType = random.randrange(0,2)
             if self.enemyType == 0:
                 self.enemy = bullet.ship(random.randrange(0, 600), -300, "Images/enemy.png", 0, 20, 1)
@@ -267,8 +271,15 @@ class Window(QGraphicsScene):
                 self.player.setPos(self.player.x(), 0)
 
     def updateMovement(self):
-        if not main.globalIsPaused: 
+        if not main.globalIsPaused:
+            
+            self.elapsed += 1
+            if self.elapsed == 200:
+                self.elapsed = 0
+                self.intensity += 1
+            
             self.score += 1 
+            
             for item in self.enemyList:
                 if item.shipType == 'b':
                     if item.y() >= 0:
