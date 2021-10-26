@@ -22,6 +22,13 @@ class ship(QGraphicsPixmapItem):
         super().__init__()
 
         self.setPixmap(QPixmap(image_name))
+
+        self.once = 1
+        self.shipType = 'b'
+        if image_name == "Images/enemy2.png":
+            self.shipType = 'a'
+        # else:
+        #     self.shipType = 'b'
         self.health = health
         self.points = health * 20
         #spawns an enemy ship that will move at the speeds/directions given
@@ -30,6 +37,6 @@ class ship(QGraphicsPixmapItem):
         self.xVel = x_vel
         self.yVel = y_vel
 
-        #this counts to a random number 0,3 before shooting a bullet at the player
+        #this counts to a random number before shooting a bullet at the player
         self.shot = 0
         self.reload = random.randrange(4,20)

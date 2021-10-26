@@ -212,9 +212,9 @@ class Window(QGraphicsScene):
         if (len(self.enemyList) < 6):
             self.enemyType = random.randrange(0,2)
             if self.enemyType == 0:
-                self.enemy = bullet.ship(random.randrange(0, 600), 0, "Images/enemy.png", random.randrange(-10, 10), 0, 1)
+                self.enemy = bullet.ship(random.randrange(0, 600), -300, "Images/enemy.png", 0, 20, 1)
             elif self.enemyType == 1:
-                self.enemy = bullet.ship(random.randrange(120, 480), -118, "Images/enemy2.png", 0, 10, 3)
+                self.enemy = bullet.ship(random.randrange(120, 480), -300, "Images/enemy2.png", 0, 10, 3)
             self.addItem(self.enemy)
             self.enemyList.append(self.enemy)
 
@@ -270,9 +270,17 @@ class Window(QGraphicsScene):
         if not main.globalIsPaused: 
             self.score += 1 
             for item in self.enemyList:
+                if item.shipType == 'b':
+                    if item.y() >= 0:
+                        item.yVel = 0
+                        if item.once == 1:
+                            item.xVel = random.randrange(-10, 10)
+                            item.once = 0
+
                 item.shot += 1
                 if item.shot > item.reload:
                         item.shot = 0
+
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
                 collision = item.collidingItems()
                 for bang in collision:
@@ -302,19 +310,20 @@ class Window(QGraphicsScene):
                     self.enemyList.remove(item)
                     self.removeItem(item)
 
-                if item.y() < -118:
+                if item.y() < -300:
                     item.yVel = -item.yVel
                     item.setPos(item.x(), -10)
 
                 if item.shot == item.reload:
-                    self.p = bullet.bullet(item.x() + 16, item.y(), "Images/beam3.png", 0, 30)
-                    self.addItem(self.p)
-                    self.projectileList.append(self.p)
+                    if item.shipType != 'a':
+                        self.p = bullet.bullet(item.x() + 16, item.y(), "Images/beam3.png", 0, 30)
+                        self.addItem(self.p)
+                        self.projectileList.append(self.p)
              
             for item in self.shotList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
                 # -118 is the current limit, this could change
-                if item.y() < -118:
+                if item.y() < -300:
                     self.shotList.remove(item)
                     self.removeItem(item)
                     continue
@@ -322,7 +331,10 @@ class Window(QGraphicsScene):
                 for bang in collision:
                     # this is easier than isinstance, and it works
                     if bang in self.enemyList:
-                        bang.health -= 1
+                        # this makes it to where the player has to be a little more intentional to kill the target
+                        # In my tests, a lot of stray bullets would hit ships before they were even a threat
+                        if bang.y() > -50:
+                            bang.health -= 1
                         self.shotList.remove(item)
                         self.removeItem(item)
                         if bang.health == 0:
