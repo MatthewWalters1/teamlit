@@ -7,13 +7,10 @@
 
 from math import isqrt
 import sys, random
-from PyQt6.QtCore import Qt, QTimer
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QPalette, QFont, QBrush, QPixmap
 from PyQt6.QtWidgets import QGraphicsPixmapItem, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QMessageBox, QApplication
-import player
-import bullet
-import windowmanager
-import main
+import player, bullet, windowmanager, main
 
 class Window(QGraphicsScene):
     def __init__(self):
@@ -24,7 +21,6 @@ class Window(QGraphicsScene):
         self.imageTwoStartX = -250
         self.imageTwoStartY = -2920
 
-        self.makeImages = 0
         self.imageMove = 0
 
         #this is your score, it gets added to when the player kills an enemy ship
@@ -108,15 +104,13 @@ class Window(QGraphicsScene):
         topWidgetPallette.setColor(QPalette.ColorRole.Window , QColor(194, 197, 204))
         topWidget.setPalette(topWidgetPallette)
 
-        if self.makeImages == 0:
-            self.image = QGraphicsPixmapItem()
-            self.image.setPixmap(QPixmap("Images/outer-space.png"))
-            self.addItem(self.image)
+        self.image = QGraphicsPixmapItem()
+        self.image.setPixmap(QPixmap("Images/outer-space.png"))
+        self.addItem(self.image)
 
-            self.imageTwo = QGraphicsPixmapItem()
-            self.imageTwo.setPixmap(QPixmap("Images/outer-space.png"))
-            self.addItem(self.imageTwo)
-            self.makeImages = 1
+        self.imageTwo = QGraphicsPixmapItem()
+        self.imageTwo.setPixmap(QPixmap("Images/planets.png"))
+        self.addItem(self.imageTwo)
 
         self.addWidget(topWidget)
 
@@ -291,16 +285,16 @@ class Window(QGraphicsScene):
     def updateMovement(self):
         if not main.globalIsPaused:
             
-            self.imageMove += 10
+            self.imageMove += 2
 
             self.image.setPos(self.imageOneStartX, (self.imageOneStartY + self.imageMove))
             self.imageTwo.setPos(self.imageTwoStartX, (self.imageTwoStartY + self.imageMove))
 
             if (self.imageOneStartY + self.imageMove) >= 1080:
-                self.imageOneStartY = -1920 - self.imageMove
+                self.imageOneStartY = -2750 - self.imageMove
 
             if (self.imageTwoStartY + self.imageMove) >= 1080:
-                self.imageTwoStartY = -1920 - self.imageMove
+                self.imageTwoStartY = -2750 - self.imageMove
 
             self.elapsed += 1
             if self.elapsed == 200:

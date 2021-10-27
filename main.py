@@ -8,7 +8,7 @@
 from PyQt6.QtWidgets import QWidget, QLabel, QApplication, QVBoxLayout
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QFont
-import sys, windowmanager, area
+import sys, windowmanager
 
 globalIsPaused = False
 
@@ -50,8 +50,8 @@ class Timer(QWidget): #Manages the game timer
         self.time += 1
         self.displayTime.setText(str(self.time))
 
-        # if self.time >= 100: #Game will call end game after 100 seconds
-        #     self.endGame()
+        if self.time >= 100: #Game will call end game after 100 seconds
+            self.endGame()
 
     def startTimer(self):
         self.timer.start(1000)
