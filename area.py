@@ -114,6 +114,8 @@ class Window(QGraphicsScene):
 
         self.addWidget(topWidget)
 
+        self.key_list = set()
+
         #Add player to the screen
         self.player = player.player()
         self.player.setPos(self.width()/2-68, self.height()-100)
@@ -245,25 +247,34 @@ class Window(QGraphicsScene):
         
     def keyPressEvent(self, event):
         if not main.globalIsPaused:
+            self.key_list.add(event.key())
+
+    def keyReleaseEvent(self, event):
+        if not main.globalIsPaused:
+            self.key_list.remove(event.key())
+
+    def updateMovement(self):
+        if not main.globalIsPaused:
+
             xVel = 0
             yVel = 0
-            if event.key() == Qt.Key.Key_Left:
+            if Qt.Key.Key_Left in self.key_list:
                 #change velocitiy
                 xVel = -40 #may change if too fast/slow
                 
-            if event.key() == Qt.Key.Key_Right:
+            if Qt.Key.Key_Right in self.key_list:
                 #change velocity
                 xVel = 40 #may change if too fast/slow
 
-            if event.key() == Qt.Key.Key_Up:
+            if Qt.Key.Key_Up in self.key_list:
                 #change velocity
                 yVel = -40 #may change if too fast/slow
 
-            if event.key() == Qt.Key.Key_Down:
+            if Qt.Key.Key_Down in self.key_list:
                 #change velocity
                 yVel = 40 #may change if too fast/slow
 
-            if event.key() == Qt.Key.Key_Space:
+            if Qt.Key.Key_Space in self.key_list:
                 #fire bullet
                 self.fireBullet(self.player.x(), self.player.y())
 
@@ -281,9 +292,6 @@ class Window(QGraphicsScene):
 
             if self.player.y() < 0:
                 self.player.setPos(self.player.x(), 0)
-
-    def updateMovement(self):
-        if not main.globalIsPaused:
             
             self.imageMove += 2
 
