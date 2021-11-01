@@ -327,7 +327,7 @@ class Window(QGraphicsScene):
                 collision = item.collidingItems()
                 for bang in collision:
                     if isinstance(bang, type(self.player)):
-                        self.player.health -= random.randrange(15, 25)
+                        self.player.health -= item.points
                         self.enemyList.remove(item)
                         self.removeItem(item)
                         print("hit")
@@ -394,7 +394,7 @@ class Window(QGraphicsScene):
                 collision = item.collidingItems()
                 for bang in collision:
                     if isinstance(bang, type(self.player)):
-                        self.player.health -= random.randrange(15, 25)
+                        self.player.health -= 15
                         self.projectileList.remove(item)
                         self.removeItem(item)
                         print("hit")
