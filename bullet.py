@@ -10,8 +10,6 @@ class bullet(QGraphicsPixmapItem):
         super().__init__()
 
         self.setPixmap(QPixmap(image_name))
-
-        #spawns bullet at a random location at the top going in a random direction
         self.setX(x_pos)
         self.setY(y_pos)
         self.xVel = x_vel
@@ -26,13 +24,14 @@ class ship(QGraphicsPixmapItem):
             image_name = "Images/enemy2.png"
         elif self.shipType == 'b':
             image_name = "Images/enemy.png"
+        elif self.shipType == 'c':
+            image_name = "Images/boss.png"
 
         self.setPixmap(QPixmap(image_name))
 
         self.once = 1
         self.health = health
         self.points = health * 20
-        #spawns an enemy ship that will move at the speeds/directions given
         self.setX(x_pos)
         self.setY(y_pos)
         self.xVel = x_vel
