@@ -11,6 +11,7 @@ from PyQt6.QtGui import QFont
 import sys, windowmanager
 
 globalIsPaused = False
+globalScore = 0
 
 class Timer(QWidget): #Manages the game timer
     def __init__(self):
@@ -70,7 +71,8 @@ class Timer(QWidget): #Manages the game timer
         self.windowmanager.show()
 
     def showScore(self): #gives the player a score based on the amount of time elapsed
-        self.score = self.time * 5
+        global globalScore
+        globalScore += self.time * 5
         #once the windowmanager is implemented, have a display somewhere on the windowmanager for your score, similar to displayTime
 
 
