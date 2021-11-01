@@ -1,4 +1,4 @@
-import sys, area, main
+import sys, area, main, database
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
@@ -62,6 +62,18 @@ class EndWindow(QMainWindow):
         self.exitbutton.clicked.connect(self.exitClicked)
         self.buttonLayout.addWidget(self.exitbutton)
 
+        self.boardbutton = QPushButton()
+        self.boardbutton.setText("Leaderboard")
+        self.boardbutton.setStyleSheet("background-color: lightGray;"
+                                       "border-style: outset;"
+                                       "border-width: 1px;"
+                                       "border-color: black;"
+                                       "min-width: 80 em;"
+                                       "max-width: 80 em;"
+                                       "padding: 6 px;")
+        self.boardbutton.clicked.connect(self.boardClicked)
+        self.buttonLayout.addWidget(self.boardbutton)
+
         self.mainLayout.setContentsMargins(0,0,0,0)
         self.mainLayout.setSpacing(20)
 
@@ -75,8 +87,19 @@ class EndWindow(QMainWindow):
         self.scene = QGraphicsScene(-50, -50, 600, 600)
         main.globalIsPaused = True
 
+        nameEntered = False
+        self.playerName, nameEntered = QInputDialog.getText(self, 'Name Dialog', 'Enter your name', QLineEdit.EchoMode.Normal, 'Name')
+        if nameEntered and self.playerName and not self.playerName.isspace():
+            database.addScore(self.playerName, main.globalScore)
+
     def exitClicked(self):
         sys.exit()
+
+    def boardClicked(self):
+        boardText = database.getTopScores()
+        leaderboard = QMessageBox()
+        leaderboard.setText(boardText)
+        leaderboard.exec()
 
     def restartGame(self):
         QApplication.closeAllWindows()

@@ -24,7 +24,7 @@ class Window(QGraphicsScene):
         self.imageMove = 0
 
         #this is your score, it gets added to when the player kills an enemy ship
-        self.score = 0
+        main.globalScore = 0
         # intensity controls the number of enemy ships on screen at once, it goes up over time
         self.intensity = 3
         # elapsed is how you measure when to increase intensity
@@ -113,6 +113,8 @@ class Window(QGraphicsScene):
         self.addItem(self.imageTwo)
 
         self.addWidget(topWidget)
+
+        self.key_list = set()
 
         #Add player to the screen
         self.player = player.player()
@@ -245,25 +247,34 @@ class Window(QGraphicsScene):
         
     def keyPressEvent(self, event):
         if not main.globalIsPaused:
+            self.key_list.add(event.key())
+
+    def keyReleaseEvent(self, event):
+        if not main.globalIsPaused:
+            self.key_list.remove(event.key())
+
+    def updateMovement(self):
+        if not main.globalIsPaused:
+
             xVel = 0
             yVel = 0
-            if event.key() == Qt.Key.Key_Left:
+            if Qt.Key.Key_Left in self.key_list:
                 #change velocitiy
                 xVel = -40 #may change if too fast/slow
                 
-            if event.key() == Qt.Key.Key_Right:
+            if Qt.Key.Key_Right in self.key_list:
                 #change velocity
                 xVel = 40 #may change if too fast/slow
 
-            if event.key() == Qt.Key.Key_Up:
+            if Qt.Key.Key_Up in self.key_list:
                 #change velocity
                 yVel = -40 #may change if too fast/slow
 
-            if event.key() == Qt.Key.Key_Down:
+            if Qt.Key.Key_Down in self.key_list:
                 #change velocity
                 yVel = 40 #may change if too fast/slow
 
-            if event.key() == Qt.Key.Key_Space:
+            if Qt.Key.Key_Space in self.key_list:
                 #fire bullet
                 self.fireBullet(self.player.x(), self.player.y())
 
@@ -281,9 +292,6 @@ class Window(QGraphicsScene):
 
             if self.player.y() < 0:
                 self.player.setPos(self.player.x(), 0)
-
-    def updateMovement(self):
-        if not main.globalIsPaused:
             
             self.imageMove += 2
 
@@ -301,7 +309,7 @@ class Window(QGraphicsScene):
                 self.elapsed = 0
                 self.intensity += 1
             
-            self.score += 1 
+            main.globalScore += 1 
             
             for item in self.enemyList:
                 if item.shipType == 'b':
@@ -372,7 +380,7 @@ class Window(QGraphicsScene):
                         self.shotList.remove(item)
                         self.removeItem(item)
                         if bang.health == 0:
-                            self.score += bang.points
+                            main.globalScore += bang.points
                             self.enemyList.remove(bang)
                             self.removeItem(bang)
                             # you have to break, in case it collided with multiple enemies, since it will try to remove the bullet twice
@@ -403,11 +411,13 @@ class Window(QGraphicsScene):
         self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
 
     def deleteSelf(self):
-        print(str(self.score))
+        main.globalIsPaused = True # Attempts to fix invisible bullet death problem
+        print(str(main.globalScore))
         for i in self.views():
             i.close()
         for i in self.items():
             self.removeItem(i)
         self.clear()
+        main.globalIsPaused = False
         self.deleteLater()
 

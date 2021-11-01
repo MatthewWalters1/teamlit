@@ -1,4 +1,6 @@
+import sys
 from google.auth.credentials import AnonymousCredentials
+from google.cloud import firestore
 from google.cloud.firestore import Client
 
 project_id = "teamlit-dd6f2"
@@ -6,17 +8,35 @@ project_id = "teamlit-dd6f2"
 credentials = AnonymousCredentials()
 db = Client(project = project_id, credentials = credentials)
 
-# The names of the document, name, and score are user-dependent, but
-# for testing purposes this would create a 'test' document with a score of 1000
-doc_ref = db.collection(u'scores').document(u'test')
-doc_ref.set({
-    u'score': 1000
-})
+def addScore(name, score):
+    # Create a name document with a score of score
+    try:
+        doc_ref = db.collection(u'scores').document(name)
+    except:
+        print('Could not add {name}\'s score, so the program will exit')
+        sys.exit()
+    doc_ref.set({
+        u'score': score
+    })
 
-scores_ref = db.collection(u'scores')
-docs = scores_ref.stream()
+def getTopScores():
+    try:
+        scores_ref = db.collection(u'scores')
+        query = scores_ref.order_by(u'score', direction=firestore.Query.DESCENDING).limit_to_last(10)
+        docs = query.get()
+    except:
+        print('Could not get and store the top ten scores, so the program will exit')
+        sys.exit()
 
-# For testing purposes, prints the contents of the 'scores' collection
-for doc in docs:
-    print(f'{doc.id} => {doc.to_dict()}')
+    # Makes a string that contains the top ten list of scores with their players, separated by new lines
+    topScores = ''
+    for doc in docs:
+        score = doc.to_dict().get(u'score')
+        topScores += f'{doc.id}: {score}\n'
+
+    # For testing purposes, prints the top scores
+    # for doc in docs:
+        #print(f'{doc.id} => {doc.to_dict()}')
+    
+    return topScores
 
