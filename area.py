@@ -29,6 +29,8 @@ class Window(QGraphicsScene):
         self.intensity = 3
         # elapsed is how you measure when to increase intensity
         self.elapsed = 0
+        # boss is used to measure how long between appearances bosses should spawn
+        self.boss = 400
 
         main.globalIsPaused = True
 
@@ -228,11 +230,20 @@ class Window(QGraphicsScene):
 
     def spawnEnemy(self):
         if (len(self.enemyList) < self.intensity):
-            self.enemyType = random.randrange(0,2)
-            if self.enemyType == 0:
-                self.enemy = bullet.ship(random.randrange(0, 600), -300, 'b', 0, 20, 1)
-            elif self.enemyType == 1:
-                self.enemy = bullet.ship(random.randrange(120, 480), -300, 'a', 0, 10, 3)
+            self.enemyType = random.randrange(0,11)
+            self.check = True
+            for i in self.enemyList:
+                if i.shipType == 'c':
+                    self.check = False
+            if self.enemyType <= 4:
+                self.enemy = bullet.ship(random.randrange(0, 480), -300, 'b', 0, 20, 1)
+            elif self.enemyType <= 9:
+                self.enemy = bullet.ship(random.randrange(0, 480), -300, 'a', 0, 10, 3)
+            elif self.enemyType == 10 and self.check == True and self.boss > 400:
+                self.boss = 0
+                self.enemy = bullet.ship(180, -400, 'c', 0, 10, 50)
+            else:
+                self.enemy = bullet.ship(random.randrange(0, 480), -300, 'b', 0, 40, 1)
             self.addItem(self.enemy)
             self.enemyList.append(self.enemy)
 
@@ -255,6 +266,9 @@ class Window(QGraphicsScene):
 
     def updateMovement(self):
         if not main.globalIsPaused:
+
+            # this is used to stop bosses from appearing constantly
+            self.boss += 1
 
             xVel = 0
             yVel = 0
@@ -318,6 +332,9 @@ class Window(QGraphicsScene):
                         if item.once == 1:
                             item.xVel = random.randrange(-10, 10)
                             item.once = 0
+                if item.shipType == 'c':
+                    if item.y() <= -300:
+                        item.yVel = 3
 
                 item.shot += 1
                 if item.shot > item.reload:
@@ -352,19 +369,28 @@ class Window(QGraphicsScene):
                     self.enemyList.remove(item)
                     self.removeItem(item)
 
-                if item.y() < -300:
+                if item.y() < -400:
                     item.yVel = -item.yVel
                     item.setPos(item.x(), -10)
 
-                if item.shot == item.reload:
-                    if item.shipType != 'a':
+                if item.shot >= item.reload:
+                    if item.shipType == 'b':
                         self.p = bullet.bullet(item.x() + 16, item.y(), "Images/beam3.png", 0, 30)
+                        self.addItem(self.p)
+                        self.projectileList.append(self.p)
+                    elif item.shipType == 'c':
+                        self.p = bullet.bullet(item.x() + 50, item.y() + 50, "Images/beam3.png", 0, 30)
+                        if self.player.x() > item.x() + 80:
+                            self.p.xVel += 5
+                        elif self.player.x() < item.x() - 10:
+                            self.p.xVel -= 5
+                        item.reload = 10
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
              
             for item in self.shotList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
-                # -118 is the current limit, this could change
+                # -300 is the current limit, this could change
                 if item.y() < -300:
                     self.shotList.remove(item)
                     self.removeItem(item)
@@ -375,13 +401,16 @@ class Window(QGraphicsScene):
                     if bang in self.enemyList:
                         # this makes it to where the player has to be a little more intentional to kill the target
                         # In my tests, a lot of stray bullets would hit ships before they were even a threat
-                        if bang.y() > -50:
+                        if bang.y() > -50 or bang.shipType == 'c':
                             bang.health -= 1
                         self.shotList.remove(item)
                         self.removeItem(item)
                         if bang.health == 0:
                             main.globalScore += bang.points
                             self.enemyList.remove(bang)
+                            if bang.shipType == 'c':
+                                # after the boss dies, we reset the timer so the player has about a minute without a boss on screen
+                                self.boss = 0
                             self.removeItem(bang)
                             # you have to break, in case it collided with multiple enemies, since it will try to remove the bullet twice
                         break

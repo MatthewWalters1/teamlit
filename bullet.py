@@ -25,7 +25,7 @@ class ship(QGraphicsPixmapItem):
         elif self.shipType == 'b':
             image_name = "Images/enemy.png"
         elif self.shipType == 'c':
-            image_name = "Images/boss.png"
+            image_name = "Images/Bat.png"
 
         self.setPixmap(QPixmap(image_name))
 
