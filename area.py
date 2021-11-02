@@ -334,7 +334,7 @@ class Window(QGraphicsScene):
                             item.once = 0
                 if item.shipType == 'c':
                     if item.y() <= -300:
-                        item.yVel = 3
+                        item.yVel = 3 + (self.intensity - 3)
 
                 item.shot += 1
                 if item.shot > item.reload:
@@ -384,7 +384,7 @@ class Window(QGraphicsScene):
                             self.p.xVel += 5
                         elif self.player.x() < item.x() - 10:
                             self.p.xVel -= 5
-                        item.reload = 10
+                        item.reload = 10 - self.intensity
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
              
