@@ -22,7 +22,7 @@ def addScore(name, score):
 def getTopScores():
     try:
         scores_ref = db.collection(u'scores')
-        query = scores_ref.order_by(u'score', direction=firestore.Query.DESCENDING).limit_to_last(10)
+        query = scores_ref.order_by(u'score', direction=firestore.Query.DESCENDING).limit(10)
         docs = query.get()
     except:
         print('Could not get and store the top ten scores, so the program will exit')
