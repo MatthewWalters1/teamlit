@@ -384,7 +384,7 @@ class Window(QGraphicsScene):
                             self.p.xVel += 5
                         elif self.player.x() < item.x() - 10:
                             self.p.xVel -= 5
-                        item.reload = 10 - self.intensity
+                        item.reload = 10
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
              
