@@ -8,7 +8,7 @@ import random
 class bullet(QGraphicsPixmapItem):
     def __init__(self, x_pos, y_pos, image_name, x_vel, y_vel):
         super().__init__()
-
+        self.image_name = image_name
         self.setPixmap(QPixmap(image_name))
         self.setX(x_pos)
         self.setY(y_pos)
@@ -25,7 +25,9 @@ class ship(QGraphicsPixmapItem):
         elif self.shipType == 'b':
             image_name = "Images/enemy.png"
         elif self.shipType == 'c':
-            image_name = "Images/Bat.png"
+            image_name = "Images/BatMk3.png"
+        elif self.shipType == 'd':
+            image_name = "Images/Omega.png"
 
         self.setPixmap(QPixmap(image_name))
 

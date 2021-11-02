@@ -233,7 +233,7 @@ class Window(QGraphicsScene):
             self.enemyType = random.randrange(0,11)
             self.check = True
             for i in self.enemyList:
-                if i.shipType == 'c':
+                if i.shipType == 'c' or i.shipType == 'd':
                     self.check = False
             if self.enemyType <= 4:
                 self.enemy = bullet.ship(random.randrange(0, 480), -300, 'b', 0, 20, 1)
@@ -241,7 +241,11 @@ class Window(QGraphicsScene):
                 self.enemy = bullet.ship(random.randrange(0, 480), -300, 'a', 0, 10, 3)
             elif self.enemyType == 10 and self.check == True and self.boss > 400:
                 self.boss = 0
-                self.enemy = bullet.ship(180, -400, 'c', 0, 10, 50)
+                self.enemyType = random.randrange(0,2)
+                if self.enemyType == 0:
+                    self.enemy = bullet.ship(180, -400, 'c', 0, 10, 50)
+                if self.enemyType == 1:
+                    self.enemy = bullet.ship(180, -400, 'd', 0, 10, 80)
             else:
                 self.enemy = bullet.ship(random.randrange(0, 480), -300, 'b', 0, 40, 1)
             self.addItem(self.enemy)
@@ -334,8 +338,18 @@ class Window(QGraphicsScene):
                             item.once = 0
                 if item.shipType == 'c':
                     if item.y() <= -300:
-                        item.yVel = 3 + (self.intensity - 3)
-
+                        item.yVel = self.intensity
+                        if item.yVel > 10 or item.reload < 6:
+                            item.yVel = 10
+                            item.reload -= 1
+                if item.shipType == 'd':
+                    if item.y() >= -80:
+                        item.yVel = 0
+                        if item.once == 1:
+                            item.xVel = 0
+                            while (item.xVel == 0):
+                                item.xVel = random.randrange(-4, 4)
+                            item.once = 0
                 item.shot += 1
                 if item.shot > item.reload:
                         item.shot = 0
@@ -387,6 +401,11 @@ class Window(QGraphicsScene):
                         item.reload = 10
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
+                    elif item.shipType == 'd':
+                        item.reload = 18
+                        self.p = bullet.bullet(item.x() + 28, item.y() + 69, "Images/beam4a.png", 0, 20)
+                        self.addItem(self.p)
+                        self.projectileList.append(self.p)
              
             for item in self.shotList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
@@ -401,7 +420,7 @@ class Window(QGraphicsScene):
                     if bang in self.enemyList:
                         # this makes it to where the player has to be a little more intentional to kill the target
                         # In my tests, a lot of stray bullets would hit ships before they were even a threat
-                        if bang.y() > -50 or bang.shipType == 'c':
+                        if bang.y() > -50 or bang.shipType == 'c' or bang.shipType == 'd':
                             bang.health -= 1
                         self.shotList.remove(item)
                         self.removeItem(item)
@@ -416,6 +435,65 @@ class Window(QGraphicsScene):
                         break
 
             for item in self.projectileList:
+                if item.image_name == "Images/beam4a.png":
+                    if self.player.x() < item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4b", -5, 20)
+                    elif self.player.x() > item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4e", 5, 20)
+                    self.projectileList.remove(item)
+                    self.removeItem(item)
+                    self.projectileList.append(self.j)
+                    self.addItem(self.j)
+                elif item.image_name == "Images/beam4b.png":
+                    if self.player.x() < item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4c", -10, 20)
+                    elif self.player.x() > item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4a", 0, 20)
+                    self.projectileList.remove(item)
+                    self.removeItem(item)
+                    self.projectileList.append(self.j)
+                    self.addItem(self.j)
+                elif item.image_name == "Images/beam4e.png":
+                    if self.player.x() < item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4a", 0, 20)
+                    elif self.player.x() > item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4f", 10, 20)
+                    self.projectileList.remove(item)
+                    self.removeItem(item)
+                    self.projectileList.append(self.j)
+                    self.addItem(self.j)
+                elif item.image_name == "Images/beam4c.png":
+                    if self.player.x() < item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4d", -15, 20)
+                    elif self.player.x() > item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4b", -5, 20)
+                    self.projectileList.remove(item)
+                    self.removeItem(item)
+                    self.projectileList.append(self.j)
+                    self.addItem(self.j)
+                elif item.image_name == "Images/beam4f.png":
+                    if self.player.x() < item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4g", 15, 20)
+                    elif self.player.x() > item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4e", 5, 20)
+                    self.projectileList.remove(item)
+                    self.removeItem(item)
+                    self.projectileList.append(self.j)
+                    self.addItem(self.j)
+                elif item.image_name == "Images/beam4d.png":
+                    if self.player.x() < item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4c", -10, 20)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
+                elif item.image_name == "Images/beam4g.png":
+                    if self.player.x() > item.x():
+                        self.j = bullet.bullet(item.x(), item.y(), "Images/beam4f", 10, 20)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
                 item.setPos(item.x() + item.xVel, item.y() + item.yVel)
                 if item.y() > self.height() + 10:
                     self.projectileList.remove(item)
