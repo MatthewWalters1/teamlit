@@ -19,7 +19,7 @@ class Window(QGraphicsScene):
         self.imageOneStartX = -250
         self.imageOneStartY = -1000
         self.imageTwoStartX = -250
-        self.imageTwoStartY = -2920
+        self.imageTwoStartY = -2919
 
         self.imageMove = 0
 
@@ -107,11 +107,11 @@ class Window(QGraphicsScene):
         topWidget.setPalette(topWidgetPallette)
 
         self.image = QGraphicsPixmapItem()
-        self.image.setPixmap(QPixmap("Images/outer-space.png"))
+        self.image.setPixmap(QPixmap("Images/milkyway.png"))
         self.addItem(self.image)
 
         self.imageTwo = QGraphicsPixmapItem()
-        self.imageTwo.setPixmap(QPixmap("Images/planets.png"))
+        self.imageTwo.setPixmap(QPixmap("Images/milkyway.png"))
         self.addItem(self.imageTwo)
 
         self.addWidget(topWidget)
@@ -313,10 +313,10 @@ class Window(QGraphicsScene):
             self.imageTwo.setPos(self.imageTwoStartX, (self.imageTwoStartY + self.imageMove))
 
             if (self.imageOneStartY + self.imageMove) >= 1080:
-                self.imageOneStartY = -2750 - self.imageMove
+                self.imageOneStartY = -2749 - self.imageMove
 
             if (self.imageTwoStartY + self.imageMove) >= 1080:
-                self.imageTwoStartY = -2750 - self.imageMove
+                self.imageTwoStartY = -2749 - self.imageMove
 
             self.elapsed += 1
             if self.elapsed == 200:
