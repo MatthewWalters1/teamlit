@@ -427,7 +427,7 @@ class Window(QGraphicsScene):
                         if bang.health == 0:
                             main.globalScore += bang.points
                             self.enemyList.remove(bang)
-                            if bang.shipType == 'c':
+                            if bang.shipType == 'c' or bang.shipType == 'd':
                                 # after the boss dies, we reset the timer so the player has about a minute without a boss on screen
                                 self.boss = 0
                             self.removeItem(bang)
