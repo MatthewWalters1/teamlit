@@ -9,13 +9,28 @@ credentials = AnonymousCredentials()
 db = Client(project = project_id, credentials = credentials)
 
 def addScore(name, score):
-    # Create a name document with a score of score
+    # Create an entry in the players collection with this player's new ID
     try:
-        doc_ref = db.collection(u'scores').document(name)
+        id_ref = db.collection(u'ids').document(u'id')
+        getID = id_ref.get()
     except:
-        print('Could not add {name}\'s score, so the program will exit')
+        print('Could not get the id document, so the program will exit')
+        sys.exit()
+    newID = getID.to_dict().get(u'nextID')
+
+    # Increment the nextID value in the ids collection id document
+    id_ref.set({
+        u'nextID': str((int(newID) + 1))
+    })
+    
+    # Create a newID document with a name of name and a score of score
+    try:
+        doc_ref = db.collection(u'scores').document(newID)
+    except:
+        print('Could not add scores document for current player, so the program will exit')
         sys.exit()
     doc_ref.set({
+        u'name': name,
         u'score': score
     })
 
@@ -31,8 +46,9 @@ def getTopScores():
     # Makes a string that contains the top ten list of scores with their players, separated by new lines
     topScores = ''
     for doc in docs:
+        name = doc.to_dict().get(u'name')
         score = doc.to_dict().get(u'score')
-        topScores += f'{doc.id}: {score}\n'
+        topScores += f'{name}: {score}\n'
 
     # For testing purposes, prints the top scores
     # for doc in docs:
