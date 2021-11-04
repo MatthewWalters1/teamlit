@@ -1,3 +1,10 @@
+'''
+    database.py
+    teamlit
+    This file handles everything related to getting and/or setting the names and scores stored with Firebase.
+    The two functions it provides are addScore(String name, int score) and getTopScores()
+'''
+
 import sys
 from google.auth.credentials import AnonymousCredentials
 from google.cloud import firestore
@@ -48,11 +55,8 @@ def getTopScores():
     for doc in docs:
         name = doc.to_dict().get(u'name')
         score = doc.to_dict().get(u'score')
-        topScores += f'{name}: {score}\n'
+        line = '{:<20} {:>10}'.format(name, str(score))
+        topScores += line + '\n'
 
-    # For testing purposes, prints the top scores
-    # for doc in docs:
-        #print(f'{doc.id} => {doc.to_dict()}')
-    
     return topScores
 
