@@ -237,15 +237,17 @@ class MainMenuWindow(QMainWindow):
     def boardClicked(self):
         boardText = database.getTopScores()
         leaderboard = QMessageBox(self)
-        font = QFont("Consolas", 12)
+        font = QFont("Consolas", 12, QFont.Weight.Bold)
         leaderboard.setFont(font)
-        leaderboard.setStyleSheet("background-color: darkGreen;"
+        leaderboard.setStyleSheet("background-color: #293D48;"
+                                  "color: white;"
                                   "min-width: 300 em;"
                                   "padding: 10 px;")
         leaderboard.setWindowTitle('Leaderboard')
         leaderboard.setWindowIcon(QIcon('Images/leaderboardicon.png'))
         leaderboard.setStandardButtons(QMessageBox.StandardButton.Ok)
-        leaderboard.button(QMessageBox.StandardButton.Ok).setStyleSheet("background-color: green")
+        leaderboard.button(QMessageBox.StandardButton.Ok).setStyleSheet("background-color: lightGray;"
+                                                                        "color: black;")
         leaderboard.setText(boardText)
         leaderboard.exec()
 
