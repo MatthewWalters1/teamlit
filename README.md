@@ -1,16 +1,16 @@
 Team Name: Teamlit
-Memebers: Jacob Page, Matthew Walters, Lillian Sharpe, and Victor Hanset
+Members: Jacob Page, Matthew Walters, Lillian Sharpe, and Victor Hanset
 
 Project Description:
 
-  Our project will be some sort of space like game, whether it's more similar to Space Invaders or closer to Asteroids, the objective is still subject to change. Currently, it is just a space ship that you can move around, doing your best to avoid enemies that spawn at the top of the screen. 
+  Our project is a space-like game similar to Space Invaders or Asteroids, and the objective is to survive as long as possible while shooting the enemy ships.
 
 Instructions for Use:
 
-* Our project doens't currently use any special repos or libraries other than those included in python(sys, random, etc.) and PyQt6
+* To install the necessary libraries, run "pip install google-auth" and "pip install google-cloud-firestore"
 * Our project runs from main.py(command line: "python3 main.py")
 * To move the player: use the arrow keys
-* To shoot, press the space bar (right now, there is nothing to shoot at, but you are welcome to shoot anyway)
+* To shoot, press the space bar
 
 Notes:
 
