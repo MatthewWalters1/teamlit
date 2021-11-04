@@ -253,11 +253,11 @@ class Window(QGraphicsScene):
                 self.enemy = bullet.ship(random.randrange(0, 480), -300, 'a', 0, 10, 3)
             elif self.enemyType == 10 and self.check == True and self.boss > 400:
                 self.boss = 0
-                # self.enemyType = random.randrange(0,2)
-                # if self.enemyType == 0:
-                #     self.enemy = bullet.ship(180, -400, 'c', 0, 10, 50)
-                # if self.enemyType == 1:
-                self.enemy = bullet.ship(180, -400, 'd', 0, 10, 80)
+                self.enemyType = random.randrange(0,2)
+                if self.enemyType == 0:
+                    self.enemy = bullet.ship(180, -400, 'c', 0, 10, 50)
+                if self.enemyType == 1:
+                    self.enemy = bullet.ship(180, -400, 'd', 0, 10, 80)
             else:
                 self.enemy = bullet.ship(random.randrange(0, 480), -300, 'b', 0, 40, 1)
             self.addItem(self.enemy)
