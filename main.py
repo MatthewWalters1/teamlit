@@ -9,6 +9,9 @@ from PyQt6.QtWidgets import QWidget, QLabel, QApplication, QVBoxLayout
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QFont
 import sys, windowmanager
+import threading
+
+from playsound import playsound
 
 globalIsPaused = False
 globalScore = 0
@@ -17,7 +20,17 @@ globalTime = 0
 class Timer(QWidget): #Manages the game timer
     def __init__(self):
         super().__init__()
- 
+
+        self.displayTime = QLabel('0') #Creates the label that the time will be printed on
+        self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
+        self.displayTime.setStyleSheet("background-color: white;"
+                                        "color: black;"
+                                        "min-width: 40 px;"
+                                        "max-width: 40 px;"
+                                        "min-height: 15 px;"
+                                        "max-height: 15 px;")
+        self.displayTime.setTextFormat(Qt.TextFormat.PlainText)
+        
         self.timer = QTimer()
         self.endButtonPressed = False
         
@@ -39,7 +52,16 @@ class Timer(QWidget): #Manages the game timer
     def pauseTimer(self): #Pauses the timer
         self.timer.stop()
 
+def LoopSound():
+        while True:
+            playsound('Sounds/background.wav', True)
+
 if __name__ == '__main__':
+
+    loopThread = threading.Thread(target=LoopSound, name='backgroundMusicThread')
+    loopThread.daemon = True
+    loopThread.start()
+
     app = QApplication(sys.argv)
 
     window = windowmanager.MainMenuWindow()
