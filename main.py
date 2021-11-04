@@ -12,31 +12,16 @@ import sys, windowmanager
 
 globalIsPaused = False
 globalScore = 0
+globalTime = 0
 
 class Timer(QWidget): #Manages the game timer
     def __init__(self):
         super().__init__()
-
-        self.displayTime = QLabel('0') #Creates the label that the time will be printed on
-        self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
-        self.displayTime.setStyleSheet("background-color: white;"
-                                        "color: black;"
-                                        "min-width: 40 px;"
-                                        "max-width: 40 px;"
-                                        "min-height: 15 px;"
-                                        "max-height: 15 px;"
-                                        "padding: 3 px;")
-        self.displayTime.setTextFormat(Qt.TextFormat.PlainText)
-        
+ 
         self.timer = QTimer()
         self.endButtonPressed = False
-        layout = QVBoxLayout()
         
-        layout.setAlignment(Qt.AlignmentFlag.AlignVCenter) #Layout to display the timer
-        layout.addWidget(self.displayTime)
-        self.setLayout(layout)
-
-        self.timer.timeout.connect(self.showTime) #Initializes the timer to 0 and starts the timer
+        #self.timer.timeout.connect(self.showTime) #Initializes the timer to 0 and starts the timer
         self.time = 0
         self.startTimer()
 
@@ -47,10 +32,6 @@ class Timer(QWidget): #Manages the game timer
         #Timer for movement
         self.movementTimer = QTimer()
         self.movementTimer.start(100)
-
-    def showTime(self):
-        self.time += 1
-        self.displayTime.setText(str(self.time))
 
     def startTimer(self):
         self.timer.start(1000)
