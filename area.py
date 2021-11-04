@@ -241,18 +241,16 @@ class Window(QGraphicsScene):
         main.globalIsPaused = False
 
     def restartClicked(self, event):
+        self.deleteEnemies()
         self.newWindow = windowmanager.MainMenuWindow()
         self.newWindow.startGame()
 
-        self.deleteSelf()
-
     def menuClicked(self, event):
+        self.deleteEnemies()
         QApplication.closeAllWindows()
 
         self.newWindow = windowmanager.MainMenuWindow()
         self.newWindow.show()
-
-        self.deleteSelf()
 
     def exitClicked(self, event):
         sys.exit()
@@ -400,12 +398,10 @@ class Window(QGraphicsScene):
                         print("hit")
                         if self.player.health <= 0:
                             QApplication.closeAllWindows()
-                            
+
                             main.globalIsPaused = True
                             self.windowmanager = windowmanager.EndWindow()
                             self.windowmanager.show()
-
-                            self.deleteSelf()
 
                 if item.x() > self.width()-70:
                     item.xVel = -item.xVel
@@ -557,20 +553,11 @@ class Window(QGraphicsScene):
                             self.windowmanager = windowmanager.EndWindow()
                             self.windowmanager.show()
 
-                            self.deleteSelf()
-
     def updateBackground(self):
         self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
 
-    def deleteSelf(self):
-        main.globalIsPaused = True # Attempts to fix invisible bullet death problem
-        main.globalTime = 0
-        print(str(main.globalScore))
-        for i in self.views():
-            i.close()
-        for i in self.items():
-            self.removeItem(i)
-        self.clear()
-        main.globalIsPaused = False
-        self.deleteLater()
+    def deleteEnemies(self):
+        self.enemyList.clear()
+        self.shotList.clear()
+        self.projectileList.clear()
 
