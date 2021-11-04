@@ -7,7 +7,7 @@ Project Description:
 
 Instructions for Use:
 
-* To install the necessary libraries, run "pip install google-auth" and "pip install google-cloud-firestore"
+* To install the necessary libraries, run "pip install google-auth", "pip install google-cloud-firestore", and "pip install playsound==1.2.2"
 * Our project runs from main.py(command line: "python3 main.py")
 * To move the player: use the arrow keys
 * To shoot, press the space bar
