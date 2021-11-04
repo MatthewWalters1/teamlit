@@ -22,10 +22,28 @@ class EndWindow(QMainWindow):
         self.mainLayout = QVBoxLayout()
 
         self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
-        self.mainLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
+        self.mainLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
 
-        self.titleLabel = QLabel("Game Over!")
-        self.titleLabel.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
+        self.titleLabel = QLabel()
+        self.titleImage = QPixmap("Images/gameover.png")
+        self.titleLabel.setPixmap(self.titleImage)
+        self.mainLayout.addWidget(self.titleLabel)
+
+        self.gameoverImage = QPixmap("Images/main.png")
+        self.gameoverPalette = QPalette()
+        self.gameoverPalette.setBrush(QPalette.ColorRole.Window, QBrush(self.gameoverImage))
+        self.setPalette(self.gameoverPalette)
+
+        self.scoreLabel = QLabel("Final Score:")
+        self.scoreLabel.setStyleSheet(  "color: black;"
+                                        "font-weight: bold;"
+                                        "font-size: 20px;"
+                                        "border: 5px solid white;"
+                                        "padding: 3 px;")
+
+        self.scoreLabel.setText("Final Score: " + str(main.globalScore))
+        self.scoreLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.mainLayout.addWidget(self.scoreLabel)
 
         self.menuButton = QPushButton() #Button that takes the player back to the main menu
         self.menuButton.setText("Main Menu")
@@ -77,7 +95,6 @@ class EndWindow(QMainWindow):
         self.mainLayout.setContentsMargins(0,0,0,0)
         self.mainLayout.setSpacing(20)
 
-        self.mainLayout.addWidget(self.titleLabel)
         self.mainLayout.addLayout(self.buttonLayout)
 
         self.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)

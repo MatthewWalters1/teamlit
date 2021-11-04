@@ -24,8 +24,7 @@ class Timer(QWidget): #Manages the game timer
                                         "min-width: 40 px;"
                                         "max-width: 40 px;"
                                         "min-height: 15 px;"
-                                        "max-height: 15 px;"
-                                        "padding: 3 px;")
+                                        "max-height: 15 px;")
         self.displayTime.setTextFormat(Qt.TextFormat.PlainText)
         
         self.timer = QTimer()
