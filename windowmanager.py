@@ -144,8 +144,16 @@ class MainMenuWindow(QMainWindow):
         self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
         self.mainLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
 
-        self.titleLabel = QLabel("Main Menu")
-        self.titleLabel.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
+        #self.titleLabel = QLabel("Main Menu")
+        #self.titleLabel.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
+        self.titleLabel = QLabel()
+        self.titleImage = QPixmap("Images/logo.png")
+        self.titleLabel.setPixmap(self.titleImage)
+
+        self.backgroundImage = QPixmap("Images/main.png")
+        self.backgroundPalette = QPalette()
+        self.backgroundPalette.setBrush(QPalette.ColorRole.Window, QBrush(self.backgroundImage))
+        self.setPalette(self.backgroundPalette)
 
         self.startButton = QPushButton() #Button that starts the game
         self.startButton.setText("Start Game")

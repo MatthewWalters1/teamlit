@@ -9,7 +9,7 @@ from math import isqrt
 import sys, random
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QPalette, QFont, QBrush, QPixmap
-from PyQt6.QtWidgets import QGraphicsPixmapItem, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QMessageBox, QApplication
+from PyQt6.QtWidgets import QGraphicsPixmapItem, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QMessageBox, QApplication
 import player, bullet, windowmanager, main
 
 class Window(QGraphicsScene):
@@ -44,6 +44,17 @@ class Window(QGraphicsScene):
 
         self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignRight)
 
+        self.displayScore = QLabel('Score: 0') #Creates the label that the Score will be printed on
+        self.displayScore.setFont(QFont("Times", 10, QFont.Weight.Medium))
+        self.displayScore.setStyleSheet("background-color: white;"
+                                        "color: black;"
+                                        "min-width: 100 px;"
+                                        "max-width: 100 px;"
+                                        "min-height: 15 px;"
+                                        "max-height: 15 px;"
+                                        "padding: 3 px;")
+        self.displayScore.setTextFormat(Qt.TextFormat.PlainText)
+        self.buttonLayout.addWidget(self.displayScore)
 
         # Add a pause button to the button layout
         self.pauseButton = QPushButton()
@@ -273,6 +284,7 @@ class Window(QGraphicsScene):
 
             # this is used to stop bosses from appearing constantly
             self.boss += 1
+            self.displayScore.setText("Score: " + str(main.globalScore))
 
             xVel = 0
             yVel = 0

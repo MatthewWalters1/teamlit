@@ -27,6 +27,7 @@ class Timer(QWidget): #Manages the game timer
                                         "max-height: 15 px;"
                                         "padding: 3 px;")
         self.displayTime.setTextFormat(Qt.TextFormat.PlainText)
+        
         self.timer = QTimer()
         self.endButtonPressed = False
         layout = QVBoxLayout()
