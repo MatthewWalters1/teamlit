@@ -386,7 +386,6 @@ class Window(QGraphicsScene):
                 item.shot += 1
                 if item.shot > item.reload:
                         item.shot = 0
-                        playsound('Sounds/laser.wav', False)
 
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
                 collision = item.collidingItems()
@@ -403,13 +402,17 @@ class Window(QGraphicsScene):
                             self.windowmanager = windowmanager.EndWindow()
                             self.windowmanager.show()
 
-                if item.x() > self.width()-70:
+                if item.shipType != 'd' and item.x() > self.width()-110:
                     item.xVel = -item.xVel
-                    item.setPos(self.width()-70, item.y())
+                    item.setPos(self.width()-110, item.y())
 
-                if item.x() < -60:
+                elif item.shipType == 'd' and item.x() > self.width()-175:
                     item.xVel = -item.xVel
-                    item.setPos(-60, item.y())
+                    item.setPos(self.width()-175, item.y())
+
+                if item.x() < -52:
+                    item.xVel = -item.xVel
+                    item.setPos(-52, item.y())
 
                 if item.y() > self.height()+10:
                     self.enemyList.remove(item)
@@ -424,6 +427,7 @@ class Window(QGraphicsScene):
                         self.p = bullet.bullet(item.x() + 16, item.y(), "Images/beam3.png", 0, 30)
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
+                        playsound('Sounds/laser.wav', False)
                     elif item.shipType == 'c':
                         self.p = bullet.bullet(item.x() + 50, item.y() + 50, "Images/beam3.png", 0, 30)
                         if self.player.x() > item.x() + 80:
@@ -433,11 +437,13 @@ class Window(QGraphicsScene):
                         item.reload = 10
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
+                        playsound('Sounds/laser.wav', False)
                     elif item.shipType == 'd':
                         item.reload = 18
                         self.p = bullet.bullet(item.x() + 28, item.y() + 69, "Images/beam4a.png", 0, 20)
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
+                        playsound('Sounds/laser.wav', False)
              
             for item in self.shotList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
@@ -450,9 +456,9 @@ class Window(QGraphicsScene):
                 for bang in collision:
                     # this is easier than isinstance, and it works
                     if bang in self.enemyList:
-                        # this makes it to where the player has to be a little more intentional to kill the target
+                        # this makes it to where the player has to be a little more intentional to kill the purple ships
                         # In my tests, a lot of stray bullets would hit ships before they were even a threat
-                        if bang.y() > -50 or bang.shipType == 'c' or bang.shipType == 'd':
+                        if bang.y() > -50 or bang.shipType != 'b' or bang.shipType != 'a':
                             bang.health -= 1
                         self.shotList.remove(item)
                         self.removeItem(item)
