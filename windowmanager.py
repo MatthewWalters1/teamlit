@@ -50,6 +50,18 @@ class EndWindow(QMainWindow):
                                         "padding: 6 px;")
         self.buttonLayout.addWidget(self.settingbutton)
 
+        self.boardbutton = QPushButton() # Button that displays the leaderboard
+        self.boardbutton.setText("Leaderboard")
+        self.boardbutton.setStyleSheet("background-color: lightGray;"
+                                       "border-style: outset;"
+                                       "border-width: 1px;"
+                                       "border-color: black;"
+                                       "min-width: 80 em;"
+                                       "max-width: 80 em;"
+                                       "padding: 6 px;")
+        self.boardbutton.clicked.connect(self.boardClicked)
+        self.buttonLayout.addWidget(self.boardbutton)
+
         self.exitbutton = QPushButton() #Button that exits the game
         self.exitbutton.setText("Exit")
         self.exitbutton.setStyleSheet("background-color: lightGray;"
@@ -61,18 +73,6 @@ class EndWindow(QMainWindow):
                                         "padding: 6 px;")
         self.exitbutton.clicked.connect(self.exitClicked)
         self.buttonLayout.addWidget(self.exitbutton)
-
-        self.boardbutton = QPushButton()
-        self.boardbutton.setText("Leaderboard")
-        self.boardbutton.setStyleSheet("background-color: lightGray;"
-                                       "border-style: outset;"
-                                       "border-width: 1px;"
-                                       "border-color: black;"
-                                       "min-width: 80 em;"
-                                       "max-width: 80 em;"
-                                       "padding: 6 px;")
-        self.boardbutton.clicked.connect(self.boardClicked)
-        self.buttonLayout.addWidget(self.boardbutton)
 
         self.mainLayout.setContentsMargins(0,0,0,0)
         self.mainLayout.setSpacing(20)
@@ -87,26 +87,37 @@ class EndWindow(QMainWindow):
         self.scene = QGraphicsScene(-50, -50, 600, 600)
         main.globalIsPaused = True
 
+        # Prompts the user for a name and adds the score to the leaderboard, if desired
         nameEntered = False
         self.playerName, nameEntered = QInputDialog.getText(self, 'Name Dialog', 'Enter a name 1-16 characters long:\n (Leave empty if you do not wish to add your name and score)', QLineEdit.EchoMode.Normal, 'Name')
-        if nameEntered and self.playerName and len(self.playerName) <=16 and not self.playerName.isspace():
-            database.addScore(self.playerName, main.globalScore)
-        else:
-            while True:
-                self.playerName, nameEntered = QInputDialog.getText(self, 'NameDialog', 'Invalid name. Try one that is 1-16 characters long:\n (Leave empty if you do not wish to add your name and score)', QLineEdit.EchoMode.Normal, 'Name')
-                if nameEntered and self.playerName:
-                    if len(self.playerName) <=16 and not self.playerName.isspace():
-                        database.addScore(self.playerName, main.globalScore)
+        if nameEntered and self.playerName:
+            if len(self.playerName) <=16 and not self.playerName.isspace():
+                database.addScore(self.playerName, main.globalScore)
+            else:
+                while True:
+                    self.playerName, nameEntered = QInputDialog.getText(self, 'Name Dialog', 'Invalid name. Try one that is 1-16 characters long:\n (Leave empty if you do not wish to add your name and score)', QLineEdit.EchoMode.Normal, 'Name')
+                    if nameEntered and self.playerName:
+                        if len(self.playerName) <=16 and not self.playerName.isspace():
+                            database.addScore(self.playerName, main.globalScore)
+                            break
+                    else:
                         break
-                else:
-                    break
 
     def exitClicked(self):
         sys.exit()
 
     def boardClicked(self):
         boardText = database.getTopScores()
-        leaderboard = QMessageBox()
+        leaderboard = QMessageBox(self)
+        font = QFont("Consolas", 12)
+        leaderboard.setFont(font)
+        leaderboard.setStyleSheet("background-color: darkGreen;"
+                                  "min-width: 300 em;"
+                                  "padding: 10 px;")
+        leaderboard.setWindowTitle('Leaderboard')
+        leaderboard.setWindowIcon(QIcon('Images/leaderboardicon.png'))
+        leaderboard.setStandardButtons(QMessageBox.StandardButton.Ok)
+        leaderboard.button(QMessageBox.StandardButton.Ok).setStyleSheet("background-color: green")
         leaderboard.setText(boardText)
         leaderboard.exec()
 
@@ -142,11 +153,23 @@ class MainMenuWindow(QMainWindow):
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
-                                        "min-width: 70 em;"
-                                        "max-width: 70 em;"
+                                        "min-width: 80 em;"
+                                        "max-width: 80 em;"
                                         "padding: 6 px;")
         self.startButton.clicked.connect(self.startGame)
         self.buttonLayout.addWidget(self.startButton)
+
+        self.boardbutton = QPushButton()
+        self.boardbutton.setText("Leaderboard")
+        self.boardbutton.setStyleSheet("background-color: lightGray;"
+                                       "border-style: outset;"
+                                       "border-width: 1px;"
+                                       "border-color: black;"
+                                       "min-width: 80 em;"
+                                       "max-width: 80 em;"
+                                       "padding: 6 px;")
+        self.boardbutton.clicked.connect(self.boardClicked)
+        self.buttonLayout.addWidget(self.boardbutton)
 
         self.settingbutton = QPushButton() #Button that takes the player back to the setting menu (currently does nothing)
         self.settingbutton.setText("Settings")
@@ -154,8 +177,8 @@ class MainMenuWindow(QMainWindow):
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
-                                        "min-width: 70 em;"
-                                        "max-width: 70 em;"
+                                        "min-width: 80 em;"
+                                        "max-width: 80 em;"
                                         "padding: 6 px;")
         self.buttonLayout.addWidget(self.settingbutton)
 
@@ -165,23 +188,11 @@ class MainMenuWindow(QMainWindow):
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
-                                        "min-width: 70 em;"
-                                        "max-width: 70 em;"
+                                        "min-width: 80 em;"
+                                        "max-width: 80 em;"
                                         "padding: 6 px;")
         self.exitbutton.clicked.connect(self.exitClicked)
         self.buttonLayout.addWidget(self.exitbutton)
-
-        self.boardbutton = QPushButton()
-        self.boardbutton.setText("Leaderboard")
-        self.boardbutton.setStyleSheet("background-color: lightGray;"
-                                       "border-style: outset;"
-                                       "border-width: 1px;"
-                                       "border-color: black;"
-                                       "min-width: 70 em;"
-                                       "max-width: 70 em;"
-                                       "padding: 6 px;")
-        self.boardbutton.clicked.connect(self.boardClicked)
-        self.buttonLayout.addWidget(self.boardbutton)
 
         self.mainLayout.setContentsMargins(0,0,0,0)
         self.mainLayout.setSpacing(20)
@@ -200,7 +211,16 @@ class MainMenuWindow(QMainWindow):
 
     def boardClicked(self):
         boardText = database.getTopScores()
-        leaderboard = QMessageBox()
+        leaderboard = QMessageBox(self)
+        font = QFont("Consolas", 12)
+        leaderboard.setFont(font)
+        leaderboard.setStyleSheet("background-color: darkGreen;"
+                                  "min-width: 300 em;"
+                                  "padding: 10 px;")
+        leaderboard.setWindowTitle('Leaderboard')
+        leaderboard.setWindowIcon(QIcon('Images/leaderboardicon.png'))
+        leaderboard.setStandardButtons(QMessageBox.StandardButton.Ok)
+        leaderboard.button(QMessageBox.StandardButton.Ok).setStyleSheet("background-color: green")
         leaderboard.setText(boardText)
         leaderboard.exec()
 

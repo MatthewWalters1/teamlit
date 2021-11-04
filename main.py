@@ -57,21 +57,6 @@ class Timer(QWidget): #Manages the game timer
     def pauseTimer(self): #Pauses the timer
         self.timer.stop()
 
-    def endGame(self): #This denotes the game has ended and all options will now be displayed
-        self.pauseTimer()
-        self.close()
-        self.showScore()
-        #windowmanager.window.isPaused = True
-        QApplication.closeAllWindows()
-
-        self.windowmanager = windowmanager.EndWindow()
-        self.windowmanager.show()
-
-    def showScore(self): #gives the player a score based on the amount of time elapsed
-        global globalScore
-        #once the windowmanager is implemented, have a display somewhere on the windowmanager for your score, similar to displayTime
-
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
