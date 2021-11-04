@@ -45,7 +45,21 @@ class Window(QGraphicsScene):
 
         self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignRight)
 
-        self.displayScore = QLabel('Score: 0') #Creates the label that the Score will be printed on
+        #Creates the label that the time will be printed on
+        self.displayTime = QLabel('Time: 0') #Creates the label that the time will be printed on
+        self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
+        self.displayTime.setStyleSheet("background-color: white;"
+                                        "color: black;"
+                                        "min-width: 50 px;"
+                                        "max-width: 50 px;"
+                                        "min-height: 15 px;"
+                                        "max-height: 15 px;"
+                                        "padding: 3 px;")
+        self.displayTime.setTextFormat(Qt.TextFormat.PlainText)
+        self.buttonLayout.addWidget(self.displayTime)
+
+        #Creates the label that the Score will be printed on
+        self.displayScore = QLabel('Score: 0')
         self.displayScore.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.displayScore.setStyleSheet("background-color: white;"
                                         "color: black;"
@@ -91,6 +105,7 @@ class Window(QGraphicsScene):
         self.exitButton.clicked.connect(self.exitClicked)
         self.buttonLayout.addWidget(self.exitButton)
 
+        # Add a resume button to the button layout
         self.resumeButton = QPushButton()
         self.resumeButton.setText("Resume")
         self.resumeButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
@@ -104,6 +119,7 @@ class Window(QGraphicsScene):
                                         "min-height: 15 em;"
                                         "max-height: 15 em;"
                                         "padding: 6 px;")
+
 
         # Add the button layout to the widget and set the widget as the top widget
         self.topLayout.addLayout(self.buttonLayout)
@@ -128,13 +144,14 @@ class Window(QGraphicsScene):
 
         self.addWidget(topWidget)
 
-        self.key_list = set()
 
         #Add player to the screen
         self.player = player.player()
         self.player.setPos(self.width()/2-68, self.height()-100)
         self.addItem(self.player)
         
+        #this is a list of keys being pressed
+        self.key_list = set()
         #this is a list of bullets that the player shoots, it is added to on 'fireBullet'
         self.shotList = []
         #this is a list of enemy ships that will be along the top of the screen
@@ -241,6 +258,10 @@ class Window(QGraphicsScene):
         sys.exit()
 
     def spawnEnemy(self):
+        #updates the time, because spawnEnemy is called on a 1 second interval
+        main.globalTime += 1
+        self.displayTime.setText("Time: " + str(main.globalTime))
+
         if (len(self.enemyList) < self.intensity):
             self.enemyType = random.randrange(0,11)
             self.check = True
@@ -543,6 +564,7 @@ class Window(QGraphicsScene):
 
     def deleteSelf(self):
         main.globalIsPaused = True # Attempts to fix invisible bullet death problem
+        main.globalTime = 0
         print(str(main.globalScore))
         for i in self.views():
             i.close()

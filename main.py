@@ -15,6 +15,7 @@ from playsound import playsound
 
 globalIsPaused = False
 globalScore = 0
+globalTime = 0
 
 class Timer(QWidget): #Manages the game timer
     def __init__(self):
@@ -32,13 +33,8 @@ class Timer(QWidget): #Manages the game timer
         
         self.timer = QTimer()
         self.endButtonPressed = False
-        layout = QVBoxLayout()
         
-        layout.setAlignment(Qt.AlignmentFlag.AlignVCenter) #Layout to display the timer
-        layout.addWidget(self.displayTime)
-        self.setLayout(layout)
-
-        self.timer.timeout.connect(self.showTime) #Initializes the timer to 0 and starts the timer
+        #self.timer.timeout.connect(self.showTime) #Initializes the timer to 0 and starts the timer
         self.time = 0
         self.startTimer()
 
@@ -49,10 +45,6 @@ class Timer(QWidget): #Manages the game timer
         #Timer for movement
         self.movementTimer = QTimer()
         self.movementTimer.start(100)
-
-    def showTime(self):
-        self.time += 1
-        self.displayTime.setText(str(self.time))
 
     def startTimer(self):
         self.timer.start(1000)
