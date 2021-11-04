@@ -11,6 +11,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QPalette, QFont, QBrush, QPixmap
 from PyQt6.QtWidgets import QGraphicsPixmapItem, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QMessageBox, QApplication
 import player, bullet, windowmanager, main
+from playsound import playsound
 
 class Window(QGraphicsScene):
     def __init__(self):
@@ -307,6 +308,7 @@ class Window(QGraphicsScene):
             if Qt.Key.Key_Space in self.key_list:
                 #fire bullet
                 self.fireBullet(self.player.x(), self.player.y())
+                playsound('Sounds/shoot.wav', False)
 
             self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
 
@@ -365,6 +367,7 @@ class Window(QGraphicsScene):
                 item.shot += 1
                 if item.shot > item.reload:
                         item.shot = 0
+                        playsound('Sounds/laser.wav', False)
 
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
                 collision = item.collidingItems()

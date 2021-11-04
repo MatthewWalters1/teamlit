@@ -9,6 +9,9 @@ from PyQt6.QtWidgets import QWidget, QLabel, QApplication, QVBoxLayout
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QFont
 import sys, windowmanager
+import threading
+
+from playsound import playsound
 
 globalIsPaused = False
 globalScore = 0
@@ -57,7 +60,16 @@ class Timer(QWidget): #Manages the game timer
     def pauseTimer(self): #Pauses the timer
         self.timer.stop()
 
+def LoopSound():
+        while True:
+            playsound('Sounds/background.wav', True)
+
 if __name__ == '__main__':
+
+    loopThread = threading.Thread(target=LoopSound, name='backgroundMusicThread')
+    loopThread.daemon = True
+    loopThread.start()
+
     app = QApplication(sys.argv)
 
     window = windowmanager.MainMenuWindow()
