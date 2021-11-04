@@ -21,16 +21,6 @@ class Timer(QWidget): #Manages the game timer
     def __init__(self):
         super().__init__()
 
-        self.displayTime = QLabel('0') #Creates the label that the time will be printed on
-        self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
-        self.displayTime.setStyleSheet("background-color: white;"
-                                        "color: black;"
-                                        "min-width: 40 px;"
-                                        "max-width: 40 px;"
-                                        "min-height: 15 px;"
-                                        "max-height: 15 px;")
-        self.displayTime.setTextFormat(Qt.TextFormat.PlainText)
-        
         self.timer = QTimer()
         self.endButtonPressed = False
         
