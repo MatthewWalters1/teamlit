@@ -241,12 +241,12 @@ class Window(QGraphicsScene):
         main.globalIsPaused = False
 
     def restartClicked(self, event):
-        self.deleteEnemies()
+        self.deleteSelf()
         self.newWindow = windowmanager.MainMenuWindow()
         self.newWindow.startGame()
 
     def menuClicked(self, event):
-        self.deleteEnemies()
+        self.deleteSelf()
         QApplication.closeAllWindows()
 
         self.newWindow = windowmanager.MainMenuWindow()
@@ -313,7 +313,8 @@ class Window(QGraphicsScene):
             
             # this is used to stop bosses from appearing constantly
             self.boss += 1
-            self.displayScore.setText("Score: " + str(main.globalScore))
+            if self.displayScore is not None:
+                self.displayScore.setText("Score: " + str(main.globalScore))
 
             xVel = 0
             yVel = 0
@@ -407,6 +408,7 @@ class Window(QGraphicsScene):
                             QApplication.closeAllWindows()
 
                             main.globalIsPaused = True
+                            self.deleteSelf()
                             self.windowmanager = windowmanager.EndWindow()
                             self.windowmanager.show()
                             
@@ -570,15 +572,20 @@ class Window(QGraphicsScene):
                             QApplication.closeAllWindows()
                             
                             main.globalIsPaused = True
+                            self.deleteSelf()
                             self.windowmanager = windowmanager.EndWindow()
                             self.windowmanager.show()
 
     def updateBackground(self):
         self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
 
-    def deleteEnemies(self):
+    def deleteSelf(self):
+        self.removeItem(self.player)
         self.enemyList.clear()
         self.shotList.clear()
         self.projectileList.clear()
 
+        self.displayScore = None
+
         main.globalTime = 0
+        self.deleteLater()
