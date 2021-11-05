@@ -284,12 +284,15 @@ class Window(QGraphicsScene):
 
     #here, use x and y to determine the position the bullet will start at
     def fireBullet(self, x, y):
-        self.shot = bullet.bullet(x + 3, y, "Images/beam2.png", 0, -30)
-        self.addItem(self.shot)
-        self.shotList.append(self.shot)
-        self.shot = bullet.bullet(x + 39, y, "Images/beam2.png", 0, -30)
-        self.addItem(self.shot)
-        self.shotList.append(self.shot)
+        if self.player.reload >= self.player.ammo:
+            self.shot = bullet.bullet(x + 3, y, "Images/beam2.png", 0, -30)
+            self.addItem(self.shot)
+            self.shotList.append(self.shot)
+            self.shot = bullet.bullet(x + 39, y, "Images/beam2.png", 0, -30)
+            self.addItem(self.shot)
+            self.shotList.append(self.shot)
+            if main.globalIsMuted == False:
+                    playsound('Sounds/shoot.wav', False)
         
     def keyPressEvent(self, event):
         if not main.globalIsPaused:
@@ -302,6 +305,12 @@ class Window(QGraphicsScene):
     def updateMovement(self):
         if not main.globalIsPaused:
 
+            # this is used for limiting the player's ammo
+            # reload is incremented by 2 because otherwise the reload time is too slow
+            self.player.reload += 2
+            if len(self.shotList) >= self.player.ammo:
+                self.player.reload = 0
+            
             # this is used to stop bosses from appearing constantly
             self.boss += 1
             self.displayScore.setText("Score: " + str(main.globalScore))
@@ -327,8 +336,6 @@ class Window(QGraphicsScene):
             if Qt.Key.Key_Space in self.key_list:
                 #fire bullet
                 self.fireBullet(self.player.x(), self.player.y())
-                if main.globalIsMuted == False:
-                    playsound('Sounds/shoot.wav', False)
 
             self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
 
