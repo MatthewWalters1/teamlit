@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 
-windowSizeOpenHeight = 1055
+windowSizeOpenHeight = 720
 windowSizeOpenWidth = 600
 windowStartLocationX = 540
 windowStartLocationY = 25
