@@ -50,8 +50,8 @@ class Window(QGraphicsScene):
         self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.displayTime.setStyleSheet("background-color: white;"
                                         "color: black;"
-                                        "min-width: 50 px;"
-                                        "max-width: 50 px;"
+                                        "min-width: 60 px;"
+                                        "max-width: 60 px;"
                                         "min-height: 15 px;"
                                         "max-height: 15 px;"
                                         "padding: 3 px;")
@@ -128,7 +128,7 @@ class Window(QGraphicsScene):
         #Sets the size and then the color of a widget and in this case it is what we call the top widget
         topWidget.setFixedSize(600, 50)
 
-        topWidget.setGeometry(-50, -270, 600, 100)
+        topWidget.setGeometry(-50, -118, 600, 100) #-50, -270
 
         topWidgetPallette = topWidget.palette()
         topWidgetPallette.setColor(QPalette.ColorRole.Window , QColor(194, 197, 204))
@@ -338,8 +338,8 @@ class Window(QGraphicsScene):
             if self.player.x() < -50:
                 self.player.setPos(-50, self.player.y())
 
-            if self.player.y() > self.height()-30:
-                self.player.setPos(self.player.x(), self.height()-30)
+            if self.player.y() > self.height()-50:
+                self.player.setPos(self.player.x(), self.height()-50)
 
             if self.player.y() < 0:
                 self.player.setPos(self.player.x(), 0)
@@ -403,13 +403,13 @@ class Window(QGraphicsScene):
                             self.windowmanager = windowmanager.EndWindow()
                             self.windowmanager.show()
 
-                if item.x() > self.width()-70:
+                if item.x() > self.width()-100:
                     item.xVel = -item.xVel
-                    item.setPos(self.width()-70, item.y())
+                    item.setPos(self.width()-100, item.y())
 
-                if item.x() < -60:
+                if item.x() < -55:
                     item.xVel = -item.xVel
-                    item.setPos(-60, item.y())
+                    item.setPos(-55, item.y())
 
                 if item.y() > self.height()+10:
                     self.enemyList.remove(item)
@@ -561,3 +561,4 @@ class Window(QGraphicsScene):
         self.shotList.clear()
         self.projectileList.clear()
 
+        main.globalTime = 0
