@@ -8,5 +8,5 @@ class player(QGraphicsPixmapItem):
     def __init__(self):
         super().__init__()
 
-        self.health = 100000
+        self.health = 100
         self.setPixmap(QPixmap("Images/fighter.png"))

@@ -466,10 +466,7 @@ class Window(QGraphicsScene):
                 for bang in collision:
                     # this is easier than isinstance, and it works
                     if bang in self.enemyList:
-                        # this makes it to where the player has to be a little more intentional to kill the purple ships
-                        # In my tests, a lot of stray bullets would hit ships before they were even a threat
-                        if bang.y() > -50 or bang.shipType != 'b' or bang.shipType != 'a':
-                            bang.health -= 1
+                        bang.health -= 1
                         self.shotList.remove(item)
                         self.removeItem(item)
                         if bang.health == 0:
