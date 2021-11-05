@@ -50,8 +50,8 @@ class Window(QGraphicsScene):
         self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.displayTime.setStyleSheet("background-color: white;"
                                         "color: black;"
-                                        "min-width: 50 px;"
-                                        "max-width: 50 px;"
+                                        "min-width: 70 px;"
+                                        "max-width: 70 px;"
                                         "min-height: 15 px;"
                                         "max-height: 15 px;"
                                         "padding: 3 px;")

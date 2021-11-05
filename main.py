@@ -14,6 +14,7 @@ import threading
 from playsound import playsound
 
 globalIsPaused = False
+globalIsMuted = False
 globalScore = 0
 globalTime = 0
 
@@ -58,4 +59,4 @@ if __name__ == '__main__':
     window.show()
 
     sys.exit(app.exec())
-    
+

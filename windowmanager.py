@@ -12,6 +12,8 @@ class EndWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.setWindowTitle("Generic Space Game")
+        self.setWindowIcon(QIcon(QPixmap("Images/fighter.png")))
         self.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight) #Set window size and color
         palette = self.palette()
         palette.setColor(QPalette.ColorRole.Window, QColor(173, 216, 230))
@@ -148,6 +150,8 @@ class MainMenuWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.setWindowTitle("Generic Space Game")
+        self.setWindowIcon(QIcon(QPixmap("Images/fighter.png")))
         self.window = area.Window()
         self.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight) #Set window size and color
         palette = self.palette()
@@ -279,3 +283,105 @@ class MainMenuWindow(QMainWindow):
 
         self.view.show()
         self.form.show()
+
+class SettingsWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Generic Space Game")
+        self.setWindowIcon(QIcon(QPixmap("Images/fighter.png")))
+        self.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight) #Set window size and color
+        palette = self.palette()
+        palette.setColor(QPalette.ColorRole.Window, QColor(173, 216, 230))
+        self.setPalette(palette)
+
+        centralwidget = QWidget() #Create central widget and the main layouts
+        self.buttonLayout = QVBoxLayout()
+        self.mainLayout = QVBoxLayout()
+
+        self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
+        self.mainLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
+
+        self.titleLabel = QLabel()
+        self.titleImage = QPixmap("Images/settings.png")
+        self.titleLabel.setPixmap(self.titleImage)
+        self.mainLayout.addWidget(self.titleLabel)
+
+        self.backgroundImage = QPixmap("Images/main.png")
+        self.backgroundPalette = QPalette()
+        self.backgroundPalette.setBrush(QPalette.ColorRole.Window, QBrush(self.backgroundImage))
+        self.setPalette(self.backgroundPalette)
+
+        self.muteButton = QPushButton() #Button that starts the game
+        if main.globalIsMute == False:
+            self.muteButton.setText("Mute")
+        else:
+            self.muteButton.setText("UnMute")
+        self.muteButton.setStyleSheet("background-color: lightGray;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 80 em;"
+                                        "max-width: 80 em;"
+                                        "padding: 6 px;")
+        self.muteButton.clicked.connect(self.muteClicked)
+        self.buttonLayout.addWidget(self.muteButton)
+
+        self.boardbutton = QPushButton()
+        self.boardbutton.setText("Leaderboard")
+        self.boardbutton.setStyleSheet("background-color: lightGray;"
+                                       "border-style: outset;"
+                                       "border-width: 1px;"
+                                       "border-color: black;"
+                                       "min-width: 80 em;"
+                                       "max-width: 80 em;"
+                                       "padding: 6 px;")
+        self.buttonLayout.addWidget(self.boardbutton)
+
+        self.settingbutton = QPushButton() #Button that takes the player back to the setting menu (currently does nothing)
+        self.settingbutton.setText("Settings")
+        self.settingbutton.setStyleSheet("background-color: lightGray;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 80 em;"
+                                        "max-width: 80 em;"
+                                        "padding: 6 px;")
+        self.buttonLayout.addWidget(self.settingbutton)
+
+        self.exitbutton = QPushButton() #Button that exits the game
+        self.exitbutton.setText("Return to Menu")
+        self.exitbutton.setStyleSheet("background-color: lightGray;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 80 em;"
+                                        "max-width: 80 em;"
+                                        "padding: 6 px;")
+        self.exitbutton.clicked.connect(self.exitClicked)
+        self.buttonLayout.addWidget(self.exitbutton)
+
+        self.mainLayout.setContentsMargins(0,0,0,0)
+        self.mainLayout.setSpacing(20)
+
+        self.mainLayout.addLayout(self.buttonLayout)
+
+        self.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
+        centralwidget.setLayout(self.mainLayout)
+        self.setCentralWidget(centralwidget)
+
+        self.scene = QGraphicsScene(-50, -50, 600, 600)
+
+    def exitClicked(self, event):
+        QApplication.closeAllWindows()
+
+        self.window = MainMenuWindow()
+        self.window.show()
+
+    def muteClicked(self):
+        if main.globalIsMute == False:
+            main.globalIsMute = True
+            self.muteButton.setText("UnMute")
+        else:
+            main.globalIsMute = False
+            self.muteButton.setText("Mute")
