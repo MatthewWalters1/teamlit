@@ -245,7 +245,10 @@ class Window(QGraphicsScene):
     def restartClicked(self, event):
         self.deleteSelf()
         self.newWindow = windowmanager.MainMenuWindow()
-        self.newWindow.startGame()
+        if self.tutorial == True:
+            self.newWindow.tutorialClicked()
+        else:
+            self.newWindow.startGame()
 
     def menuClicked(self, event):
         self.deleteSelf()
