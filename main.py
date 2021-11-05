@@ -44,7 +44,7 @@ class Timer(QWidget): #Manages the game timer
         self.timer.stop()
 
 def LoopSound():
-        while True:
+        while globalIsMuted == False:
             playsound('Sounds/background.wav', True)
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 
-windowSizeOpenHeight = 1055
+windowSizeOpenHeight = 720
 windowSizeOpenWidth = 600
 windowStartLocationX = 540
 windowStartLocationY = 25
@@ -68,6 +68,7 @@ class EndWindow(QMainWindow):
                                         "min-width: 60 em;"
                                         "max-width: 60 em;"
                                         "padding: 6 px;")
+        self.settingbutton.clicked.connect(self.settingClicked)
         self.buttonLayout.addWidget(self.settingbutton)
 
         self.boardbutton = QPushButton() # Button that displays the leaderboard
@@ -124,6 +125,12 @@ class EndWindow(QMainWindow):
 
     def exitClicked(self):
         sys.exit()
+
+    def settingClicked(self):
+        QApplication.closeAllWindows
+
+        self.newWindow = SettingsWindow()
+        self.newWindow.show()
 
     def boardClicked(self):
         boardText = database.getTopScores()
@@ -209,6 +216,7 @@ class MainMenuWindow(QMainWindow):
                                         "min-width: 80 em;"
                                         "max-width: 80 em;"
                                         "padding: 6 px;")
+        self.settingbutton.clicked.connect(self.settingClicked)
         self.buttonLayout.addWidget(self.settingbutton)
 
         self.exitbutton = QPushButton() #Button that exits the game
@@ -237,6 +245,12 @@ class MainMenuWindow(QMainWindow):
 
     def exitClicked(self, event):
         sys.exit()
+
+    def settingClicked(self):
+        QApplication.closeAllWindows
+
+        self.newWindow = SettingsWindow()
+        self.newWindow.show()
 
     def boardClicked(self):
         boardText = database.getTopScores()
@@ -313,10 +327,11 @@ class SettingsWindow(QMainWindow):
         self.setPalette(self.backgroundPalette)
 
         self.muteButton = QPushButton() #Button that starts the game
-        if main.globalIsMute == False:
+        if main.globalIsMuted == False:
             self.muteButton.setText("Mute")
         else:
             self.muteButton.setText("UnMute")
+
         self.muteButton.setStyleSheet("background-color: lightGray;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
@@ -336,7 +351,7 @@ class SettingsWindow(QMainWindow):
                                        "min-width: 80 em;"
                                        "max-width: 80 em;"
                                        "padding: 6 px;")
-        self.buttonLayout.addWidget(self.boardbutton)
+        #self.buttonLayout.addWidget(self.boardbutton)
 
         self.settingbutton = QPushButton() #Button that takes the player back to the setting menu (currently does nothing)
         self.settingbutton.setText("Settings")
@@ -347,7 +362,7 @@ class SettingsWindow(QMainWindow):
                                         "min-width: 80 em;"
                                         "max-width: 80 em;"
                                         "padding: 6 px;")
-        self.buttonLayout.addWidget(self.settingbutton)
+        #self.buttonLayout.addWidget(self.settingbutton)
 
         self.exitbutton = QPushButton() #Button that exits the game
         self.exitbutton.setText("Return to Menu")
@@ -379,9 +394,9 @@ class SettingsWindow(QMainWindow):
         self.window.show()
 
     def muteClicked(self):
-        if main.globalIsMute == False:
-            main.globalIsMute = True
+        if main.globalIsMuted == False:
+            main.globalIsMuted = True
             self.muteButton.setText("UnMute")
         else:
-            main.globalIsMute = False
+            main.globalIsMuted = False
             self.muteButton.setText("Mute")

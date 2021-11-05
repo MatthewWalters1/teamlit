@@ -128,7 +128,7 @@ class Window(QGraphicsScene):
         #Sets the size and then the color of a widget and in this case it is what we call the top widget
         topWidget.setFixedSize(600, 50)
 
-        topWidget.setGeometry(-50, -270, 600, 100)
+        topWidget.setGeometry(-50, -118, 600, 100) #-50, -270
 
         topWidgetPallette = topWidget.palette()
         topWidgetPallette.setColor(QPalette.ColorRole.Window , QColor(194, 197, 204))
@@ -327,7 +327,8 @@ class Window(QGraphicsScene):
             if Qt.Key.Key_Space in self.key_list:
                 #fire bullet
                 self.fireBullet(self.player.x(), self.player.y())
-                playsound('Sounds/shoot.wav', False)
+                if main.globalIsMuted == False:
+                    playsound('Sounds/shoot.wav', False)
 
             self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
 
@@ -338,8 +339,8 @@ class Window(QGraphicsScene):
             if self.player.x() < -50:
                 self.player.setPos(-50, self.player.y())
 
-            if self.player.y() > self.height()-30:
-                self.player.setPos(self.player.x(), self.height()-30)
+            if self.player.y() > self.height()-50:
+                self.player.setPos(self.player.x(), self.height()-50)
 
             if self.player.y() < 0:
                 self.player.setPos(self.player.x(), 0)
@@ -401,6 +402,23 @@ class Window(QGraphicsScene):
                             main.globalIsPaused = True
                             self.windowmanager = windowmanager.EndWindow()
                             self.windowmanager.show()
+                            
+                            
+                if item.x() > self.width()-100:
+                    item.xVel = -item.xVel
+                    item.setPos(self.width()-100, item.y())
+
+                if item.x() < -55:
+                    item.xVel = -item.xVel
+                    item.setPos(-55, item.y())
+                
+                if item.y() > self.height()+10:
+                    self.enemyList.remove(item)
+                    self.removeItem(item)
+
+                if item.y() < -400:
+                    item.yVel = -item.yVel
+                    item.setPos(item.x(), -10)
 
                 if item.shipType != 'd' and item.x() > self.width()-110:
                     item.xVel = -item.xVel
@@ -410,24 +428,14 @@ class Window(QGraphicsScene):
                     item.xVel = -item.xVel
                     item.setPos(self.width()-175, item.y())
 
-                if item.x() < -52:
-                    item.xVel = -item.xVel
-                    item.setPos(-52, item.y())
-
-                if item.y() > self.height()+10:
-                    self.enemyList.remove(item)
-                    self.removeItem(item)
-
-                if item.y() < -400:
-                    item.yVel = -item.yVel
-                    item.setPos(item.x(), -10)
 
                 if item.shot >= item.reload:
                     if item.shipType == 'b':
                         self.p = bullet.bullet(item.x() + 16, item.y(), "Images/beam3.png", 0, 30)
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
-                        playsound('Sounds/laser.wav', False)
+                        if main.globalIsMuted == False:
+                            playsound('Sounds/laser.wav', False)
                     elif item.shipType == 'c':
                         self.p = bullet.bullet(item.x() + 50, item.y() + 50, "Images/beam3.png", 0, 30)
                         if self.player.x() > item.x() + 80:
@@ -437,13 +445,15 @@ class Window(QGraphicsScene):
                         item.reload = 10
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
-                        playsound('Sounds/laser.wav', False)
+                        if main.globalIsMuted == False:
+                            playsound('Sounds/laser.wav', False)
                     elif item.shipType == 'd':
                         item.reload = 18
                         self.p = bullet.bullet(item.x() + 28, item.y() + 69, "Images/beam4a.png", 0, 20)
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
-                        playsound('Sounds/laser.wav', False)
+                        if main.globalIsMuted == False:
+                            playsound('Sounds/laser.wav', False)
              
             for item in self.shotList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
@@ -567,3 +577,4 @@ class Window(QGraphicsScene):
         self.shotList.clear()
         self.projectileList.clear()
 
+        main.globalTime = 0
