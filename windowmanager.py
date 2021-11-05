@@ -197,6 +197,18 @@ class MainMenuWindow(QMainWindow):
         self.startButton.clicked.connect(self.startGame)
         self.buttonLayout.addWidget(self.startButton)
 
+        self.tutorialbutton = QPushButton()
+        self.tutorialbutton.setText("Tutorial Mode")
+        self.tutorialbutton.setStyleSheet("background-color: lightGray;"
+                                       "border-style: outset;"
+                                       "border-width: 1px;"
+                                       "border-color: black;"
+                                       "min-width: 80 em;"
+                                       "max-width: 80 em;"
+                                       "padding: 6 px;")
+        self.tutorialbutton.clicked.connect(self.tutorialClicked)
+        self.buttonLayout.addWidget(self.tutorialbutton)
+        
         self.boardbutton = QPushButton()
         self.boardbutton.setText("Leaderboard")
         self.boardbutton.setStyleSheet("background-color: lightGray;"
@@ -254,6 +266,35 @@ class MainMenuWindow(QMainWindow):
         self.newWindow = SettingsWindow()
         self.newWindow.show()
 
+    def tutorialClicked(self):
+        QApplication.closeAllWindows()
+        
+        main.globalIsPaused = False
+
+        self.form = main.Timer()
+        self.view = QGraphicsView(self.window)
+
+        self.window.buttonLayout.addWidget(self.form)
+        self.window.pauseButton.clicked.connect(self.form.pauseTimer)
+        self.window.resumeButton.clicked.connect(self.form.startTimer)
+        self.window.tutorial = True
+
+        # Connects the update timer to the update functions of the background and objects of the window
+        for i in self.window.enemyList:
+            self.form.updateTimer.timeout.connect(i.update)
+        for i in self.window.shotList:
+            self.form.updateTimer.timeout.connect(i.update)
+
+        self.form.updateTimer.timeout.connect(self.window.player.update)
+        self.form.updateTimer.timeout.connect(self.window.updateBackground)
+        self.form.movementTimer.timeout.connect(self.window.updateMovement)
+
+        self.view.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight)
+        self.view.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
+
+        self.view.show()
+        self.form.show()
+
     def boardClicked(self):
         boardText = database.getTopScores()
         leaderboard = QMessageBox(self)
@@ -282,6 +323,7 @@ class MainMenuWindow(QMainWindow):
         self.window.buttonLayout.addWidget(self.form)
         self.window.pauseButton.clicked.connect(self.form.pauseTimer)
         self.window.resumeButton.clicked.connect(self.form.startTimer)
+        self.window.tutorial = False
 
         # Connects the update timer to the update functions of the background and objects of the window
         for i in self.window.enemyList:

@@ -32,6 +32,8 @@ class Window(QGraphicsScene):
         self.elapsed = 0
         # boss is used to measure how long between appearances bosses should spawn
         self.boss = 400
+        # this is true if the player picked tutorial, otherwise it is false
+        self.tutorial = bool
 
         main.globalIsPaused = True
 
@@ -255,32 +257,52 @@ class Window(QGraphicsScene):
     def exitClicked(self, event):
         sys.exit()
 
-    def spawnEnemy(self):
+    def spawnEnemy(self, thing = "e"):
         #updates the time, because spawnEnemy is called on a 1 second interval
-        main.globalTime += 1
+        if self.tutorial == False:
+            main.globalTime += 1
         self.displayTime.setText("Time: " + str(main.globalTime))
-
-        if (len(self.enemyList) < self.intensity):
-            self.enemyType = random.randrange(0,11)
-            self.check = True
-            for i in self.enemyList:
-                if i.shipType == 'c' or i.shipType == 'd':
-                    self.check = False
-            if self.enemyType <= 4:
-                self.enemy = bullet.ship(random.randrange(0, 480), -300, 'b', 0, 20, 1)
-            elif self.enemyType <= 9:
+        if thing == "e":
+            if (len(self.enemyList) < self.intensity):
+                self.enemyType = random.randrange(0,11)
+                self.check = True
+                for i in self.enemyList:
+                    if i.shipType == 'c' or i.shipType == 'd':
+                        self.check = False
+                if self.enemyType <= 4:
+                    self.enemy = bullet.ship(random.randrange(0, 480), -300, 'b', 0, 20, 1)
+                elif self.enemyType <= 9:
+                    self.enemy = bullet.ship(random.randrange(0, 480), -300, 'a', 0, 10, 3)
+                elif self.enemyType == 10 and self.check == True and self.boss > 400:
+                    self.boss = 0
+                    self.enemyType = random.randrange(0,2)
+                    if self.enemyType == 0:
+                        self.enemy = bullet.ship(180, -400, 'c', 0, 10, 50)
+                    if self.enemyType == 1:
+                        self.enemy = bullet.ship(180, -400, 'd', 0, 10, 80)
+                else:
+                    self.enemy = bullet.ship(random.randrange(0, 480), -300, 'b', 0, 40, 1)
+                self.addItem(self.enemy)
+                self.enemyList.append(self.enemy)
+        elif len(self.enemyList) < 3:
+            if thing == "1":
+                self.enemy = bullet.ship(random.randrange(0,480), -300, 'b', 0, 20, 1)
+                self.addItem(self.enemy)
+                self.enemyList.append(self.enemy)
+            elif thing == "2":
                 self.enemy = bullet.ship(random.randrange(0, 480), -300, 'a', 0, 10, 3)
-            elif self.enemyType == 10 and self.check == True and self.boss > 400:
-                self.boss = 0
-                self.enemyType = random.randrange(0,2)
-                if self.enemyType == 0:
+                self.addItem(self.enemy)
+                self.enemyList.append(self.enemy)
+            if len(self.enemyList) < 1:
+                if thing == "3":
                     self.enemy = bullet.ship(180, -400, 'c', 0, 10, 50)
-                if self.enemyType == 1:
+                    self.addItem(self.enemy)
+                    self.enemyList.append(self.enemy)
+                elif thing == "4":
                     self.enemy = bullet.ship(180, -400, 'd', 0, 10, 80)
-            else:
-                self.enemy = bullet.ship(random.randrange(0, 480), -300, 'b', 0, 40, 1)
-            self.addItem(self.enemy)
-            self.enemyList.append(self.enemy)
+                    self.addItem(self.enemy)
+                    self.enemyList.append(self.enemy)
+            
 
     #here, use x and y to determine the position the bullet will start at
     def fireBullet(self, x, y):
@@ -337,6 +359,15 @@ class Window(QGraphicsScene):
             if Qt.Key.Key_Space in self.key_list:
                 #fire bullet
                 self.fireBullet(self.player.x(), self.player.y())
+            if self.tutorial == True:
+                if Qt.Key.Key_1 in self.key_list:
+                    self.spawnEnemy("1")
+                if Qt.Key.Key_2 in self.key_list:
+                    self.spawnEnemy("2")
+                if Qt.Key.Key_3 in self.key_list:
+                    self.spawnEnemy("3")
+                if Qt.Key.Key_4 in self.key_list:
+                    self.spawnEnemy("4")
 
             self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
 
@@ -353,7 +384,10 @@ class Window(QGraphicsScene):
             if self.player.y() < 0:
                 self.player.setPos(self.player.x(), 0)
             
-            self.imageMove += 2
+            if self.tutorial == False:
+                self.imageMove += 2
+            # else:
+            #     self.image.setPixmap(QPixmap("Images/tutorial.png"))
 
             self.image.setPos(self.imageOneStartX, (self.imageOneStartY + self.imageMove))
             self.imageTwo.setPos(self.imageTwoStartX, (self.imageTwoStartY + self.imageMove))
@@ -369,7 +403,8 @@ class Window(QGraphicsScene):
                 self.elapsed = 0
                 self.intensity += 1
             
-            main.globalScore += 1 
+            if self.tutorial == False:
+                main.globalScore += 1 
             
             for item in self.enemyList:
                 if item.shipType == 'b':
@@ -405,14 +440,17 @@ class Window(QGraphicsScene):
                         self.removeItem(item)
                         print("hit")
                         if self.player.health <= 0:
-                            QApplication.closeAllWindows()
+                            if self.tutorial == True:
+                                self.player.health = 100
+                            else:
+                                QApplication.closeAllWindows()
 
-                            main.globalIsPaused = True
-                            self.deleteSelf()
-                            self.windowmanager = windowmanager.EndWindow()
-                            self.windowmanager.show()
+                                main.globalIsPaused = True
+                                self.deleteSelf()
+                                self.windowmanager = windowmanager.EndWindow()
+                                self.windowmanager.show()
                             
-                            
+
                 if item.x() > self.width()-100:
                     item.xVel = -item.xVel
                     item.setPos(self.width()-100, item.y())
@@ -479,7 +517,8 @@ class Window(QGraphicsScene):
                         self.shotList.remove(item)
                         self.removeItem(item)
                         if bang.health == 0:
-                            main.globalScore += bang.points
+                            if self.tutorial == False:
+                                main.globalScore += bang.points
                             self.enemyList.remove(bang)
                             if bang.shipType == 'c' or bang.shipType == 'd':
                                 # after the boss dies, we reset the timer so the player has about a minute without a boss on screen
@@ -564,17 +603,21 @@ class Window(QGraphicsScene):
                 collision = item.collidingItems()
                 for bang in collision:
                     if isinstance(bang, type(self.player)):
-                        self.player.health -= 15
+                        if self.tutorial == False:
+                            self.player.health -= 15
                         self.projectileList.remove(item)
                         self.removeItem(item)
                         print("hit")
                         if self.player.health <= 0:
-                            QApplication.closeAllWindows()
-                            
-                            main.globalIsPaused = True
-                            self.deleteSelf()
-                            self.windowmanager = windowmanager.EndWindow()
-                            self.windowmanager.show()
+                            if self.tutorial == True:
+                                self.player.health = 100
+                            else:
+                                QApplication.closeAllWindows()
+                                
+                                main.globalIsPaused = True
+                                self.deleteSelf()
+                                self.windowmanager = windowmanager.EndWindow()
+                                self.windowmanager.show()
 
     def updateBackground(self):
         self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
