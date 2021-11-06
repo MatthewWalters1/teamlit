@@ -534,52 +534,72 @@ class Window(QGraphicsScene):
                 if item.image_name == "Images/beam4a.png":
                     if self.player.x() < item.x():
                         self.j = bullet.bullet(item.x(), item.y(), "Images/beam4b.png", -5, 20)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
                     elif self.player.x() > item.x():
                         self.j = bullet.bullet(item.x(), item.y(), "Images/beam4e.png", 5, 20)
-                    self.projectileList.remove(item)
-                    self.removeItem(item)
-                    self.projectileList.append(self.j)
-                    self.addItem(self.j)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
                     break
                 elif item.image_name == "Images/beam4b.png":
                     if self.player.x() < item.x():
                         self.j = bullet.bullet(item.x(), item.y(), "Images/beam4c.png", -10, 20)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
                     elif self.player.x() > item.x():
                         self.j = bullet.bullet(item.x(), item.y(), "Images/beam4a.png", 0, 20)
-                    self.projectileList.remove(item)
-                    self.removeItem(item)
-                    self.projectileList.append(self.j)
-                    self.addItem(self.j)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
                     break
                 elif item.image_name == "Images/beam4e.png":
                     if self.player.x() < item.x():
                         self.j = bullet.bullet(item.x(), item.y(), "Images/beam4a.png", 0, 20)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
                     elif self.player.x() > item.x():
                         self.j = bullet.bullet(item.x(), item.y(), "Images/beam4f.png", 10, 20)
-                    self.projectileList.remove(item)
-                    self.removeItem(item)
-                    self.projectileList.append(self.j)
-                    self.addItem(self.j)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
                     break
                 elif item.image_name == "Images/beam4c.png":
                     if self.player.x() < item.x():
                         self.j = bullet.bullet(item.x(), item.y(), "Images/beam4d.png", -15, 20)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
                     elif self.player.x() > item.x():
                         self.j = bullet.bullet(item.x(), item.y(), "Images/beam4b.png", -5, 20)
-                    self.projectileList.remove(item)
-                    self.removeItem(item)
-                    self.projectileList.append(self.j)
-                    self.addItem(self.j)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
                     break
                 elif item.image_name == "Images/beam4f.png":
                     if self.player.x() < item.x():
                         self.j = bullet.bullet(item.x(), item.y(), "Images/beam4e.png", 5, 20)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
                     elif self.player.x() > item.x():
                         self.j = bullet.bullet(item.x(), item.y(), "Images/beam4g.png", 15, 20)
-                    self.projectileList.remove(item)
-                    self.removeItem(item)
-                    self.projectileList.append(self.j)
-                    self.addItem(self.j)
+                        self.projectileList.remove(item)
+                        self.removeItem(item)
+                        self.projectileList.append(self.j)
+                        self.addItem(self.j)
                     break
                 elif item.image_name == "Images/beam4d.png":
                     if self.player.x() > item.x():
