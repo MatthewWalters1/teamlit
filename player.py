@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QGraphicsPixmapItem
 from PyQt6.QtGui import QPixmap
 
 class player(QGraphicsPixmapItem):
-    def __init__(self):
+    def __init__(self, image_name):
         super().__init__()
 
         # this is used to limit the player's ammo
@@ -13,4 +13,4 @@ class player(QGraphicsPixmapItem):
         self.reload = 30
         
         self.health = 100
-        self.setPixmap(QPixmap("Images/fighter.png"))
+        self.setPixmap(QPixmap(image_name))

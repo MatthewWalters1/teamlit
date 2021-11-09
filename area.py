@@ -150,7 +150,7 @@ class Window(QGraphicsScene):
 
 
         #Add player to the screen
-        self.player = player.player()
+        self.player = player.player("Images/fighter-blue.png")
         self.player.setPos(self.width()/2-68, self.height()-100)
         self.addItem(self.player)
         
