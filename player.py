@@ -11,6 +11,7 @@ class player(QGraphicsPixmapItem):
         # this is used to limit the player's ammo
         self.ammo = 30
         self.reload = 30
+        self.image_name = image_name
         
         self.health = 100
         self.setPixmap(QPixmap(image_name))

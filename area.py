@@ -339,8 +339,9 @@ class Window(QGraphicsScene):
             if self.pvp == True and self.once == 0:
                 self.once += 1
                 self.removeItem(self.player)
+                # player 1 is one more pixel to the right so they line up better at the start
                 self.player1 = player.player("Images/fighter-blue.png")
-                self.player1.setPos(self.width()/2-68, self.height()-100)
+                self.player1.setPos(self.width()/2-69, self.height()-100)
                 self.addItem(self.player1)
                 self.player1.ammo = 4
                 self.player2 = player.player("Images/fighter-red-down.png")
@@ -359,39 +360,93 @@ class Window(QGraphicsScene):
             if self.displayScore is not None:
                 self.displayScore.setText("Score: " + str(main.globalScore))
 
-            xVel = 0
-            yVel = 0
-            if Qt.Key.Key_Left in self.key_list:
-                #change velocitiy
-                xVel = -40 #may change if too fast/slow
+            if self.pvp == False:
+                xVel = 0
+                yVel = 0
+                if Qt.Key.Key_Left in self.key_list:
+                    #change velocitiy
+                    xVel = -40 #may change if too fast/slow
+                    
+                if Qt.Key.Key_Right in self.key_list:
+                    #change velocity
+                    xVel = 40 #may change if too fast/slow
+
+                if Qt.Key.Key_Up in self.key_list:
+                    #change velocity
+                    yVel = -40 #may change if too fast/slow
+
+                if Qt.Key.Key_Down in self.key_list:
+                    #change velocity
+                    yVel = 40 #may change if too fast/slow
+
+                if Qt.Key.Key_Space in self.key_list:
+                    #fire bullet
+                    self.fireBullet(self.player.x(), self.player.y())
+                if self.tutorial == True:
+                    if Qt.Key.Key_1 in self.key_list:
+                        self.spawnEnemy("1")
+                    if Qt.Key.Key_2 in self.key_list:
+                        self.spawnEnemy("2")
+                    if Qt.Key.Key_3 in self.key_list:
+                        self.spawnEnemy("3")
+                    if Qt.Key.Key_4 in self.key_list:
+                        self.spawnEnemy("4")
+
+            elif self.pvp == True:
+                xVel1 = 0
+                yVel1 = 0
+                xVel2 = 0
+                yVel2 = 0
+                # player1 controls in pvp
+                if Qt.Key.Key_W in self.key_list:
+                    yVel1 = -40
+                if Qt.Key.Key_A in self.key_list:
+                    xVel1 = -40
+                if Qt.Key.Key_S in self.key_list:
+                    yVel1 = 40
+                if Qt.Key.Key_D in self.key_list:
+                    xVel1 = 40
                 
-            if Qt.Key.Key_Right in self.key_list:
-                #change velocity
-                xVel = 40 #may change if too fast/slow
+                # player2 controls in pvp
+                if Qt.Key.Key_Up in self.key_list:
+                    yVel2 = -40
+                if Qt.Key.Key_Left in self.key_list:
+                    xVel2 = -40
+                if Qt.Key.Key_Down in self.key_list:
+                    yVel2 = 40
+                if Qt.Key.Key_Right in self.key_list:
+                    xVel2 = 40
 
-            if Qt.Key.Key_Up in self.key_list:
-                #change velocity
-                yVel = -40 #may change if too fast/slow
+            if self.pvp == False:
+                self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
+            else:
+                self.player1.setPos(self.player1.x()+xVel1, self.player1.y()+yVel1)
+                self.player2.setPos(self.player2.x()+xVel2, self.player2.y()+yVel2)
+                # player 1 boundaries
+                if self.player1.x() > self.width()-119:
+                    self.player1.setPos(self.width()-119, self.player1.y())
 
-            if Qt.Key.Key_Down in self.key_list:
-                #change velocity
-                yVel = 40 #may change if too fast/slow
+                if self.player1.x() < -51:
+                    self.player1.setPos(-51, self.player1.y())
 
-            if Qt.Key.Key_Space in self.key_list:
-                #fire bullet
-                self.fireBullet(self.player.x(), self.player.y())
-            if self.tutorial == True:
-                if Qt.Key.Key_1 in self.key_list:
-                    self.spawnEnemy("1")
-                if Qt.Key.Key_2 in self.key_list:
-                    self.spawnEnemy("2")
-                if Qt.Key.Key_3 in self.key_list:
-                    self.spawnEnemy("3")
-                if Qt.Key.Key_4 in self.key_list:
-                    self.spawnEnemy("4")
+                if self.player1.y() > self.height()-50:
+                    self.player1.setPos(self.player1.x(), self.height()-50)
 
-            self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
+                if self.player1.y() < 300:
+                    self.player1.setPos(self.player1.x(), 300)
+                
+                # player 2 boundaries
+                if self.player2.x() > self.width()-118:
+                    self.player2.setPos(self.width()-118, self.player2.y())
 
+                if self.player2.x() < -50:
+                    self.player2.setPos(-50, self.player2.y())
+
+                if self.player2.y() > 230:
+                    self.player2.setPos(self.player2.x(), 230)
+
+                if self.player2.y() < 0:
+                    self.player2.setPos(self.player2.x(), 0)
 
             if self.player.x() > self.width()-118:
                 self.player.setPos(self.width()-118, self.player.y())
