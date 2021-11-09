@@ -34,6 +34,8 @@ class Window(QGraphicsScene):
         self.boss = 400
         # this is true if the player picked tutorial, otherwise it is false
         self.tutorial = bool
+        # this is true if the player picked pvp mode, otherwise it is false
+        self.pvp = bool
 
         main.globalIsPaused = True
 
@@ -261,9 +263,11 @@ class Window(QGraphicsScene):
         sys.exit()
 
     def spawnEnemy(self, thing = "e"):
+
         #updates the time, because spawnEnemy is called on a 1 second interval
-        if self.tutorial == False:
+        if self.tutorial == False and self.pvp == False:
             main.globalTime += 1
+
         self.displayTime.setText("Time: " + str(main.globalTime))
         if thing == "e":
             if (len(self.enemyList) < self.intensity):
@@ -329,6 +333,9 @@ class Window(QGraphicsScene):
 
     def updateMovement(self):
         if not main.globalIsPaused:
+
+            if self.pvp == True:
+                self.player.ammo = 4
 
             # this is used for limiting the player's ammo
             # reload is incremented by 2 because otherwise the reload time is too slow
@@ -406,7 +413,7 @@ class Window(QGraphicsScene):
                 self.elapsed = 0
                 self.intensity += 1
             
-            if self.tutorial == False:
+            if self.tutorial == False and self.pvp == False:
                 main.globalScore += 1 
             
             for item in self.enemyList:
