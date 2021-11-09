@@ -314,14 +314,26 @@ class Window(QGraphicsScene):
             
 
     #here, use x and y to determine the position the bullet will start at
-    def fireBullet(self, x, y):
-        if self.player.reload >= self.player.ammo and self.pvp == False:
-            self.shot = bullet.bullet(x + 3, y, "Images/beam2.png", 0, -30)
+    def fireBullet(self, x, y, dir, player):
+        if dir == "up":
+            self.speed = -30
+            self.bulletImage = "Images/beam2.png"
+        if dir == "down":
+            self.speed = 30
+            self.bulletImage = "Images/beam3.png"
+        if player.reload >= player.ammo:
+            self.shot = bullet.bullet(x + 3, y, self.bulletImage, 0, self.speed)
             self.addItem(self.shot)
-            self.shotList.append(self.shot)
-            self.shot = bullet.bullet(x + 39, y, "Images/beam2.png", 0, -30)
+            if dir == "up":
+                self.shotList.append(self.shot)
+            if dir == "down":
+                self.shotList2.append(self.shot)
+            self.shot = bullet.bullet(x + 39, y, self.bulletImage, 0, self.speed)
             self.addItem(self.shot)
-            self.shotList.append(self.shot)
+            if dir == "up":
+                self.shotList.append(self.shot)
+            elif dir == "down":
+                self.shotList2.append(self.shot)
             if main.globalIsMuted == False:
                     playsound('Sounds/shoot.wav', False)
         
@@ -348,10 +360,14 @@ class Window(QGraphicsScene):
                 self.player2.setPos(self.width()/2-68, self.height()-650)
                 self.addItem(self.player2)
                 self.player2.ammo = 4
+                self.shotList2 = []
 
             # this is used for limiting the player's ammo
             # reload is incremented by 2 because otherwise the reload time is too slow
             self.player.reload += 2
+            if self.pvp == True:
+                self.player1.reload += 2
+                self.player2.reload += 2
             if len(self.shotList) >= self.player.ammo:
                 self.player.reload = 0
             
@@ -381,7 +397,7 @@ class Window(QGraphicsScene):
 
                 if Qt.Key.Key_Space in self.key_list:
                     #fire bullet
-                    self.fireBullet(self.player.x(), self.player.y())
+                    self.fireBullet(self.player.x(), self.player.y(), "up", self.player)
                 if self.tutorial == True:
                     if Qt.Key.Key_1 in self.key_list:
                         self.spawnEnemy("1")
@@ -406,6 +422,8 @@ class Window(QGraphicsScene):
                     yVel1 = 40
                 if Qt.Key.Key_D in self.key_list:
                     xVel1 = 40
+                if Qt.Key.Key_Space in self.key_list:
+                    self.fireBullet(self.player1.x(), self.player1.y(), "up", self.player1)
                 
                 # player2 controls in pvp
                 if Qt.Key.Key_Up in self.key_list:
@@ -416,6 +434,9 @@ class Window(QGraphicsScene):
                     yVel2 = 40
                 if Qt.Key.Key_Right in self.key_list:
                     xVel2 = 40
+                if Qt.Key.Key_0 in self.key_list:
+                    # player 2's y here is increased so that it doesn't hit it's own ship
+                    self.fireBullet(self.player2.x(), self.player2.y() + 40, "down", self.player2)
 
             if self.pvp == False:
                 self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
@@ -577,31 +598,71 @@ class Window(QGraphicsScene):
                         self.projectileList.append(self.p)
                         if main.globalIsMuted == False:
                             playsound('Sounds/laser.wav', False)
-             
-            for item in self.shotList:
-                item.setPos(item.x()+item.xVel, item.y()+item.yVel)
-                # -300 is the current limit, this could change
-                if item.y() < -100:
-                    self.shotList.remove(item)
-                    self.removeItem(item)
-                    continue
-                collision = item.collidingItems()
-                for bang in collision:
-                    # this is easier than isinstance, and it works
-                    if bang in self.enemyList:
-                        bang.health -= 1
+
+            if self.pvp == False:
+                for item in self.shotList:
+                    item.setPos(item.x()+item.xVel, item.y()+item.yVel)
+                    # -300 is the current limit, this could change
+                    if item.y() < -100:
                         self.shotList.remove(item)
                         self.removeItem(item)
-                        if bang.health == 0:
-                            if self.tutorial == False:
-                                main.globalScore += bang.points
-                            self.enemyList.remove(bang)
-                            if bang.shipType == 'c' or bang.shipType == 'd':
-                                # after the boss dies, we reset the timer so the player has about a minute without a boss on screen
-                                self.boss = 0
-                            self.removeItem(bang)
-                            # you have to break, in case it collided with multiple enemies, since it will try to remove the bullet twice
-                        break
+                        continue
+                    collision = item.collidingItems()
+                    for bang in collision:
+                        # this is easier than isinstance, and it works
+                        if bang in self.enemyList:
+                            bang.health -= 1
+                            self.shotList.remove(item)
+                            self.removeItem(item)
+                            if bang.health == 0:
+                                if self.tutorial == False:
+                                    main.globalScore += bang.points
+                                self.enemyList.remove(bang)
+                                if bang.shipType == 'c' or bang.shipType == 'd':
+                                    # after the boss dies, we reset the timer so the player has about a minute without a boss on screen
+                                    self.boss = 0
+                                self.removeItem(bang)
+                                # you have to break, in case it collided with multiple enemies, since it will try to remove the bullet twice
+                            break
+
+            if self.pvp == True:
+                for item in self.shotList:
+                    item.setPos(item.x()+item.xVel, item.y()+item.yVel)
+                    if item.y() < -100:
+                        self.shotList.remove(item)
+                        self.removeItem(item)
+                    collision = item.collidingItems()
+                    for bang in collision:
+                        if isinstance(bang, type(self.player)):
+                            self.player2.health -= 10
+                            self.shotList.remove(item)
+                            self.removeItem(item)
+                            if self.player2.health <= 0:
+                                QApplication.closeAllWindows()
+
+                                main.globalIsPaused = True
+                                self.deleteSelf()
+                                self.windowmanager = windowmanager.pvpEndWindow("Player 1")
+                                self.windowmanager.show()
+
+                for item in self.shotList2:
+                    item.setPos(item.x()+item.xVel, item.y()+item.yVel)
+                    if item.y() > self.height():
+                        self.shotList2.remove(item)
+                        self.removeItem(item)
+                    collision = item.collidingItems()
+                    for bang in collision:
+                        if isinstance(bang, type(self.player)):
+                            self.player1.health -= 10
+                            self.shotList2.remove(item)
+                            self.removeItem(item)
+                            if self.player1.health <= 0:
+                                QApplication.closeAllWindows()
+
+                                main.globalIsPaused = True
+                                self.deleteSelf()
+                                self.windowmanager = windowmanager.pvpEndWindow("Player 2")
+                                self.windowmanager.show()
 
             for item in self.projectileList:
                 if item.image_name == "Images/beam4a.png":
@@ -719,7 +780,11 @@ class Window(QGraphicsScene):
         self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
 
     def deleteSelf(self):
-        self.removeItem(self.player)
+        if self.pvp == False:
+            self.removeItem(self.player)
+        else:
+            self.removeItem(self.player1)
+            self.removeItem(self.player2)
         self.enemyList.clear()
         self.shotList.clear()
         self.projectileList.clear()

@@ -155,6 +155,120 @@ class EndWindow(QMainWindow):
         self.window = MainMenuWindow()
         self.window.show()
 
+
+
+class pvpEndWindow(QMainWindow):
+    def __init__(self, winner):
+        super().__init__()
+
+        self.setWindowTitle("Generic Space Game")
+        self.setWindowIcon(QIcon(QPixmap("Images/fighter.png")))
+        self.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight) #Set window size and color
+        palette = self.palette()
+        palette.setColor(QPalette.ColorRole.Window, QColor(173, 216, 230))
+        self.setPalette(palette)
+
+        centralwidget = QWidget() #Create central widget and the main layouts
+        self.buttonLayout = QHBoxLayout()
+        self.mainLayout = QVBoxLayout()
+
+        self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
+        self.mainLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
+
+        self.titleLabel = QLabel()
+        self.titleImage = QPixmap("Images/gameover.png")
+        self.titleLabel.setPixmap(self.titleImage)
+        self.mainLayout.addWidget(self.titleLabel)
+
+        self.gameoverImage = QPixmap("Images/main.png")
+        self.gameoverPalette = QPalette()
+        self.gameoverPalette.setBrush(QPalette.ColorRole.Window, QBrush(self.gameoverImage))
+        self.setPalette(self.gameoverPalette)
+
+        self.menuButton = QPushButton() #Button that takes the player back to the main menu
+        self.menuButton.setText("Main Menu")
+        self.menuButton.setStyleSheet("background-color: lightGray;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 60 em;"
+                                        "max-width: 60 em;"
+                                        "padding: 6 px;")
+        self.menuButton.clicked.connect(self.restartGame)
+        self.buttonLayout.addWidget(self.menuButton)
+
+        self.settingbutton = QPushButton() #Button that takes the player back to the setting menu (currently does nothing)
+        self.settingbutton.setText("Settings")
+        self.settingbutton.setStyleSheet("background-color: lightGray;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 60 em;"
+                                        "max-width: 60 em;"
+                                        "padding: 6 px;")
+        self.settingbutton.clicked.connect(self.settingClicked)
+        self.buttonLayout.addWidget(self.settingbutton)
+
+        self.exitbutton = QPushButton() #Button that exits the game
+        self.exitbutton.setText("Exit")
+        self.exitbutton.setStyleSheet("background-color: lightGray;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 60 em;"
+                                        "max-width: 60 em;"
+                                        "padding: 6 px;")
+        self.exitbutton.clicked.connect(self.exitClicked)
+        self.buttonLayout.addWidget(self.exitbutton)
+
+        self.mainLayout.setContentsMargins(0,0,0,0)
+        self.mainLayout.setSpacing(20)
+
+        self.mainLayout.addLayout(self.buttonLayout)
+
+        self.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
+        centralwidget.setLayout(self.mainLayout)
+        self.setCentralWidget(centralwidget)
+
+        self.scene = QGraphicsScene(-50, -50, 600, 600)
+        main.globalIsPaused = True
+
+
+
+    def exitClicked(self):
+        sys.exit()
+
+    def settingClicked(self):
+        QApplication.closeAllWindows
+
+        self.newWindow = SettingsWindow()
+        self.newWindow.show()
+
+    def boardClicked(self):
+        boardText = database.getTopScores()
+        leaderboard = QMessageBox(self)
+        font = QFont("Consolas", 12, QFont.Weight.Bold)
+        leaderboard.setFont(font)
+        leaderboard.setStyleSheet("background-color: #293D48;"
+                                  "color: white;"
+                                  "min-width: 300 em;"
+                                  "padding: 10 px;")
+        leaderboard.setWindowTitle('Leaderboard')
+        leaderboard.setWindowIcon(QIcon('Images/leaderboardicon.png'))
+        leaderboard.setStandardButtons(QMessageBox.StandardButton.Ok)
+        leaderboard.button(QMessageBox.StandardButton.Ok).setStyleSheet("background-color: lightGray;"
+                                                                        "color: black;")
+        leaderboard.setText(boardText)
+        leaderboard.exec()
+
+    def restartGame(self):
+        QApplication.closeAllWindows()
+
+        self.window = MainMenuWindow()
+        self.window.show()
+
+
+
 class MainMenuWindow(QMainWindow):
     def __init__(self):
         super().__init__()
