@@ -36,6 +36,8 @@ class Window(QGraphicsScene):
         self.tutorial = bool
         # this is true if the player picked pvp mode, otherwise it is false
         self.pvp = bool
+        # this is used in pvp mode to replace the player with the 2 separate players
+        self.once = 0
 
         main.globalIsPaused = True
 
@@ -313,7 +315,7 @@ class Window(QGraphicsScene):
 
     #here, use x and y to determine the position the bullet will start at
     def fireBullet(self, x, y):
-        if self.player.reload >= self.player.ammo:
+        if self.player.reload >= self.player.ammo and self.pvp == False:
             self.shot = bullet.bullet(x + 3, y, "Images/beam2.png", 0, -30)
             self.addItem(self.shot)
             self.shotList.append(self.shot)
@@ -334,8 +336,17 @@ class Window(QGraphicsScene):
     def updateMovement(self):
         if not main.globalIsPaused:
 
-            if self.pvp == True:
-                self.player.ammo = 4
+            if self.pvp == True and self.once == 0:
+                self.once += 1
+                self.removeItem(self.player)
+                self.player1 = player.player("Images/fighter-blue.png")
+                self.player1.setPos(self.width()/2-68, self.height()-100)
+                self.addItem(self.player1)
+                self.player1.ammo = 4
+                self.player2 = player.player("Images/fighter-red-down.png")
+                self.player2.setPos(self.width()/2-68, self.height()-650)
+                self.addItem(self.player2)
+                self.player2.ammo = 4
 
             # this is used for limiting the player's ammo
             # reload is incremented by 2 because otherwise the reload time is too slow
