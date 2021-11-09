@@ -581,7 +581,7 @@ class Window(QGraphicsScene):
             for item in self.shotList:
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
                 # -300 is the current limit, this could change
-                if item.y() < -300:
+                if item.y() < -100:
                     self.shotList.remove(item)
                     self.removeItem(item)
                     continue
