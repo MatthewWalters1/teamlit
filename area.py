@@ -362,6 +362,16 @@ class Window(QGraphicsScene):
                 self.player2.ammo = 4
                 self.shotList2 = []
 
+            elif self.tutorial == True and self.once == 0:
+                self.once += 1
+                self.removeItem(self.image)
+                self.removeItem(self.imageTwo)
+                self.removeItem(self.player)
+                self.image3 = QGraphicsPixmapItem()
+                self.image3.setPixmap(QPixmap("Images/Tutorial-Background.png"))
+                self.addItem(self.image3)
+                self.addItem(self.player)
+
             # this is used for limiting the player's ammo
             # reload is incremented by 2 because otherwise the reload time is too slow
             self.player.reload += 2
@@ -487,11 +497,8 @@ class Window(QGraphicsScene):
             
             if self.tutorial == False:
                 self.imageMove += 2
-            # else:
-            #     self.image.setPixmap(QPixmap("Images/tutorial.png"))
-
-            self.image.setPos(self.imageOneStartX, (self.imageOneStartY + self.imageMove))
-            self.imageTwo.setPos(self.imageTwoStartX, (self.imageTwoStartY + self.imageMove))
+                self.image.setPos(self.imageOneStartX, (self.imageOneStartY + self.imageMove))
+                self.imageTwo.setPos(self.imageTwoStartX, (self.imageTwoStartY + self.imageMove))
 
             if (self.imageOneStartY + self.imageMove) >= 1080:
                 self.imageOneStartY = -2749 - self.imageMove
