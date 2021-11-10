@@ -11,7 +11,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QColor, QPalette, QFont, QBrush, QPixmap
 from PyQt6.QtWidgets import QGraphicsPixmapItem, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QMessageBox, QApplication
 import player, bullet, windowmanager, main
-from playsound import playsound
+import pygame
 
 class Window(QGraphicsScene):
     def __init__(self):
@@ -134,7 +134,7 @@ class Window(QGraphicsScene):
         #Sets the size and then the color of a widget and in this case it is what we call the top widget
         topWidget.setFixedSize(600, 50)
 
-        topWidget.setGeometry(-50, -118, 600, 100) #-50, -270
+        topWidget.setGeometry(-50, -100, 600, 100) #-50, -270
 
         topWidgetPallette = topWidget.palette()
         topWidgetPallette.setColor(QPalette.ColorRole.Window , QColor(194, 197, 204))
@@ -335,7 +335,8 @@ class Window(QGraphicsScene):
             elif dir == "down":
                 self.shotList2.append(self.shot)
             if main.globalIsMuted == False:
-                    playsound('Sounds/shoot.wav', False)
+                    soundObject = pygame.mixer.Sound('Sounds/shoot.wav')
+                    soundObject.play()
         
     def keyPressEvent(self, event):
         if not main.globalIsPaused:
@@ -590,7 +591,8 @@ class Window(QGraphicsScene):
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
                         if main.globalIsMuted == False:
-                            playsound('Sounds/laser.wav', False)
+                            soundObject = pygame.mixer.Sound('Sounds/laser.wav')
+                            soundObject.play()
                     elif item.shipType == 'c':
                         self.p = bullet.bullet(item.x() + 50, item.y() + 50, "Images/beam3.png", 0, 30)
                         if self.player.x() > item.x() + 80:
@@ -601,14 +603,16 @@ class Window(QGraphicsScene):
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
                         if main.globalIsMuted == False:
-                            playsound('Sounds/laser.wav', False)
+                            soundObject = pygame.mixer.Sound('Sounds/laser.wav')
+                            soundObject.play()
                     elif item.shipType == 'd':
                         item.reload = 18
                         self.p = bullet.bullet(item.x() + 28, item.y() + 69, "Images/beam4a.png", 0, 20)
                         self.addItem(self.p)
                         self.projectileList.append(self.p)
                         if main.globalIsMuted == False:
-                            playsound('Sounds/laser.wav', False)
+                            soundObject = pygame.mixer.Sound('Sounds/laser.wav')
+                            soundObject.play()
 
             if self.pvp == False:
                 for item in self.shotList:

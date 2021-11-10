@@ -5,11 +5,9 @@
     This is the main for the project and contains the timer class and brings the play field, menus, and the player togther to form the game
 
 '''
-from PyQt6.QtWidgets import QWidget, QLabel, QApplication, QVBoxLayout
-from PyQt6.QtCore import QTimer, Qt
-from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import QWidget, QApplication
+from PyQt6.QtCore import QTimer
 import sys, windowmanager
-import multiprocessing
 import pygame   
 
 from playsound import playsound
