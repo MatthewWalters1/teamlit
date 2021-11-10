@@ -9,7 +9,8 @@ from PyQt6.QtWidgets import QWidget, QLabel, QApplication, QVBoxLayout
 from PyQt6.QtCore import QTimer, Qt
 from PyQt6.QtGui import QFont
 import sys, windowmanager
-import threading
+import multiprocessing
+import pygame   
 
 from playsound import playsound
 
@@ -47,11 +48,18 @@ def LoopSound():
         while globalIsMuted == False:
             playsound('Sounds/background.wav', True)
 
+def StopMusic(musicPlayer):
+    musicPlayer.music.stop()
+
+def StartMusic(musicPlayer):
+    musicPlayer.music.load('Sounds/background.wav')
+    musicPlayer.music.set_volume(0.5)
+    musicPlayer.music.play(-1)
+
 if __name__ == '__main__':
 
-    loopThread = threading.Thread(target=LoopSound, name='backgroundMusicThread')
-    loopThread.daemon = True
-    loopThread.start()
+    pygame.mixer.init()
+    StartMusic(pygame.mixer)
 
     app = QApplication(sys.argv)
 

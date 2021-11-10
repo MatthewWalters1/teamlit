@@ -2,6 +2,7 @@ import sys, area, main, database
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
+import pygame
 
 windowSizeOpenHeight = 720
 windowSizeOpenWidth = 600
@@ -83,17 +84,17 @@ class EndWindow(QMainWindow):
         self.boardbutton.clicked.connect(self.boardClicked)
         self.buttonLayout.addWidget(self.boardbutton)
 
-        self.exitbutton = QPushButton() #Button that exits the game
-        self.exitbutton.setText("Exit")
-        self.exitbutton.setStyleSheet("background-color: lightGray;"
+        self.volumehigh = QPushButton() #Button that exits the game
+        self.volumehigh.setText("Exit")
+        self.volumehigh.setStyleSheet("background-color: lightGray;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
                                         "min-width: 60 em;"
                                         "max-width: 60 em;"
                                         "padding: 6 px;")
-        self.exitbutton.clicked.connect(self.exitClicked)
-        self.buttonLayout.addWidget(self.exitbutton)
+        self.volumehigh.clicked.connect(self.exitClicked)
+        self.buttonLayout.addWidget(self.volumehigh)
 
         self.mainLayout.setContentsMargins(0,0,0,0)
         self.mainLayout.setSpacing(20)
@@ -209,17 +210,17 @@ class pvpEndWindow(QMainWindow):
         self.settingbutton.clicked.connect(self.settingClicked)
         self.buttonLayout.addWidget(self.settingbutton)
 
-        self.exitbutton = QPushButton() #Button that exits the game
-        self.exitbutton.setText("Exit")
-        self.exitbutton.setStyleSheet("background-color: lightGray;"
+        self.volumehigh = QPushButton() #Button that exits the game
+        self.volumehigh.setText("Exit")
+        self.volumehigh.setStyleSheet("background-color: lightGray;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
                                         "min-width: 60 em;"
                                         "max-width: 60 em;"
                                         "padding: 6 px;")
-        self.exitbutton.clicked.connect(self.exitClicked)
-        self.buttonLayout.addWidget(self.exitbutton)
+        self.volumehigh.clicked.connect(self.exitClicked)
+        self.buttonLayout.addWidget(self.volumehigh)
 
         self.mainLayout.setContentsMargins(0,0,0,0)
         self.mainLayout.setSpacing(20)
@@ -359,17 +360,17 @@ class MainMenuWindow(QMainWindow):
         self.settingbutton.clicked.connect(self.settingClicked)
         self.buttonLayout.addWidget(self.settingbutton)
 
-        self.exitbutton = QPushButton() #Button that exits the game
-        self.exitbutton.setText("Exit")
-        self.exitbutton.setStyleSheet("background-color: lightGray;"
+        self.volumehigh = QPushButton() #Button that exits the game
+        self.volumehigh.setText("Exit")
+        self.volumehigh.setStyleSheet("background-color: lightGray;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
                                         "min-width: 80 em;"
                                         "max-width: 80 em;"
                                         "padding: 6 px;")
-        self.exitbutton.clicked.connect(self.exitClicked)
-        self.buttonLayout.addWidget(self.exitbutton)
+        self.volumehigh.clicked.connect(self.exitClicked)
+        self.buttonLayout.addWidget(self.volumehigh)
 
         self.mainLayout.setContentsMargins(0,0,0,0)
         self.mainLayout.setSpacing(20)
@@ -514,9 +515,11 @@ class SettingsWindow(QMainWindow):
         centralwidget = QWidget() #Create central widget and the main layouts
         self.buttonLayout = QVBoxLayout()
         self.mainLayout = QVBoxLayout()
+        self.volumeLayout = QHBoxLayout()
 
-        self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
-        self.mainLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
+        self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
+        self.volumeLayout.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
+        self.mainLayout.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
 
         self.titleLabel = QLabel()
         self.titleImage = QPixmap("Images/settings.png")
@@ -566,6 +569,44 @@ class SettingsWindow(QMainWindow):
                                         "padding: 6 px;")
         #self.buttonLayout.addWidget(self.settingbutton)
 
+        self.volumehigh = QPushButton() #Button that sets the volume to low
+        self.volumehigh.setText("Low")
+        self.volumehigh.setStyleSheet("background-color: lightGray;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 80 em;"
+                                        "max-width: 80 em;"
+                                        "padding: 6 px;")
+        self.volumehigh.clicked.connect(self.setLow)
+        self.volumeLayout.addWidget(self.volumehigh)
+
+        self.volumenormal = QPushButton() #Button that sets the volume to normal
+        self.volumenormal.setText("Normal")
+        self.volumenormal.setStyleSheet("background-color: lightGray;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 80 em;"
+                                        "max-width: 80 em;"
+                                        "padding: 6 px;")
+        self.volumenormal.clicked.connect(self.setNormal)
+        self.volumeLayout.addWidget(self.volumenormal)
+
+        self.volumehigh = QPushButton() #Button that sets the volume to high
+        self.volumehigh.setText("High")
+        self.volumehigh.setStyleSheet("background-color: lightGray;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 80 em;"
+                                        "max-width: 80 em;"
+                                        "padding: 6 px;")
+        self.volumehigh.clicked.connect(self.setHigh)
+        self.volumeLayout.addWidget(self.volumehigh)
+
+        self.buttonLayout.addLayout(self.volumeLayout)
+
         self.exitbutton = QPushButton() #Button that exits the game
         self.exitbutton.setText("Return to Menu")
         self.exitbutton.setStyleSheet("background-color: lightGray;"
@@ -577,6 +618,7 @@ class SettingsWindow(QMainWindow):
                                         "padding: 6 px;")
         self.exitbutton.clicked.connect(self.exitClicked)
         self.buttonLayout.addWidget(self.exitbutton)
+
 
         self.mainLayout.setContentsMargins(0,0,0,0)
         self.mainLayout.setSpacing(20)
@@ -595,10 +637,21 @@ class SettingsWindow(QMainWindow):
         self.window = MainMenuWindow()
         self.window.show()
 
+    def setLow(self):
+        pygame.mixer.music.set_volume(0.1)
+
+    def setNormal(self):
+        pygame.mixer.music.set_volume(0.4)
+
+    def setHigh(self):
+        pygame.mixer.music.set_volume(0.8)
+
     def muteClicked(self):
         if main.globalIsMuted == False:
             main.globalIsMuted = True
+            main.StopMusic(pygame.mixer)
             self.muteButton.setText("UnMute")
         else:
             main.globalIsMuted = False
+            main.StartMusic(pygame.mixer)
             self.muteButton.setText("Mute")
