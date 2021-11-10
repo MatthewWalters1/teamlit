@@ -366,8 +366,8 @@ class Window(QGraphicsScene):
             # reload is incremented by 2 because otherwise the reload time is too slow
             self.player.reload += 2
             if self.pvp == True:
-                self.player1.reload += 2
-                self.player2.reload += 2
+                self.player1.reload += 1
+                self.player2.reload += 1
                 if len(self.shotList) >= self.player1.ammo:
                     self.player1.reload = 0
                 if len(self.shotList2) >= self.player2.ammo:
