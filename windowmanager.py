@@ -639,12 +639,15 @@ class SettingsWindow(QMainWindow):
 
     def setLow(self):
         pygame.mixer.music.set_volume(0.1)
+        main.currentVolume = 0.1
 
     def setNormal(self):
         pygame.mixer.music.set_volume(0.4)
+        main.currentVolume = 0.4
 
     def setHigh(self):
         pygame.mixer.music.set_volume(0.8)
+        main.currentVolume = 0.8
 
     def muteClicked(self):
         if main.globalIsMuted == False:

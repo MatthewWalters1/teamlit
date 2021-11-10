@@ -17,6 +17,8 @@ globalIsMuted = False
 globalScore = 0
 globalTime = 0
 
+currentVolume = 0.4
+
 class Timer(QWidget): #Manages the game timer
     def __init__(self):
         super().__init__()
@@ -42,16 +44,12 @@ class Timer(QWidget): #Manages the game timer
     def pauseTimer(self): #Pauses the timer
         self.timer.stop()
 
-def LoopSound():
-        while globalIsMuted == False:
-            playsound('Sounds/background.wav', True)
-
 def StopMusic(musicPlayer):
     musicPlayer.music.stop()
 
 def StartMusic(musicPlayer):
     musicPlayer.music.load('Sounds/background.wav')
-    musicPlayer.music.set_volume(0.5)
+    musicPlayer.music.set_volume(currentVolume)
     musicPlayer.music.play(-1)
 
 if __name__ == '__main__':

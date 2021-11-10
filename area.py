@@ -336,6 +336,7 @@ class Window(QGraphicsScene):
                 self.shotList2.append(self.shot)
             if main.globalIsMuted == False:
                     soundObject = pygame.mixer.Sound('Sounds/shoot.wav')
+                    soundObject.set_volume(main.currentVolume)
                     soundObject.play()
         
     def keyPressEvent(self, event):
@@ -592,6 +593,7 @@ class Window(QGraphicsScene):
                         self.projectileList.append(self.p)
                         if main.globalIsMuted == False:
                             soundObject = pygame.mixer.Sound('Sounds/laser.wav')
+                            soundObject.set_volume(main.currentVolume)
                             soundObject.play()
                     elif item.shipType == 'c':
                         self.p = bullet.bullet(item.x() + 50, item.y() + 50, "Images/beam3.png", 0, 30)
@@ -604,6 +606,7 @@ class Window(QGraphicsScene):
                         self.projectileList.append(self.p)
                         if main.globalIsMuted == False:
                             soundObject = pygame.mixer.Sound('Sounds/laser.wav')
+                            soundObject.set_volume(main.currentVolume)
                             soundObject.play()
                     elif item.shipType == 'd':
                         item.reload = 18
@@ -612,6 +615,7 @@ class Window(QGraphicsScene):
                         self.projectileList.append(self.p)
                         if main.globalIsMuted == False:
                             soundObject = pygame.mixer.Sound('Sounds/laser.wav')
+                            soundObject.set_volume(main.currentVolume)
                             soundObject.play()
 
             if self.pvp == False:
