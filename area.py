@@ -368,6 +368,10 @@ class Window(QGraphicsScene):
             if self.pvp == True:
                 self.player1.reload += 2
                 self.player2.reload += 2
+                if len(self.shotList) >= self.player1.ammo:
+                    self.player1.reload = 0
+                if len(self.shotList2) >= self.player2.ammo:
+                    self.player2.reload = 0
             if len(self.shotList) >= self.player.ammo:
                 self.player.reload = 0
             
@@ -628,7 +632,7 @@ class Window(QGraphicsScene):
             if self.pvp == True:
                 for item in self.shotList:
                     item.setPos(item.x()+item.xVel, item.y()+item.yVel)
-                    if item.y() < -100:
+                    if item.y() < -90:
                         self.shotList.remove(item)
                         self.removeItem(item)
                     collision = item.collidingItems()
@@ -647,7 +651,7 @@ class Window(QGraphicsScene):
 
                 for item in self.shotList2:
                     item.setPos(item.x()+item.xVel, item.y()+item.yVel)
-                    if item.y() > self.height():
+                    if item.y() > self.height() - 30:
                         self.shotList2.remove(item)
                         self.removeItem(item)
                     collision = item.collidingItems()
