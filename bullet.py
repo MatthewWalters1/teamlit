@@ -67,11 +67,14 @@ def getEnemy(enemyList, boss):
 def getTutorialEnemy(enemyListLength, thing):
     if thing == "1":
         enemy = ship(random.randrange(0,480), -300, 'b', 0, 20, 1)
+        return enemy
     elif thing == "2":
         enemy = ship(random.randrange(0, 480), -300, 'a', 0, 10, 3)
+        return enemy
     elif enemyListLength < 1:
         if thing == "3":
             enemy = ship(180, -400, 'c', 0, 10, 50)
+            return enemy
         elif thing == "4":
             enemy = ship(180, -400, 'd', 0, 10, 80)
-    return enemy
+            return enemy

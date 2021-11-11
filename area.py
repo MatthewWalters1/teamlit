@@ -43,7 +43,7 @@ class Window(QGraphicsScene):
         self.pvp = bool
 
         # Used in PvP mode to replace the player with the 2 separate players
-        self.once = 0
+        #self.once = 0
 
         main.globalIsPaused = True
 
@@ -284,8 +284,9 @@ class Window(QGraphicsScene):
                 self.enemyList.append(self.enemy)
         elif len(self.enemyList) < 3:
             self.enemy = bullet.getTutorialEnemy(len(self.enemyList), thing)
-            self.addItem(self.enemy)
-            self.enemyList.append(self.enemy)
+            if self.enemy is not None:
+                self.addItem(self.enemy)
+                self.enemyList.append(self.enemy)
             
 
     #here, use x and y to determine the position the bullet will start at
@@ -317,35 +318,39 @@ class Window(QGraphicsScene):
         if not main.globalIsPaused:
             self.key_list.remove(event.key())
 
+    def pvpInit(self):
+        self.tutorial = False
+        self.pvp = True
+
+        self.removeItem(self.player)
+
+        # player 1 is one more pixel to the right so they line up better at the start
+        self.player1 = player.player("Images/fighter-blue.png")
+        self.player1.setPos(self.width()/2-69, self.height()-100)
+        self.addItem(self.player1)
+        self.player1.ammo = 4
+        
+        self.player2 = player.player("Images/fighter-red-down.png")
+        self.player2.setPos(self.width()/2-68, self.height()-650)
+        self.addItem(self.player2)
+        self.player2.ammo = 4
+        self.shotList2 = []
+
+    def tutorialInit(self):
+        self.pvp = False
+        self.tutorial = True
+
+        self.removeItem(self.image)
+        self.removeItem(self.imageTwo)
+        self.removeItem(self.player)
+
+        self.image3 = QGraphicsPixmapItem()
+        self.image3.setPixmap(QPixmap("Images/Tutorial-Background.png"))
+        self.addItem(self.image3)
+        self.addItem(self.player)
+
     def updateMovement(self):
         if not main.globalIsPaused:
-            if self.once == 0:
-                if self.pvp == True:
-                    self.once += 1
-                    self.removeItem(self.player)
-
-                    # player 1 is one more pixel to the right so they line up better at the start
-                    self.player1 = player.player("Images/fighter-blue.png")
-                    self.player1.setPos(self.width()/2-69, self.height()-100)
-                    self.addItem(self.player1)
-                    self.player1.ammo = 4
-                    
-                    self.player2 = player.player("Images/fighter-red-down.png")
-                    self.player2.setPos(self.width()/2-68, self.height()-650)
-                    self.addItem(self.player2)
-                    self.player2.ammo = 4
-                    self.shotList2 = []
-
-                elif self.tutorial == True:
-                    self.once += 1
-                    self.removeItem(self.image)
-                    self.removeItem(self.imageTwo)
-                    self.removeItem(self.player)
-                    self.image3 = QGraphicsPixmapItem()
-                    self.image3.setPixmap(QPixmap("Images/Tutorial-Background.png"))
-                    self.addItem(self.image3)
-                    self.addItem(self.player)
-
             # this is used for limiting the player's ammo
             # reload is incremented by 2 because otherwise the reload time is too slow
             self.player.reload += 2
