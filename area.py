@@ -42,9 +42,6 @@ class Window(QGraphicsScene):
         # True if the player picked PvP mode and false otherwise
         self.pvp = bool
 
-        # Used in PvP mode to replace the player with the 2 separate players
-        #self.once = 0
-
         main.globalIsPaused = True
 
         # Create a widget with a button layout at the top right of the window
@@ -272,7 +269,7 @@ class Window(QGraphicsScene):
         sys.exit()
 
     def spawnEnemy(self, thing = "e"):
-        #updates the time, because spawnEnemy is called on a 1 second interval
+        # Updates the time, because spawnEnemy is called on a 1 second interval
         if self.tutorial == False and self.pvp == False:
             main.globalTime += 1
 
@@ -289,7 +286,7 @@ class Window(QGraphicsScene):
                 self.enemyList.append(self.enemy)
             
 
-    #here, use x and y to determine the position the bullet will start at
+    # Here, use x and y to determine the position the bullet will start at
     def firePressed(self, x, y, dir, player):
         if player.reload >= player.ammo:
             if dir == "up":
@@ -351,117 +348,51 @@ class Window(QGraphicsScene):
 
     def updateMovement(self):
         if not main.globalIsPaused:
-            # this is used for limiting the player's ammo
+            # This is used for limiting the player's ammo
             # reload is incremented by 2 because otherwise the reload time is too slow
             self.player.reload += 2
-            if self.pvp == True:
-                self.player1.reload += 1
-                self.player2.reload += 1
-                if len(self.shotList) >= self.player1.ammo:
-                    self.player1.reload = 0
-                if len(self.shotList2) >= self.player2.ammo:
-                    self.player2.reload = 0
             if len(self.shotList) >= self.player.ammo:
                 self.player.reload = 0
             
-            # this is used to stop bosses from appearing constantly
+            # This is used to stop bosses from appearing constantly
             self.boss += 1
 
             if self.displayScore is not None:
                 self.displayScore.setText("Score: " + str(main.globalScore))
 
-            if self.pvp == False:
-                xVel = 0
-                yVel = 0
-                if Qt.Key.Key_Left in self.key_list:
-                    #change velocitiy
-                    xVel = -40 #may change if too fast/slow
-                    
-                if Qt.Key.Key_Right in self.key_list:
-                    #change velocity
-                    xVel = 40 #may change if too fast/slow
-
-                if Qt.Key.Key_Up in self.key_list:
-                    #change velocity
-                    yVel = -40 #may change if too fast/slow
-
-                if Qt.Key.Key_Down in self.key_list:
-                    #change velocity
-                    yVel = 40 #may change if too fast/slow
-
-                if Qt.Key.Key_Space in self.key_list:
-                    #fire bullet
-                    self.firePressed(self.player.x(), self.player.y(), "up", self.player)
-                if self.tutorial == True:
-                    if Qt.Key.Key_1 in self.key_list:
-                        self.spawnEnemy("1")
-                    if Qt.Key.Key_2 in self.key_list:
-                        self.spawnEnemy("2")
-                    if Qt.Key.Key_3 in self.key_list:
-                        self.spawnEnemy("3")
-                    if Qt.Key.Key_4 in self.key_list:
-                        self.spawnEnemy("4")
-
-            elif self.pvp == True:
-                xVel1 = 0
-                yVel1 = 0
-                xVel2 = 0
-                yVel2 = 0
-                # player1 controls in pvp
-                if Qt.Key.Key_W in self.key_list:
-                    yVel1 = -40
-                if Qt.Key.Key_A in self.key_list:
-                    xVel1 = -40
-                if Qt.Key.Key_S in self.key_list:
-                    yVel1 = 40
-                if Qt.Key.Key_D in self.key_list:
-                    xVel1 = 40
-                if Qt.Key.Key_Space in self.key_list:
-                    self.firePressed(self.player1.x(), self.player1.y(), "up", self.player1)
+            xVel = 0
+            yVel = 0
+            if Qt.Key.Key_Left in self.key_list:
+                # Change velocity
+                xVel = -40 # May change if too fast/slow
                 
-                # player2 controls in pvp
-                if Qt.Key.Key_Up in self.key_list:
-                    yVel2 = -40
-                if Qt.Key.Key_Left in self.key_list:
-                    xVel2 = -40
-                if Qt.Key.Key_Down in self.key_list:
-                    yVel2 = 40
-                if Qt.Key.Key_Right in self.key_list:
-                    xVel2 = 40
-                if Qt.Key.Key_0 in self.key_list:
-                    # player 2's y here is increased so that it doesn't hit its own ship
-                    self.firePressed(self.player2.x(), self.player2.y() + 40, "down", self.player2)
+            if Qt.Key.Key_Right in self.key_list:
+                # Change velocity
+                xVel = 40 # May change if too fast/slow
 
-            if self.pvp == False:
-                self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
-            else:
-                self.player1.setPos(self.player1.x()+xVel1, self.player1.y()+yVel1)
-                self.player2.setPos(self.player2.x()+xVel2, self.player2.y()+yVel2)
-                # player 1 boundaries
-                if self.player1.x() > self.width()-119:
-                    self.player1.setPos(self.width()-119, self.player1.y())
+            if Qt.Key.Key_Up in self.key_list:
+                # Change velocity
+                yVel = -40 # May change if too fast/slow
 
-                if self.player1.x() < -51:
-                    self.player1.setPos(-51, self.player1.y())
+            if Qt.Key.Key_Down in self.key_list:
+                # Change velocity
+                yVel = 40 # May change if too fast/slow
 
-                if self.player1.y() > self.height()-50:
-                    self.player1.setPos(self.player1.x(), self.height()-50)
+            if Qt.Key.Key_Space in self.key_list:
+                # Fire bullet
+                self.firePressed(self.player.x(), self.player.y(), "up", self.player)
 
-                if self.player1.y() < 300:
-                    self.player1.setPos(self.player1.x(), 300)
+            if self.tutorial == True:
+                if Qt.Key.Key_1 in self.key_list:
+                    self.spawnEnemy("1")
+                if Qt.Key.Key_2 in self.key_list:
+                    self.spawnEnemy("2")
+                if Qt.Key.Key_3 in self.key_list:
+                    self.spawnEnemy("3")
+                if Qt.Key.Key_4 in self.key_list:
+                    self.spawnEnemy("4")
                 
-                # player 2 boundaries
-                if self.player2.x() > self.width()-118:
-                    self.player2.setPos(self.width()-118, self.player2.y())
-
-                if self.player2.x() < -50:
-                    self.player2.setPos(-50, self.player2.y())
-
-                if self.player2.y() > 230:
-                    self.player2.setPos(self.player2.x(), 230)
-
-                if self.player2.y() < 0:
-                    self.player2.setPos(self.player2.x(), 0)
+            self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
 
             if self.player.x() > self.width()-118:
                 self.player.setPos(self.width()-118, self.player.y())
@@ -476,22 +407,14 @@ class Window(QGraphicsScene):
                 self.player.setPos(self.player.x(), 0)
             
             if self.tutorial == False:
-                self.imageMove += 2
-                self.image.setPos(self.imageOneStartX, (self.imageOneStartY + self.imageMove))
-                self.imageTwo.setPos(self.imageTwoStartX, (self.imageTwoStartY + self.imageMove))
-
-            if (self.imageOneStartY + self.imageMove) >= 1080:
-                self.imageOneStartY = -2749 - self.imageMove
-
-            if (self.imageTwoStartY + self.imageMove) >= 1080:
-                self.imageTwoStartY = -2749 - self.imageMove
+                self.moveBackground()
 
             self.elapsed += 1
             if self.elapsed == 200:
                 self.elapsed = 0
                 self.intensity += 1
             
-            if self.tutorial == False and self.pvp == False:
+            if self.tutorial == False:
                 main.globalScore += 1 
             
             for item in self.enemyList:
@@ -596,70 +519,30 @@ class Window(QGraphicsScene):
                             soundObject.set_volume(main.currentVolume)
                             soundObject.play()
 
-            if self.pvp == False:
-                for item in self.shotList:
-                    item.setPos(item.x()+item.xVel, item.y()+item.yVel)
-                    # -300 is the current limit, this could change
-                    if item.y() < -100:
+            for item in self.shotList:
+                item.setPos(item.x()+item.xVel, item.y()+item.yVel)
+                # -100 is the current limit, this could change
+                if item.y() < -100:
+                    self.shotList.remove(item)
+                    self.removeItem(item)
+                    continue
+                collision = item.collidingItems()
+                for bang in collision:
+                    # This is easier than isinstance, and it works
+                    if bang in self.enemyList:
+                        bang.health -= 1
                         self.shotList.remove(item)
                         self.removeItem(item)
-                        continue
-                    collision = item.collidingItems()
-                    for bang in collision:
-                        # this is easier than isinstance, and it works
-                        if bang in self.enemyList:
-                            bang.health -= 1
-                            self.shotList.remove(item)
-                            self.removeItem(item)
-                            if bang.health == 0:
-                                if self.tutorial == False:
-                                    main.globalScore += bang.points
-                                self.enemyList.remove(bang)
-                                if bang.shipType == 'c' or bang.shipType == 'd':
-                                    # after the boss dies, we reset the timer so the player has about a minute without a boss on screen
-                                    self.boss = 0
-                                self.removeItem(bang)
-                                # you have to break, in case it collided with multiple enemies, since it will try to remove the bullet twice
-                            break
-
-            if self.pvp == True:
-                for item in self.shotList:
-                    item.setPos(item.x()+item.xVel, item.y()+item.yVel)
-                    if item.y() < -90:
-                        self.shotList.remove(item)
-                        self.removeItem(item)
-                    collision = item.collidingItems()
-                    for bang in collision:
-                        if isinstance(bang, type(self.player)):
-                            self.player2.health -= 10
-                            self.shotList.remove(item)
-                            self.removeItem(item)
-                            if self.player2.health <= 0:
-                                QApplication.closeAllWindows()
-
-                                main.globalIsPaused = True
-                                self.deleteSelf()
-                                self.windowmanager = windowmanager.pvpEndWindow("Player 1")
-                                self.windowmanager.show()
-
-                for item in self.shotList2:
-                    item.setPos(item.x()+item.xVel, item.y()+item.yVel)
-                    if item.y() > self.height() - 30:
-                        self.shotList2.remove(item)
-                        self.removeItem(item)
-                    collision = item.collidingItems()
-                    for bang in collision:
-                        if isinstance(bang, type(self.player)):
-                            self.player1.health -= 10
-                            self.shotList2.remove(item)
-                            self.removeItem(item)
-                            if self.player1.health <= 0:
-                                QApplication.closeAllWindows()
-
-                                main.globalIsPaused = True
-                                self.deleteSelf()
-                                self.windowmanager = windowmanager.pvpEndWindow("Player 2")
-                                self.windowmanager.show()
+                        if bang.health == 0:
+                            if self.tutorial == False:
+                                main.globalScore += bang.points
+                            self.enemyList.remove(bang)
+                            if bang.shipType == 'c' or bang.shipType == 'd':
+                                # After the boss dies, we reset the timer so the player has about a minute without a boss on screen
+                                self.boss = 0
+                            self.removeItem(bang)
+                            # Must break in case it collided with multiple enemies, since it will try to remove the bullet twice
+                        break
 
             for item in self.projectileList:
                 if item.image_name == "Images/beam4a.png":
@@ -772,6 +655,124 @@ class Window(QGraphicsScene):
                                 self.deleteSelf()
                                 self.windowmanager = windowmanager.EndWindow()
                                 self.windowmanager.show()
+
+    def updatePvPMovement(self):
+        if not main.globalIsPaused:
+            self.player1.reload += 1
+            self.player2.reload += 1
+            if len(self.shotList) >= self.player1.ammo:
+                self.player1.reload = 0
+            if len(self.shotList2) >= self.player2.ammo:
+                self.player2.reload = 0
+
+            xVel1 = 0
+            yVel1 = 0
+            xVel2 = 0
+            yVel2 = 0
+            # player1 controls in pvp
+            if Qt.Key.Key_W in self.key_list:
+                yVel1 = -40
+            if Qt.Key.Key_A in self.key_list:
+                xVel1 = -40
+            if Qt.Key.Key_S in self.key_list:
+                yVel1 = 40
+            if Qt.Key.Key_D in self.key_list:
+                xVel1 = 40
+            if Qt.Key.Key_Space in self.key_list:
+                self.firePressed(self.player1.x(), self.player1.y(), "up", self.player1)
+            
+            # player2 controls in pvp
+            if Qt.Key.Key_Up in self.key_list:
+                yVel2 = -40
+            if Qt.Key.Key_Left in self.key_list:
+                xVel2 = -40
+            if Qt.Key.Key_Down in self.key_list:
+                yVel2 = 40
+            if Qt.Key.Key_Right in self.key_list:
+                xVel2 = 40
+            if Qt.Key.Key_0 in self.key_list:
+                # player 2's y here is increased so that it doesn't hit its own ship
+                self.firePressed(self.player2.x(), self.player2.y() + 40, "down", self.player2)
+
+            self.player1.setPos(self.player1.x()+xVel1, self.player1.y()+yVel1)
+            self.player2.setPos(self.player2.x()+xVel2, self.player2.y()+yVel2)
+
+            # player 1 boundaries
+            if self.player1.x() > self.width()-119:
+                self.player1.setPos(self.width()-119, self.player1.y())
+
+            if self.player1.x() < -51:
+                self.player1.setPos(-51, self.player1.y())
+
+            if self.player1.y() > self.height()-50:
+                self.player1.setPos(self.player1.x(), self.height()-50)
+
+            if self.player1.y() < 300:
+                self.player1.setPos(self.player1.x(), 300)
+            
+            # player 2 boundaries
+            if self.player2.x() > self.width()-118:
+                self.player2.setPos(self.width()-118, self.player2.y())
+
+            if self.player2.x() < -50:
+                self.player2.setPos(-50, self.player2.y())
+
+            if self.player2.y() > 230:
+                self.player2.setPos(self.player2.x(), 230)
+
+            if self.player2.y() < 0:
+                self.player2.setPos(self.player2.x(), 0)
+
+            self.moveBackground()
+
+            for item in self.shotList:
+                item.setPos(item.x()+item.xVel, item.y()+item.yVel)
+                if item.y() < -90:
+                    self.shotList.remove(item)
+                    self.removeItem(item)
+                collision = item.collidingItems()
+                for bang in collision:
+                    if isinstance(bang, type(self.player)):
+                        self.player2.health -= 10
+                        self.shotList.remove(item)
+                        self.removeItem(item)
+                        if self.player2.health <= 0:
+                            QApplication.closeAllWindows()
+
+                            main.globalIsPaused = True
+                            self.deleteSelf()
+                            self.windowmanager = windowmanager.pvpEndWindow("Player 1")
+                            self.windowmanager.show()
+
+            for item in self.shotList2:
+                item.setPos(item.x()+item.xVel, item.y()+item.yVel)
+                if item.y() > self.height() - 30:
+                    self.shotList2.remove(item)
+                    self.removeItem(item)
+                collision = item.collidingItems()
+                for bang in collision:
+                    if isinstance(bang, type(self.player)):
+                        self.player1.health -= 10
+                        self.shotList2.remove(item)
+                        self.removeItem(item)
+                        if self.player1.health <= 0:
+                            QApplication.closeAllWindows()
+
+                            main.globalIsPaused = True
+                            self.deleteSelf()
+                            self.windowmanager = windowmanager.pvpEndWindow("Player 2")
+                            self.windowmanager.show()
+
+    def moveBackground(self):
+        self.imageMove += 2
+        self.image.setPos(self.imageOneStartX, (self.imageOneStartY + self.imageMove))
+        self.imageTwo.setPos(self.imageTwoStartX, (self.imageTwoStartY + self.imageMove))
+
+        if (self.imageOneStartY + self.imageMove) >= 1080:
+            self.imageOneStartY = -2749 - self.imageMove
+
+        if (self.imageTwoStartY + self.imageMove) >= 1080:
+            self.imageTwoStartY = -2749 - self.imageMove
 
     def updateBackground(self):
         self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))

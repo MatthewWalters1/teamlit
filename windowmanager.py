@@ -414,7 +414,7 @@ class MainMenuWindow(QMainWindow):
 
         self.form.updateTimer.timeout.connect(self.window.player.update)
         self.form.updateTimer.timeout.connect(self.window.updateBackground)
-        self.form.movementTimer.timeout.connect(self.window.updateMovement)
+        self.form.movementTimer.timeout.connect(self.window.updatePvPMovement)
 
         self.view.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight)
         self.view.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
