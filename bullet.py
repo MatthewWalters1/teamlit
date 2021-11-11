@@ -42,3 +42,39 @@ class ship(QGraphicsPixmapItem):
         #this counts to a random number before shooting a bullet at the player
         self.shot = 0
         self.reload = random.randrange(4,20)
+
+def getEnemy(enemyList, boss):
+    enemyType = random.randrange(0,11)
+    check = True
+    for i in enemyList:
+        if i.shipType == 'c' or i.shipType == 'd':
+            check = False
+    if enemyType <= 4:
+        enemy = ship(random.randrange(0, 480), -300, 'b', 0, 20, 1)
+    elif enemyType <= 9:
+        enemy = ship(random.randrange(0, 480), -300, 'a', 0, 10, 3)
+    elif enemyType == 10 and check == True and boss > 400:
+        boss = 0
+        enemyType = random.randrange(0,2)
+        if enemyType == 0:
+            enemy = ship(180, -400, 'c', 0, 10, 50)
+        if enemyType == 1:
+            enemy = ship(180, -400, 'd', 0, 10, 80)
+    else:
+        enemy = ship(random.randrange(0, 480), -300, 'b', 0, 40, 1)
+    return enemy, boss
+
+def getTutorialEnemy(enemyListLength, thing):
+    if thing == "1":
+        enemy = ship(random.randrange(0,480), -300, 'b', 0, 20, 1)
+        return enemy
+    elif thing == "2":
+        enemy = ship(random.randrange(0, 480), -300, 'a', 0, 10, 3)
+        return enemy
+    elif enemyListLength < 1:
+        if thing == "3":
+            enemy = ship(180, -400, 'c', 0, 10, 50)
+            return enemy
+        elif thing == "4":
+            enemy = ship(180, -400, 'd', 0, 10, 80)
+            return enemy

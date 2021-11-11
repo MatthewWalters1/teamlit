@@ -404,8 +404,7 @@ class MainMenuWindow(QMainWindow):
         self.window.buttonLayout.addWidget(self.form)
         self.window.pauseButton.clicked.connect(self.form.pauseTimer)
         self.window.resumeButton.clicked.connect(self.form.startTimer)
-        self.window.pvp = True
-        self.window.tutorial = False
+        self.window.pvpInit()
 
         # Connects the update timer to the update functions of the background and objects of the window
         for i in self.window.enemyList:
@@ -415,7 +414,7 @@ class MainMenuWindow(QMainWindow):
 
         self.form.updateTimer.timeout.connect(self.window.player.update)
         self.form.updateTimer.timeout.connect(self.window.updateBackground)
-        self.form.movementTimer.timeout.connect(self.window.updateMovement)
+        self.form.movementTimer.timeout.connect(self.window.updatePvPMovement)
 
         self.view.setGeometry(windowStartLocationX, windowStartLocationY, windowSizeOpenWidth, windowSizeOpenHeight)
         self.view.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
@@ -434,8 +433,7 @@ class MainMenuWindow(QMainWindow):
         self.window.buttonLayout.addWidget(self.form)
         self.window.pauseButton.clicked.connect(self.form.pauseTimer)
         self.window.resumeButton.clicked.connect(self.form.startTimer)
-        self.window.pvp = False
-        self.window.tutorial = True
+        self.window.tutorialInit()
 
         # Connects the update timer to the update functions of the background and objects of the window
         for i in self.window.enemyList:
