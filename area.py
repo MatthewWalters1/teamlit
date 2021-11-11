@@ -345,6 +345,7 @@ class Window(QGraphicsScene):
         self.image3.setPixmap(QPixmap("Images/Tutorial-Background.png"))
         self.addItem(self.image3)
         self.addItem(self.player)
+        self.image3.setPos(-50, -50)
 
     def updateMovement(self):
         if not main.globalIsPaused:
