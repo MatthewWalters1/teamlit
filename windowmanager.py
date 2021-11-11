@@ -177,7 +177,10 @@ class pvpEndWindow(QMainWindow):
         self.mainLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignCenter)
 
         self.titleLabel = QLabel()
-        self.titleImage = QPixmap("Images/gameover.png")
+        if winner == "Player 2":
+            self.titleImage = QPixmap("Images/Player2.png")
+        if winner == "Player 1":
+            self.titleImage = QPixmap("Images/Player1.png")
         self.titleLabel.setPixmap(self.titleImage)
         self.mainLayout.addWidget(self.titleLabel)
 
