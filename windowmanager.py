@@ -10,7 +10,7 @@ windowStartLocationX = 540
 windowStartLocationY = 25
 
 class EndWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, score):
         super().__init__()
 
         self.setWindowTitle("Generic Space Game")
@@ -44,7 +44,7 @@ class EndWindow(QMainWindow):
                                         "border: 5px solid white;"
                                         "padding: 3 px;")
 
-        self.scoreLabel.setText("Final Score: " + str(main.globalScore))
+        self.scoreLabel.setText("Final Score: " + str(score))
         self.scoreLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.mainLayout.addWidget(self.scoreLabel)
 
@@ -106,20 +106,19 @@ class EndWindow(QMainWindow):
         self.setCentralWidget(centralwidget)
 
         self.scene = QGraphicsScene(-50, -50, 600, 600)
-        main.globalIsPaused = True
 
         # Prompts the user for a name and adds the score to the leaderboard, if desired
         nameEntered = False
         self.playerName, nameEntered = QInputDialog.getText(self, 'Name Dialog', 'Enter a name 1-16 characters long:\n (Leave empty if you do not wish to add your name and score)', QLineEdit.EchoMode.Normal, 'Name')
         if nameEntered and self.playerName:
             if len(self.playerName) <=16 and not self.playerName.isspace():
-                database.addScore(self.playerName, main.globalScore)
+                database.addScore(self.playerName, score)
             else:
                 while True:
                     self.playerName, nameEntered = QInputDialog.getText(self, 'Name Dialog', 'Invalid name. Try one that is 1-16 characters long:\n (Leave empty if you do not wish to add your name and score)', QLineEdit.EchoMode.Normal, 'Name')
                     if nameEntered and self.playerName:
                         if len(self.playerName) <=16 and not self.playerName.isspace():
-                            database.addScore(self.playerName, main.globalScore)
+                            database.addScore(self.playerName, score)
                             break
                     else:
                         break
@@ -232,7 +231,6 @@ class pvpEndWindow(QMainWindow):
         self.setCentralWidget(centralwidget)
 
         self.scene = QGraphicsScene(-50, -50, 600, 600)
-        main.globalIsPaused = True
 
 
 
@@ -395,8 +393,6 @@ class MainMenuWindow(QMainWindow):
 
     def pvpClicked(self):
         QApplication.closeAllWindows()
-        
-        main.globalIsPaused = False
 
         self.form = main.Timer()
         self.view = QGraphicsView(self.window)
@@ -424,8 +420,6 @@ class MainMenuWindow(QMainWindow):
 
     def tutorialClicked(self):
         QApplication.closeAllWindows()
-        
-        main.globalIsPaused = False
 
         self.form = main.Timer()
         self.view = QGraphicsView(self.window)
@@ -471,7 +465,7 @@ class MainMenuWindow(QMainWindow):
     def startGame(self):
         QApplication.closeAllWindows()
         
-        main.globalIsPaused = False
+        self.window.isPaused = False
 
         self.form = main.Timer()
         self.view = QGraphicsView(self.window)
@@ -529,7 +523,7 @@ class SettingsWindow(QMainWindow):
         self.backgroundPalette.setBrush(QPalette.ColorRole.Window, QBrush(self.backgroundImage))
         self.setPalette(self.backgroundPalette)
 
-        self.muteButton = QPushButton() #Button that starts the game
+        self.muteButton = QPushButton() #Button that mutes the music and sounds
         if main.globalIsMuted == False:
             self.muteButton.setText("Mute")
         else:
@@ -544,28 +538,6 @@ class SettingsWindow(QMainWindow):
                                         "padding: 6 px;")
         self.muteButton.clicked.connect(self.muteClicked)
         self.buttonLayout.addWidget(self.muteButton)
-
-        self.boardbutton = QPushButton()
-        self.boardbutton.setText("Leaderboard")
-        self.boardbutton.setStyleSheet("background-color: lightGray;"
-                                       "border-style: outset;"
-                                       "border-width: 1px;"
-                                       "border-color: black;"
-                                       "min-width: 80 em;"
-                                       "max-width: 80 em;"
-                                       "padding: 6 px;")
-        #self.buttonLayout.addWidget(self.boardbutton)
-
-        self.settingbutton = QPushButton() #Button that takes the player back to the setting menu (currently does nothing)
-        self.settingbutton.setText("Settings")
-        self.settingbutton.setStyleSheet("background-color: lightGray;"
-                                        "border-style: outset;"
-                                        "border-width: 1px;"
-                                        "border-color: black;"
-                                        "min-width: 80 em;"
-                                        "max-width: 80 em;"
-                                        "padding: 6 px;")
-        #self.buttonLayout.addWidget(self.settingbutton)
 
         self.volumehigh = QPushButton() #Button that sets the volume to low
         self.volumehigh.setText("Low")
