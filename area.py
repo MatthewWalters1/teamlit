@@ -24,19 +24,25 @@ class Window(QGraphicsScene):
 
         self.imageMove = 0
 
-        #this is your score, it gets added to when the player kills an enemy ship
+        # The player's score, which is increased when the player kills an enemy ship.
         main.globalScore = 0
-        # intensity controls the number of enemy ships on screen at once, it goes up over time
+
+        # Controls the number of enemy ships on screen at once and goes up over time
         self.intensity = 3
-        # elapsed is how you measure when to increase intensity
+
+        # Used to measure when to increase intensity
         self.elapsed = 0
-        # boss is used to measure how long between appearances bosses should spawn
+
+        # Used to measure how long between appearances bosses should spawn
         self.boss = 400
-        # this is true if the player picked tutorial, otherwise it is false
+
+        # True if the player picked tutorial and false otherwise
         self.tutorial = bool
-        # this is true if the player picked pvp mode, otherwise it is false
+
+        # True if the player picked PvP mode and false otherwise
         self.pvp = bool
-        # this is used in pvp mode to replace the player with the 2 separate players
+
+        # Used in PvP mode to replace the player with the 2 separate players
         self.once = 0
 
         main.globalIsPaused = True
@@ -51,7 +57,7 @@ class Window(QGraphicsScene):
 
         self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignRight)
 
-        #Creates the label that the time will be printed on
+        # Create the label that the time will be printed on
         self.displayTime = QLabel('Time: 0') #Creates the label that the time will be printed on
         self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.displayTime.setStyleSheet("background-color: white;"
@@ -64,7 +70,7 @@ class Window(QGraphicsScene):
         self.displayTime.setTextFormat(Qt.TextFormat.PlainText)
         self.buttonLayout.addWidget(self.displayTime)
 
-        #Creates the label that the Score will be printed on
+        # Create the label that the score will be printed on
         self.displayScore = QLabel('Score: 0')
         self.displayScore.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.displayScore.setStyleSheet("background-color: white;"
@@ -131,14 +137,12 @@ class Window(QGraphicsScene):
         self.topLayout.addLayout(self.buttonLayout)
         topWidget.setLayout(self.topLayout)
 
-        #Sets the size and then the color of a widget and in this case it is what we call the top widget
+        # Set the size, location, and color of a widget which we call the top widget
         topWidget.setFixedSize(600, 50)
-
-        topWidget.setGeometry(-50, -100, 600, 100) #-50, -270
-
-        topWidgetPallette = topWidget.palette()
-        topWidgetPallette.setColor(QPalette.ColorRole.Window , QColor(194, 197, 204))
-        topWidget.setPalette(topWidgetPallette)
+        topWidget.move(-50, -100)
+        topWidgetPalette = topWidget.palette()
+        topWidgetPalette.setColor(QPalette.ColorRole.Window, QColor(194, 197, 204))
+        topWidget.setPalette(topWidgetPalette)
 
         self.image = QGraphicsPixmapItem()
         self.image.setPixmap(QPixmap("Images/milkyway.png"))
@@ -151,18 +155,21 @@ class Window(QGraphicsScene):
         self.addWidget(topWidget)
 
 
-        #Add player to the screen
+        # Add player to the screen
         self.player = player.player("Images/fighter.png")
         self.player.setPos(self.width()/2-68, self.height()-100)
         self.addItem(self.player)
         
-        #this is a list of keys being pressed
+        # List of keys being pressed
         self.key_list = set()
-        #this is a list of bullets that the player shoots, it is added to on 'fireBullet'
+
+        # List of bullets that the player shoots, it is added to on 'fireBullets'
         self.shotList = []
-        #this is a list of enemy ships that will be along the top of the screen
+
+        # List of enemy ships that will be along the top of the screen
         self.enemyList = []
-        #this is a list of bullets that the enemies shoot at the player
+
+        # List of bullets that the enemies shoot at the player
         self.projectileList = []
         
     def pauseClicked(self, event):
@@ -265,7 +272,6 @@ class Window(QGraphicsScene):
         sys.exit()
 
     def spawnEnemy(self, thing = "e"):
-
         #updates the time, because spawnEnemy is called on a 1 second interval
         if self.tutorial == False and self.pvp == False:
             main.globalTime += 1
@@ -273,72 +279,36 @@ class Window(QGraphicsScene):
         self.displayTime.setText("Time: " + str(main.globalTime))
         if thing == "e":
             if (len(self.enemyList) < self.intensity):
-                self.enemyType = random.randrange(0,11)
-                self.check = True
-                for i in self.enemyList:
-                    if i.shipType == 'c' or i.shipType == 'd':
-                        self.check = False
-                if self.enemyType <= 4:
-                    self.enemy = bullet.ship(random.randrange(0, 480), -300, 'b', 0, 20, 1)
-                elif self.enemyType <= 9:
-                    self.enemy = bullet.ship(random.randrange(0, 480), -300, 'a', 0, 10, 3)
-                elif self.enemyType == 10 and self.check == True and self.boss > 400:
-                    self.boss = 0
-                    self.enemyType = random.randrange(0,2)
-                    if self.enemyType == 0:
-                        self.enemy = bullet.ship(180, -400, 'c', 0, 10, 50)
-                    if self.enemyType == 1:
-                        self.enemy = bullet.ship(180, -400, 'd', 0, 10, 80)
-                else:
-                    self.enemy = bullet.ship(random.randrange(0, 480), -300, 'b', 0, 40, 1)
+                self.enemy, self.boss = bullet.getEnemy(self.enemyList, self.boss)
                 self.addItem(self.enemy)
                 self.enemyList.append(self.enemy)
         elif len(self.enemyList) < 3:
-            if thing == "1":
-                self.enemy = bullet.ship(random.randrange(0,480), -300, 'b', 0, 20, 1)
-                self.addItem(self.enemy)
-                self.enemyList.append(self.enemy)
-            elif thing == "2":
-                self.enemy = bullet.ship(random.randrange(0, 480), -300, 'a', 0, 10, 3)
-                self.addItem(self.enemy)
-                self.enemyList.append(self.enemy)
-            if len(self.enemyList) < 1:
-                if thing == "3":
-                    self.enemy = bullet.ship(180, -400, 'c', 0, 10, 50)
-                    self.addItem(self.enemy)
-                    self.enemyList.append(self.enemy)
-                elif thing == "4":
-                    self.enemy = bullet.ship(180, -400, 'd', 0, 10, 80)
-                    self.addItem(self.enemy)
-                    self.enemyList.append(self.enemy)
+            self.enemy = bullet.getTutorialEnemy(len(self.enemyList), thing)
+            self.addItem(self.enemy)
+            self.enemyList.append(self.enemy)
             
 
     #here, use x and y to determine the position the bullet will start at
-    def fireBullet(self, x, y, dir, player):
-        if dir == "up":
-            self.speed = -30
-            self.bulletImage = "Images/beam2.png"
-        if dir == "down":
-            self.speed = 30
-            self.bulletImage = "Images/beam3.png"
+    def firePressed(self, x, y, dir, player):
         if player.reload >= player.ammo:
-            self.shot = bullet.bullet(x + 3, y, self.bulletImage, 0, self.speed)
-            self.addItem(self.shot)
             if dir == "up":
-                self.shotList.append(self.shot)
-            if dir == "down":
-                self.shotList2.append(self.shot)
-            self.shot = bullet.bullet(x + 39, y, self.bulletImage, 0, self.speed)
-            self.addItem(self.shot)
-            if dir == "up":
-                self.shotList.append(self.shot)
+                self.fireBullets(x, y, "Images/beam2.png", self.shotList, -30)
             elif dir == "down":
-                self.shotList2.append(self.shot)
+                self.fireBullets(x, y, "Images/beam3.png", self.shotList2, 30)
+
             if main.globalIsMuted == False:
                     soundObject = pygame.mixer.Sound('Sounds/shoot.wav')
                     soundObject.set_volume(main.currentVolume)
                     soundObject.play()
-        
+
+    def fireBullets(self, x, y, image, shotList, speed):
+        shot = bullet.bullet(x + 3, y, image, 0, speed)
+        self.addItem(shot)
+        shotList.append(shot)
+        shot = bullet.bullet(x + 39, y, image, 0, speed)
+        self.addItem(shot)
+        shotList.append(shot)
+
     def keyPressEvent(self, event):
         if not main.globalIsPaused:
             self.key_list.add(event.key())
@@ -349,30 +319,32 @@ class Window(QGraphicsScene):
 
     def updateMovement(self):
         if not main.globalIsPaused:
+            if self.once == 0:
+                if self.pvp == True:
+                    self.once += 1
+                    self.removeItem(self.player)
 
-            if self.pvp == True and self.once == 0:
-                self.once += 1
-                self.removeItem(self.player)
-                # player 1 is one more pixel to the right so they line up better at the start
-                self.player1 = player.player("Images/fighter-blue.png")
-                self.player1.setPos(self.width()/2-69, self.height()-100)
-                self.addItem(self.player1)
-                self.player1.ammo = 4
-                self.player2 = player.player("Images/fighter-red-down.png")
-                self.player2.setPos(self.width()/2-68, self.height()-650)
-                self.addItem(self.player2)
-                self.player2.ammo = 4
-                self.shotList2 = []
+                    # player 1 is one more pixel to the right so they line up better at the start
+                    self.player1 = player.player("Images/fighter-blue.png")
+                    self.player1.setPos(self.width()/2-69, self.height()-100)
+                    self.addItem(self.player1)
+                    self.player1.ammo = 4
+                    
+                    self.player2 = player.player("Images/fighter-red-down.png")
+                    self.player2.setPos(self.width()/2-68, self.height()-650)
+                    self.addItem(self.player2)
+                    self.player2.ammo = 4
+                    self.shotList2 = []
 
-            elif self.tutorial == True and self.once == 0:
-                self.once += 1
-                self.removeItem(self.image)
-                self.removeItem(self.imageTwo)
-                self.removeItem(self.player)
-                self.image3 = QGraphicsPixmapItem()
-                self.image3.setPixmap(QPixmap("Images/Tutorial-Background.png"))
-                self.addItem(self.image3)
-                self.addItem(self.player)
+                elif self.tutorial == True:
+                    self.once += 1
+                    self.removeItem(self.image)
+                    self.removeItem(self.imageTwo)
+                    self.removeItem(self.player)
+                    self.image3 = QGraphicsPixmapItem()
+                    self.image3.setPixmap(QPixmap("Images/Tutorial-Background.png"))
+                    self.addItem(self.image3)
+                    self.addItem(self.player)
 
             # this is used for limiting the player's ammo
             # reload is incremented by 2 because otherwise the reload time is too slow
@@ -389,6 +361,7 @@ class Window(QGraphicsScene):
             
             # this is used to stop bosses from appearing constantly
             self.boss += 1
+
             if self.displayScore is not None:
                 self.displayScore.setText("Score: " + str(main.globalScore))
 
@@ -413,7 +386,7 @@ class Window(QGraphicsScene):
 
                 if Qt.Key.Key_Space in self.key_list:
                     #fire bullet
-                    self.fireBullet(self.player.x(), self.player.y(), "up", self.player)
+                    self.firePressed(self.player.x(), self.player.y(), "up", self.player)
                 if self.tutorial == True:
                     if Qt.Key.Key_1 in self.key_list:
                         self.spawnEnemy("1")
@@ -439,7 +412,7 @@ class Window(QGraphicsScene):
                 if Qt.Key.Key_D in self.key_list:
                     xVel1 = 40
                 if Qt.Key.Key_Space in self.key_list:
-                    self.fireBullet(self.player1.x(), self.player1.y(), "up", self.player1)
+                    self.firePressed(self.player1.x(), self.player1.y(), "up", self.player1)
                 
                 # player2 controls in pvp
                 if Qt.Key.Key_Up in self.key_list:
@@ -451,8 +424,8 @@ class Window(QGraphicsScene):
                 if Qt.Key.Key_Right in self.key_list:
                     xVel2 = 40
                 if Qt.Key.Key_0 in self.key_list:
-                    # player 2's y here is increased so that it doesn't hit it's own ship
-                    self.fireBullet(self.player2.x(), self.player2.y() + 40, "down", self.player2)
+                    # player 2's y here is increased so that it doesn't hit its own ship
+                    self.firePressed(self.player2.x(), self.player2.y() + 40, "down", self.player2)
 
             if self.pvp == False:
                 self.player.setPos(self.player.x()+xVel, self.player.y()+yVel)
