@@ -13,7 +13,7 @@ import pygame
 globalIsMuted = False
 currentVolume = 0.4
 
-class Timer(QWidget): #Manages the game timer
+class Timer(QWidget): # Manages the game timer
     def __init__(self):
         super().__init__()
 
