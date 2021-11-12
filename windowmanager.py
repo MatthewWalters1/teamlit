@@ -133,10 +133,7 @@ class EndWindow(MenuWindow):
 
         # Add the Game Over graphic
         self.titleLabel = QLabel()
-        if winner == "Player 2":
-            self.titleImage = QPixmap("Images/Player2.png")
-        if winner == "Player 1":
-            self.titleImage = QPixmap("Images/Player1.png")
+        self.titleImage = QPixmap("Images/gameover.png")
         self.titleLabel.setPixmap(self.titleImage)
         self.mainLayout.addWidget(self.titleLabel)
 
@@ -186,9 +183,12 @@ class pvpEndWindow(MenuWindow):
         # Align button layout
         self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignHCenter)
 
-        # Add the Game Over graphic
+        # Add the PvP win graphic
         self.titleLabel = QLabel()
-        self.titleImage = QPixmap("Images/gameover.png")
+        if winner == "Player 2":
+            self.titleImage = QPixmap("Images/Player2.png")
+        if winner == "Player 1":
+            self.titleImage = QPixmap("Images/Player1.png")
         self.titleLabel.setPixmap(self.titleImage)
         self.mainLayout.addWidget(self.titleLabel)
 
@@ -453,7 +453,7 @@ class SettingsWindow(MenuWindow):
 
         self.mainLayout.addLayout(self.buttonLayout)
 
-    def returnClicked(self, event):
+    def returnClicked(self):
         QApplication.closeAllWindows()
 
         self.window = MainMenuWindow()
