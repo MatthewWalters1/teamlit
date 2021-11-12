@@ -60,7 +60,7 @@ class Window(QGraphicsScene):
         self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignRight)
 
         # Create the label that the time will be printed on
-        self.displayTime = QLabel('Time: 0') #Creates the label that the time will be printed on
+        self.displayTime = QLabel('Time: 0')
         self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.displayTime.setStyleSheet("background-color: white;"
                                         "color: black;"
@@ -177,7 +177,7 @@ class Window(QGraphicsScene):
         
     def pauseClicked(self):
         if not self.isPaused:
-            # Creates a message box to hold buttons to click when the game is paused
+            # Create a message box to hold buttons to click when the game is paused
             self.pauseMenu = QMessageBox()
             self.pauseMenu.setText("Paused")
             self.pauseMenu.setFont(QFont("Times", 14, QFont.Weight.Medium))
@@ -185,12 +185,12 @@ class Window(QGraphicsScene):
                                          "color: black;"
                                          "padding: 6px;")
             
-            # Adds the resume button to the pause menu
+            # Add the resume button to the pause menu
             self.pauseMenu.addButton(self.resumeButton, QMessageBox.ButtonRole.DestructiveRole)
             self.resumeButton.clicked.connect(self.resumeClicked)
             self.pauseMenu.setEscapeButton(self.resumeButton)
 
-            # Adds a main menu button to the pause menu
+            # Add a main menu button to the pause menu
             self.menuButton = QPushButton()
             self.menuButton.setText("Main Menu")
             self.menuButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
@@ -207,7 +207,7 @@ class Window(QGraphicsScene):
             self.menuButton.clicked.connect(self.menuClicked)
             self.pauseMenu.addButton(self.menuButton, QMessageBox.ButtonRole.DestructiveRole)
 
-            # Adds a restart button to the pause menu
+            # Add a restart button to the pause menu
             self.restartButton = QPushButton()
             self.restartButton.setText("Restart")
             self.restartButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
@@ -224,7 +224,7 @@ class Window(QGraphicsScene):
             self.restartButton.clicked.connect(self.restartClicked)
             self.pauseMenu.addButton(self.restartButton, QMessageBox.ButtonRole.DestructiveRole)
 
-            # Adds an exit button to pauseMenu
+            # Add an exit button to pauseMenu
             self.pauseExitButton = QPushButton()
             self.pauseExitButton.setText("Exit")
             self.pauseExitButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
@@ -248,7 +248,7 @@ class Window(QGraphicsScene):
                 
             self.pauseMenu.open()
 
-            # Moves pauseMenu to the center of the scene
+            # Move pauseMenu to the center of the scene
             centerX = int(self.sceneRect().center().x())
             centerY = int(self.sceneRect().center().y())
             self.pauseMenu.move(centerX - self.pauseMenu.width()/2, centerY - self.pauseMenu.width()/2)
