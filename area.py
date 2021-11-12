@@ -788,9 +788,6 @@ class Window(QGraphicsScene):
         if (self.imageTwoStartY + self.imageMove) >= 1080:
             self.imageTwoStartY = -2749 - self.imageMove
 
-    def updateBackground(self):
-        self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
-
     def deleteSelf(self):
         if self.pvp == False:
             self.removeItem(self.player)

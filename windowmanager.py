@@ -295,7 +295,6 @@ class MainMenuWindow(MenuWindow):
             self.form.updateTimer.timeout.connect(i.update)
 
         self.form.updateTimer.timeout.connect(self.window.player.update)
-        self.form.updateTimer.timeout.connect(self.window.updateBackground)
         self.form.movementTimer.timeout.connect(self.window.updatePvPMovement)
 
         self.view.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
@@ -323,7 +322,6 @@ class MainMenuWindow(MenuWindow):
             self.form.updateTimer.timeout.connect(i.update)
 
         self.form.updateTimer.timeout.connect(self.window.player.update)
-        self.form.updateTimer.timeout.connect(self.window.updateBackground)
         self.form.movementTimer.timeout.connect(self.window.updateMovement)
 
         self.view.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
@@ -355,7 +353,6 @@ class MainMenuWindow(MenuWindow):
 
         self.form.timer.timeout.connect(self.window.spawnEnemy)
         self.form.updateTimer.timeout.connect(self.window.player.update)
-        self.form.updateTimer.timeout.connect(self.window.updateBackground)
         self.form.movementTimer.timeout.connect(self.window.updateMovement)
 
         self.view.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
