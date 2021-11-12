@@ -99,6 +99,7 @@ class Window(QGraphicsScene):
                                         "max-height: 15 em;"
                                         "max-width: 40 em;"
                                         "padding: 6 px;")
+        self.displayTime.setAlignment(Qt.AlignmentFlag.AlignVCenter)
         self.pauseButton.clicked.connect(self.pauseClicked)                                
         self.buttonLayout.addWidget(self.pauseButton)
         
@@ -141,7 +142,7 @@ class Window(QGraphicsScene):
 
         # Set the size, location, and color of a widget which we call the top widget
         topWidget.setFixedSize(600, 50)
-        topWidget.move(-50, -100)
+        topWidget.move(-50, -110)
         topWidgetPalette = topWidget.palette()
         topWidgetPalette.setColor(QPalette.ColorRole.Window, QColor(194, 197, 204))
         topWidget.setPalette(topWidgetPalette)
@@ -174,7 +175,7 @@ class Window(QGraphicsScene):
         # List of bullets that the enemies shoot at the player
         self.projectileList = []
         
-    def pauseClicked(self, event):
+    def pauseClicked(self):
         if not self.isPaused:
             # Creates a message box to hold buttons to click when the game is paused
             self.pauseMenu = QMessageBox()
@@ -252,10 +253,10 @@ class Window(QGraphicsScene):
             centerY = int(self.sceneRect().center().y())
             self.pauseMenu.move(centerX - self.pauseMenu.width()/2, centerY - self.pauseMenu.width()/2)
     
-    def resumeClicked(self, event):
+    def resumeClicked(self):
         self.isPaused = False
 
-    def restartClicked(self, event):
+    def restartClicked(self):
         self.deleteSelf()
         self.newWindow = windowmanager.MainMenuWindow()
         if self.tutorial == True:
@@ -263,14 +264,14 @@ class Window(QGraphicsScene):
         else:
             self.newWindow.startGame()
 
-    def menuClicked(self, event):
+    def menuClicked(self):
         self.deleteSelf()
         QApplication.closeAllWindows()
 
         self.newWindow = windowmanager.MainMenuWindow()
         self.newWindow.show()
 
-    def exitClicked(self, event):
+    def exitClicked(self):
         sys.exit()
 
     def spawnEnemy(self, thing = "e"):
@@ -352,6 +353,7 @@ class Window(QGraphicsScene):
         self.image3.setPixmap(QPixmap("Images/Tutorial-Background.png"))
         self.addItem(self.image3)
         self.addItem(self.player)
+        self.image3.setPos(-50, -60)
 
         self.isPaused = False
 
@@ -371,21 +373,24 @@ class Window(QGraphicsScene):
 
             xVel = 0
             yVel = 0
-            if Qt.Key.Key_Left in self.key_list:
+            if Qt.Key.Key_P in self.key_list:
+                self.pauseClicked()
+                self.key_list.remove(Qt.Key.Key_P)
+            if Qt.Key.Key_Left in self.key_list or Qt.Key.Key_A in self.key_list:
                 # Change velocity
-                xVel = -40 # May change if too fast/slow
+                xVel = -40
                 
-            if Qt.Key.Key_Right in self.key_list:
+            if Qt.Key.Key_Right in self.key_list or Qt.Key.Key_D in self.key_list:
                 # Change velocity
-                xVel = 40 # May change if too fast/slow
+                xVel = 40
 
-            if Qt.Key.Key_Up in self.key_list:
+            if Qt.Key.Key_Up in self.key_list or Qt.Key.Key_W in self.key_list:
                 # Change velocity
-                yVel = -40 # May change if too fast/slow
+                yVel = -40
 
-            if Qt.Key.Key_Down in self.key_list:
+            if Qt.Key.Key_Down in self.key_list or Qt.Key.Key_S in self.key_list:
                 # Change velocity
-                yVel = 40 # May change if too fast/slow
+                yVel = 40
 
             if Qt.Key.Key_Space in self.key_list:
                 # Fire bullet
