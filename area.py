@@ -24,8 +24,14 @@ class Window(QGraphicsScene):
 
         self.imageMove = 0
 
+        # Controls whether the game is paused
+        self.isPaused = True
+
+        # The time elapsed since the start of the game, in seconds
+        self.time = 0
+
         # The player's score, which is increased when the player kills an enemy ship.
-        main.globalScore = 0
+        self.score = 0
 
         # Controls the number of enemy ships on screen at once and goes up over time
         self.intensity = 3
@@ -42,7 +48,6 @@ class Window(QGraphicsScene):
         # True if the player picked PvP mode and false otherwise
         self.pvp = bool
 
-        main.globalIsPaused = True
 
         # Create a widget with a button layout at the top right of the window
         topWidget = QWidget()
@@ -55,7 +60,7 @@ class Window(QGraphicsScene):
         self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignRight)
 
         # Create the label that the time will be printed on
-        self.displayTime = QLabel('Time: 0') #Creates the label that the time will be printed on
+        self.displayTime = QLabel('Time: 0')
         self.displayTime.setFont(QFont("Times", 10, QFont.Weight.Medium))
         self.displayTime.setStyleSheet("background-color: white;"
                                         "color: black;"
@@ -171,8 +176,8 @@ class Window(QGraphicsScene):
         self.projectileList = []
         
     def pauseClicked(self):
-        if not main.globalIsPaused:
-            # Creates a message box to hold buttons to click when the game is paused
+        if not self.isPaused:
+            # Create a message box to hold buttons to click when the game is paused
             self.pauseMenu = QMessageBox()
             self.pauseMenu.setText("Paused")
             self.pauseMenu.setFont(QFont("Times", 14, QFont.Weight.Medium))
@@ -180,12 +185,12 @@ class Window(QGraphicsScene):
                                          "color: black;"
                                          "padding: 6px;")
             
-            # Adds the resume button to the pause menu
+            # Add the resume button to the pause menu
             self.pauseMenu.addButton(self.resumeButton, QMessageBox.ButtonRole.DestructiveRole)
             self.resumeButton.clicked.connect(self.resumeClicked)
             self.pauseMenu.setEscapeButton(self.resumeButton)
 
-            # Adds a main menu button to the pause menu
+            # Add a main menu button to the pause menu
             self.menuButton = QPushButton()
             self.menuButton.setText("Main Menu")
             self.menuButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
@@ -202,7 +207,7 @@ class Window(QGraphicsScene):
             self.menuButton.clicked.connect(self.menuClicked)
             self.pauseMenu.addButton(self.menuButton, QMessageBox.ButtonRole.DestructiveRole)
 
-            # Adds a restart button to the pause menu
+            # Add a restart button to the pause menu
             self.restartButton = QPushButton()
             self.restartButton.setText("Restart")
             self.restartButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
@@ -219,7 +224,7 @@ class Window(QGraphicsScene):
             self.restartButton.clicked.connect(self.restartClicked)
             self.pauseMenu.addButton(self.restartButton, QMessageBox.ButtonRole.DestructiveRole)
 
-            # Adds an exit button to pauseMenu
+            # Add an exit button to pauseMenu
             self.pauseExitButton = QPushButton()
             self.pauseExitButton.setText("Exit")
             self.pauseExitButton.setFont(QFont("Times", 10, QFont.Weight.Medium))
@@ -239,17 +244,17 @@ class Window(QGraphicsScene):
 
             self.addWidget(self.pauseMenu)
 
-            main.globalIsPaused = True
+            self.isPaused = True
                 
             self.pauseMenu.open()
 
-            # Moves pauseMenu to the center of the scene
+            # Move pauseMenu to the center of the scene
             centerX = int(self.sceneRect().center().x())
             centerY = int(self.sceneRect().center().y())
             self.pauseMenu.move(centerX - self.pauseMenu.width()/2, centerY - self.pauseMenu.width()/2)
     
     def resumeClicked(self):
-        main.globalIsPaused = False
+        self.isPaused = False
 
     def restartClicked(self):
         self.deleteSelf()
@@ -274,9 +279,9 @@ class Window(QGraphicsScene):
     def spawnEnemy(self, thing = "e"):
         # Updates the time, because spawnEnemy is called on a 1 second interval
         if self.tutorial == False and self.pvp == False:
-            main.globalTime += 1
+            self.time += 1
 
-        self.displayTime.setText("Time: " + str(main.globalTime))
+        self.displayTime.setText("Time: " + str(self.time))
         if thing == "e":
             if (len(self.enemyList) < self.intensity):
                 self.enemy, self.boss = bullet.getEnemy(self.enemyList, self.boss)
@@ -311,11 +316,11 @@ class Window(QGraphicsScene):
         shotList.append(shot)
 
     def keyPressEvent(self, event):
-        if not main.globalIsPaused:
+        if not self.isPaused:
             self.key_list.add(event.key())
 
     def keyReleaseEvent(self, event):
-        if not main.globalIsPaused:
+        if not self.isPaused:
             self.key_list.remove(event.key())
 
     def pvpInit(self):
@@ -336,6 +341,8 @@ class Window(QGraphicsScene):
         self.player2.ammo = 8
         self.shotList2 = []
 
+        self.isPaused = False
+
     def tutorialInit(self):
         self.pvp = False
         self.tutorial = True
@@ -350,8 +357,10 @@ class Window(QGraphicsScene):
         self.addItem(self.player)
         self.image3.setPos(-50, -60)
 
+        self.isPaused = False
+
     def updateMovement(self):
-        if not main.globalIsPaused:
+        if not self.isPaused:
             # This is used for limiting the player's ammo
             # reload is incremented by 2 because otherwise the reload time is too slow
             self.player.reload += 2
@@ -362,7 +371,7 @@ class Window(QGraphicsScene):
             self.boss += 1
 
             if self.displayScore is not None:
-                self.displayScore.setText("Score: " + str(main.globalScore))
+                self.displayScore.setText("Score: " + str(self.score))
 
             xVel = 0
             yVel = 0
@@ -422,7 +431,7 @@ class Window(QGraphicsScene):
                 self.intensity += 1
             
             if self.tutorial == False:
-                main.globalScore += 1 
+                self.score += 1 
             
             for item in self.enemyList:
                 if item.shipType == 'b':
@@ -463,9 +472,9 @@ class Window(QGraphicsScene):
                             else:
                                 QApplication.closeAllWindows()
 
-                                main.globalIsPaused = True
+                                self.isPaused = True
                                 self.deleteSelf()
-                                self.windowmanager = windowmanager.EndWindow()
+                                self.windowmanager = windowmanager.EndWindow(self.score)
                                 self.windowmanager.show()
                             
 
@@ -542,7 +551,7 @@ class Window(QGraphicsScene):
                         self.removeItem(item)
                         if bang.health == 0:
                             if self.tutorial == False:
-                                main.globalScore += bang.points
+                                self.score += bang.points
                             self.enemyList.remove(bang)
                             if bang.shipType == 'c' or bang.shipType == 'd':
                                 # After the boss dies, we reset the timer so the player has about a minute without a boss on screen
@@ -658,13 +667,13 @@ class Window(QGraphicsScene):
                             else:
                                 QApplication.closeAllWindows()
                                 
-                                main.globalIsPaused = True
+                                self.isPaused = True
                                 self.deleteSelf()
-                                self.windowmanager = windowmanager.EndWindow()
+                                self.windowmanager = windowmanager.EndWindow(self.score)
                                 self.windowmanager.show()
 
     def updatePvPMovement(self):
-        if not main.globalIsPaused:
+        if not self.isPaused:
             self.player1.reload += 1
             self.player2.reload += 1
             if len(self.shotList) >= self.player1.ammo:
@@ -746,7 +755,7 @@ class Window(QGraphicsScene):
                         if self.player2.health <= 0:
                             QApplication.closeAllWindows()
 
-                            main.globalIsPaused = True
+                            self.isPaused = True
                             self.deleteSelf()
                             self.windowmanager = windowmanager.pvpEndWindow("Player 1")
                             self.windowmanager.show()
@@ -765,7 +774,7 @@ class Window(QGraphicsScene):
                         if self.player1.health <= 0:
                             QApplication.closeAllWindows()
 
-                            main.globalIsPaused = True
+                            self.isPaused = True
                             self.deleteSelf()
                             self.windowmanager = windowmanager.pvpEndWindow("Player 2")
                             self.windowmanager.show()
@@ -781,9 +790,6 @@ class Window(QGraphicsScene):
         if (self.imageTwoStartY + self.imageMove) >= 1080:
             self.imageTwoStartY = -2749 - self.imageMove
 
-    def updateBackground(self):
-        self.setBackgroundBrush(QBrush(QColor(173, 216, 230)))
-
     def deleteSelf(self):
         if self.pvp == False:
             self.removeItem(self.player)
@@ -796,5 +802,5 @@ class Window(QGraphicsScene):
 
         self.displayScore = None
 
-        main.globalTime = 0
+        self.time = 0
         self.deleteLater()
