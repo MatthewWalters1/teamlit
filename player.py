@@ -9,8 +9,8 @@ class player(QGraphicsPixmapItem):
         super().__init__()
 
         # this is used to limit the player's ammo
-        self.ammo = 30
-        self.reload = 30
+        self.ammo = 25
+        self.reload = 25
         self.image_name = image_name
         
         self.health = 100

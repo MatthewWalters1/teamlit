@@ -256,6 +256,8 @@ class Window(QGraphicsScene):
         self.newWindow = windowmanager.MainMenuWindow()
         if self.tutorial == True:
             self.newWindow.tutorialClicked()
+        elif self.pvp == True:
+            self.newWindow.pvpClicked()
         else:
             self.newWindow.startGame()
 
@@ -326,12 +328,12 @@ class Window(QGraphicsScene):
         self.player1 = player.player("Images/fighter-blue.png")
         self.player1.setPos(self.width()/2-69, self.height()-100)
         self.addItem(self.player1)
-        self.player1.ammo = 4
+        self.player1.ammo = 8
         
         self.player2 = player.player("Images/fighter-red-down.png")
         self.player2.setPos(self.width()/2-68, self.height()-650)
         self.addItem(self.player2)
-        self.player2.ammo = 4
+        self.player2.ammo = 8
         self.shotList2 = []
 
     def tutorialInit(self):
@@ -432,8 +434,8 @@ class Window(QGraphicsScene):
                 if item.shipType == 'c':
                     if item.y() <= -300:
                         item.yVel = self.intensity
-                        if item.yVel > 10 or item.reload < 6:
-                            item.yVel = 10
+                        if item.yVel > 4 or item.reload < 6:
+                            item.yVel = 4
                             item.reload -= 1
                 if item.shipType == 'd':
                     if item.y() >= -80:
