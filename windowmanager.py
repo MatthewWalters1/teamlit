@@ -322,6 +322,7 @@ class MainMenuWindow(MenuWindow):
             self.form.updateTimer.timeout.connect(i.update)
 
         self.form.updateTimer.timeout.connect(self.window.player.update)
+        self.form.updateTimer.timeout.connect(self.window.updateTutorialBackground)
         self.form.movementTimer.timeout.connect(self.window.updateMovement)
 
         self.view.setFixedSize(windowSizeOpenWidth, windowSizeOpenHeight)
