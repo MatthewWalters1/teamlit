@@ -55,10 +55,10 @@ def getEnemy(enemyList, boss):
         enemy = ship(random.randrange(0, 480), -300, 'a', 0, 10, 3)
     elif enemyType == 10 and check == True and boss > 400:
         boss = 0
-        enemyType = random.randrange(0,2)
-        if enemyType == 0:
+        enemyType = random.randrange(0,4)
+        if enemyType <= 2:
             enemy = ship(180, -400, 'c', 0, 10, 50)
-        if enemyType == 1:
+        if enemyType == 3:
             enemy = ship(180, -400, 'd', 0, 10, 80)
     else:
         enemy = ship(random.randrange(0, 480), -300, 'b', 0, 40, 1)
