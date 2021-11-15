@@ -7,7 +7,7 @@
 
 from math import isqrt
 import sys, random
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import QRect, Qt
 from PyQt6.QtGui import QColor, QPalette, QFont, QBrush, QPixmap
 from PyQt6.QtWidgets import QGraphicsPixmapItem, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QGraphicsScene, QMessageBox, QApplication
 import player, bullet, windowmanager, main
@@ -147,6 +147,37 @@ class Window(QGraphicsScene):
         topWidgetPalette.setColor(QPalette.ColorRole.Window, QColor(194, 197, 204))
         topWidget.setPalette(topWidgetPalette)
 
+        #Creates widget at the bottom for the health bar
+        self.healthBar = QWidget()
+        self.healthBar.setGeometry(0, 570, 500, 30)
+        healthBarPalette = self.healthBar.palette()
+        healthBarPalette.setColor(QPalette.ColorRole.Window, QColor(0, 150, 0))
+        self.healthBar.setPalette(healthBarPalette)
+
+        self.displayHP = QLabel('HP') #Creates the label that the time will be printed on
+        self.displayHP.setFont(QFont("Times", 20, QFont.Weight.Medium))
+        self.displayHP.setStyleSheet("background-color: rgba(0,0,0,0);"
+                                        "color: white;"
+                                        "min-width: 30 px;"
+                                        "max-width: 30 px;"
+                                        "min-height: 35 px;"
+                                        "max-height: 35 px;"
+                                        "padding: 3 px;")
+        self.displayHP.setTextFormat(Qt.TextFormat.PlainText)
+        self.displayHP.move(-40, 562)
+
+        self.displayHealth = QLabel('100') #Creates the label that the time will be printed on
+        self.displayHealth.setFont(QFont("Times", 20, QFont.Weight.Medium))
+        self.displayHealth.setStyleSheet("background-color: rgba(0,0,0,0);"
+                                        "color: white;"
+                                        "min-width: 40 px;"
+                                        "max-width: 40 px;"
+                                        "min-height: 35 px;"
+                                        "max-height: 35 px;"
+                                        "padding: 3 px;")
+        self.displayHealth.setTextFormat(Qt.TextFormat.PlainText)
+        self.displayHealth.move(505, 562)
+
         self.image = QGraphicsPixmapItem()
         self.image.setPixmap(QPixmap("Images/milkyway.png"))
         self.addItem(self.image)
@@ -156,6 +187,9 @@ class Window(QGraphicsScene):
         self.addItem(self.imageTwo)
 
         self.addWidget(topWidget)
+        self.addWidget(self.healthBar)
+        self.addWidget(self.displayHP)
+        self.addWidget(self.displayHealth)
 
 
         # Add player to the screen
@@ -416,8 +450,8 @@ class Window(QGraphicsScene):
             if self.player.x() < -50:
                 self.player.setPos(-50, self.player.y())
 
-            if self.player.y() > self.height()-50:
-                self.player.setPos(self.player.x(), self.height()-50)
+            if self.player.y() > self.height()-100:
+                self.player.setPos(self.player.x(), self.height()-100)
 
             if self.player.y() < 0:
                 self.player.setPos(self.player.x(), 0)
@@ -671,6 +705,10 @@ class Window(QGraphicsScene):
                                 self.deleteSelf()
                                 self.windowmanager = windowmanager.EndWindow(self.score)
                                 self.windowmanager.show()
+            
+            #Causes health bar widget to reflect health
+            self.healthBar.setGeometry(0, 570, self.player.health*5, 30)
+            self.displayHealth.setText(str(self.player.health))
 
     def updatePvPMovement(self):
         if not self.isPaused:
