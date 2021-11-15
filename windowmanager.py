@@ -70,6 +70,7 @@ class MenuWindow(QMainWindow):
         self.boardbutton = QPushButton()
         self.boardbutton.setText("Leaderboard")
         self.boardbutton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                        "border-style: outset;"
                                        "border-width: 1px;"
                                        "border-color: black;"
@@ -217,6 +218,7 @@ class MainMenuWindow(MenuWindow):
         self.startButton = QPushButton()
         self.startButton.setText("Start Game")
         self.startButton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
@@ -230,6 +232,7 @@ class MainMenuWindow(MenuWindow):
         self.tutorialbutton = QPushButton()
         self.tutorialbutton.setText("Tutorial Mode")
         self.tutorialbutton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                        "border-style: outset;"
                                        "border-width: 1px;"
                                        "border-color: black;"
@@ -243,6 +246,7 @@ class MainMenuWindow(MenuWindow):
         self.pvpbutton = QPushButton()
         self.pvpbutton.setText("PvP Mode")
         self.pvpbutton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                        "border-style: outset;"
                                        "border-width: 1px;"
                                        "border-color: black;"
@@ -255,6 +259,7 @@ class MainMenuWindow(MenuWindow):
         self.buttonLayout.addWidget(self.boardbutton)
 
         self.settingbutton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                        "border-style: outset;"
                                        "border-width: 1px;"
                                        "border-color: black;"
@@ -264,6 +269,7 @@ class MainMenuWindow(MenuWindow):
         self.buttonLayout.addWidget(self.settingbutton)
 
         self.exitButton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                        "border-style: outset;"
                                        "border-width: 1px;"
                                        "border-color: black;"
