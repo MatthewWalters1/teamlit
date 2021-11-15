@@ -330,12 +330,12 @@ class Window(QGraphicsScene):
         self.removeItem(self.player)
 
         # player 1 is one more pixel to the right so they line up better at the start
-        self.player1 = player.player("Images/fighter-blue.png")
+        self.player1 = player.player("Images/fighter-red.png")
         self.player1.setPos(self.width()/2-69, self.height()-100)
         self.addItem(self.player1)
         self.player1.ammo = 8
         
-        self.player2 = player.player("Images/fighter-red-down.png")
+        self.player2 = player.player("Images/fighter-blue-down.png")
         self.player2.setPos(self.width()/2-68, self.height()-650)
         self.addItem(self.player2)
         self.player2.ammo = 8
