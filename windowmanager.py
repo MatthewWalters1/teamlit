@@ -139,7 +139,7 @@ class EndWindow(MenuWindow):
 
         # Display the player's score
         self.scoreLabel = QLabel("Final Score:")
-        self.scoreLabel.setStyleSheet(  "color: black;"
+        self.scoreLabel.setStyleSheet(  "color: white;"
                                         "font-weight: bold;"
                                         "font-size: 20px;"
                                         "border: 5px solid white;"
