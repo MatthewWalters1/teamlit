@@ -46,6 +46,7 @@ class MenuWindow(QMainWindow):
         self.menuButton = QPushButton()
         self.menuButton.setText("Main Menu")
         self.menuButton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
@@ -58,6 +59,7 @@ class MenuWindow(QMainWindow):
         self.settingbutton = QPushButton()
         self.settingbutton.setText("Settings")
         self.settingbutton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
@@ -83,6 +85,7 @@ class MenuWindow(QMainWindow):
         self.exitButton = QPushButton()
         self.exitButton.setText("Exit")
         self.exitButton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
@@ -394,6 +397,7 @@ class SettingsWindow(MenuWindow):
             self.muteButton.setText("UnMute")
 
         self.muteButton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
@@ -407,6 +411,7 @@ class SettingsWindow(MenuWindow):
         self.volumelow = QPushButton()
         self.volumelow.setText("Low")
         self.volumelow.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
@@ -420,6 +425,7 @@ class SettingsWindow(MenuWindow):
         self.volumenormal = QPushButton()
         self.volumenormal.setText("Normal")
         self.volumenormal.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
@@ -433,6 +439,7 @@ class SettingsWindow(MenuWindow):
         self.volumehigh = QPushButton()
         self.volumehigh.setText("High")
         self.volumehigh.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
@@ -448,6 +455,7 @@ class SettingsWindow(MenuWindow):
         self.returnButton = QPushButton()
         self.returnButton.setText("Return to Menu")
         self.returnButton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
