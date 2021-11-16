@@ -107,6 +107,8 @@ class MenuWindow(QMainWindow):
     def boardClicked(self):
         # Sets boardText to a formatted string containing the top ten scores in a right-justified column and their winners on the left
         boardText = database.getTopScores()
+        if boardText is None:
+            return
 
         # Pops up a leaderboard (in the form of a message box) with the top ten scores and the players who won them
         leaderboard = QMessageBox(self)

@@ -213,7 +213,7 @@ class Window(QGraphicsScene):
         if not self.isPaused:
             # Create a message box to hold buttons to click when the game is paused
             self.pauseMenu = QMessageBox()
-            self.pauseMenu.setText("Paused")
+            self.pauseMenu.setText("{:^29}".format("Paused"))
             self.pauseMenu.setFont(QFont("Times", 14, QFont.Weight.Medium))
             self.pauseMenu.setStyleSheet("background-color: white;"
                                          "color: black;"
