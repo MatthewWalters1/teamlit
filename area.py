@@ -362,6 +362,9 @@ class Window(QGraphicsScene):
         self.pvp = True
 
         self.removeItem(self.player)
+        self.healthBar.deleteLater()
+        self.displayHP.deleteLater()
+        self.displayHealth.deleteLater()
 
         # player 1 is one more pixel to the right so they line up better at the start
         self.player1 = player.player("Images/fighter-red.png")
@@ -505,7 +508,6 @@ class Window(QGraphicsScene):
                         self.enemyList.remove(item)
                         self.removeItem(item)
 
-                        print("hit")
                         if self.player.health <= 0:
                             if self.tutorial == True:
                                 self.player.health = 100
@@ -705,7 +707,6 @@ class Window(QGraphicsScene):
                         self.soundObject.set_volume(main.currentVolume)
                         self.soundObject.play()
 
-                        print("hit")
                         if self.player.health <= 0:
                             if self.tutorial == True:
                                 self.player.health = 100
