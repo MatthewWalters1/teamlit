@@ -495,10 +495,16 @@ class Window(QGraphicsScene):
                 item.setPos(item.x()+item.xVel, item.y()+item.yVel)
                 collision = item.collidingItems()
                 for bang in collision:
+
                     if isinstance(bang, type(self.player)):
+                        self.soundObject = pygame.mixer.Sound('Sounds/hit.wav')
+                        self.soundObject.set_volume(main.currentVolume)
+                        self.soundObject.play()
+
                         self.player.health -= item.points
                         self.enemyList.remove(item)
                         self.removeItem(item)
+
                         print("hit")
                         if self.player.health <= 0:
                             if self.tutorial == True:
@@ -694,6 +700,11 @@ class Window(QGraphicsScene):
                             self.player.health -= 15
                         self.projectileList.remove(item)
                         self.removeItem(item)
+
+                        self.soundObject = pygame.mixer.Sound('Sounds/hit.wav')
+                        self.soundObject.set_volume(main.currentVolume)
+                        self.soundObject.play()
+
                         print("hit")
                         if self.player.health <= 0:
                             if self.tutorial == True:
