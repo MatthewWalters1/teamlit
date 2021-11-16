@@ -7,11 +7,12 @@ Project Description:
 
 Instructions for Use:
 
-* To install the necessary libraries, run "pip install google-auth", "pip install google-cloud-firestore", and "pip install playsound==1.2.2"
+* To install the necessary libraries, run "pip install google-auth", "pip install google-cloud-firestore", and "python3 -m pip install -U pygame --user" (the latter is only used for sound)
 * Our project runs from main.py(command line: "python3 main.py")
-* To move the player: use the arrow keys
+* To move the player: use the arrow keys or w, a, s, and d
 * To shoot, press the space bar
+* The shortcut key for pause is p
 
 Notes:
 
-* The game windows and widgets appear differently on Mac and Windows, and currently the printed timer does not show on Mac at all.
+* The game windows and widgets appear differently on Mac and Windows.
