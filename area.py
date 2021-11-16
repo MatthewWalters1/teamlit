@@ -154,19 +154,19 @@ class Window(QGraphicsScene):
         healthBarPalette.setColor(QPalette.ColorRole.Window, QColor(0, 150, 0))
         self.healthBar.setPalette(healthBarPalette)
 
-        self.displayHP = QLabel('HP') #Creates the label that the time will be printed on
+        self.displayHP = QLabel('HP') #Creates the label that "HP" is printed on
         self.displayHP.setFont(QFont("Times", 16, QFont.Weight.Medium))
         self.displayHP.setStyleSheet("background-color: rgba(0,0,0,0);"
                                         "color: white;"
-                                        "min-width: 30 px;"
-                                        "max-width: 30 px;"
+                                        "min-width: 40 px;"
+                                        "max-width: 40 px;"
                                         "min-height: 35 px;"
                                         "max-height: 35 px;"
                                         "padding: 3 px;")
         self.displayHP.setTextFormat(Qt.TextFormat.PlainText)
         self.displayHP.move(-40, 562)
 
-        self.displayHealth = QLabel('100') #Creates the label that the time will be printed on
+        self.displayHealth = QLabel('100') #Creates the label that the health will be printed on
         self.displayHealth.setFont(QFont("Times", 16, QFont.Weight.Medium))
         self.displayHealth.setStyleSheet("background-color: rgba(0,0,0,0);"
                                         "color: white;"
