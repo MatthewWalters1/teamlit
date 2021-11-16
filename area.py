@@ -155,7 +155,7 @@ class Window(QGraphicsScene):
         self.healthBar.setPalette(healthBarPalette)
 
         self.displayHP = QLabel('HP') #Creates the label that the time will be printed on
-        self.displayHP.setFont(QFont("Times", 20, QFont.Weight.Medium))
+        self.displayHP.setFont(QFont("Times", 16, QFont.Weight.Medium))
         self.displayHP.setStyleSheet("background-color: rgba(0,0,0,0);"
                                         "color: white;"
                                         "min-width: 30 px;"
@@ -167,7 +167,7 @@ class Window(QGraphicsScene):
         self.displayHP.move(-40, 562)
 
         self.displayHealth = QLabel('100') #Creates the label that the time will be printed on
-        self.displayHealth.setFont(QFont("Times", 20, QFont.Weight.Medium))
+        self.displayHealth.setFont(QFont("Times", 16, QFont.Weight.Medium))
         self.displayHealth.setStyleSheet("background-color: rgba(0,0,0,0);"
                                         "color: white;"
                                         "min-width: 40 px;"
