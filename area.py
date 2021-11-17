@@ -338,7 +338,7 @@ class Window(QGraphicsScene):
 
             if main.globalIsMuted == False:
                     soundObject = pygame.mixer.Sound('Sounds/shoot.wav')
-                    soundObject.set_volume(main.currentVolume)
+                    soundObject.set_volume(main.soundVolume)
                     soundObject.play()
 
     def fireBullets(self, x, y, image, shotList, speed):
@@ -501,7 +501,7 @@ class Window(QGraphicsScene):
 
                     if isinstance(bang, type(self.player)):
                         self.soundObject = pygame.mixer.Sound('Sounds/hit.wav')
-                        self.soundObject.set_volume(main.currentVolume)
+                        self.soundObject.set_volume(main.soundVolume)
                         self.soundObject.play()
 
                         self.player.health -= item.points
@@ -552,7 +552,7 @@ class Window(QGraphicsScene):
                         self.projectileList.append(self.p)
                         if main.globalIsMuted == False:
                             soundObject = pygame.mixer.Sound('Sounds/laser.wav')
-                            soundObject.set_volume(main.currentVolume)
+                            soundObject.set_volume(main.soundVolume)
                             soundObject.play()
                     elif item.shipType == 'c':
                         self.p = bullet.bullet(item.x() + 50, item.y() + 50, "Images/beam3.png", 0, 30)
@@ -565,7 +565,7 @@ class Window(QGraphicsScene):
                         self.projectileList.append(self.p)
                         if main.globalIsMuted == False:
                             soundObject = pygame.mixer.Sound('Sounds/laser.wav')
-                            soundObject.set_volume(main.currentVolume)
+                            soundObject.set_volume(main.soundVolume)
                             soundObject.play()
                     elif item.shipType == 'd':
                         item.reload = 18
@@ -574,7 +574,7 @@ class Window(QGraphicsScene):
                         self.projectileList.append(self.p)
                         if main.globalIsMuted == False:
                             soundObject = pygame.mixer.Sound('Sounds/laser.wav')
-                            soundObject.set_volume(main.currentVolume)
+                            soundObject.set_volume(main.soundVolume)
                             soundObject.play()
 
             for item in self.shotList:
@@ -704,7 +704,7 @@ class Window(QGraphicsScene):
                         self.removeItem(item)
 
                         self.soundObject = pygame.mixer.Sound('Sounds/hit.wav')
-                        self.soundObject.set_volume(main.currentVolume)
+                        self.soundObject.set_volume(main.soundVolume)
                         self.soundObject.play()
 
                         if self.player.health <= 0:

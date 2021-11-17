@@ -379,10 +379,12 @@ class SettingsWindow(MenuWindow):
         # Create the layouts
         self.buttonLayout = QVBoxLayout()
         self.volumeLayout = QHBoxLayout()
+        self.volumeOffLayout = QHBoxLayout()
 
         # Align layouts
         self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
         self.volumeLayout.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
+        self.volumeOffLayout.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignCenter)
 
         self.titleLabel = QLabel()
         self.titleImage = QPixmap("Images/settings.png")
@@ -405,7 +407,6 @@ class SettingsWindow(MenuWindow):
                                         "max-width: 80 em;"
                                         "padding: 6 px;")
         self.muteButton.clicked.connect(self.muteClicked)
-        self.buttonLayout.addWidget(self.muteButton)
 
         # Button that sets the volume to low
         self.volumelow = QPushButton()
@@ -449,8 +450,6 @@ class SettingsWindow(MenuWindow):
         self.volumehigh.clicked.connect(self.setHigh)
         self.volumeLayout.addWidget(self.volumehigh)
 
-        self.buttonLayout.addLayout(self.volumeLayout)
-
         # Button that returns to the main menu
         self.returnButton = QPushButton()
         self.returnButton.setText("Return to Menu")
@@ -463,8 +462,61 @@ class SettingsWindow(MenuWindow):
                                         "max-width: 80 em;"
                                         "padding: 6 px;")
         self.returnButton.clicked.connect(self.returnClicked)
-        self.buttonLayout.addWidget(self.returnButton)
 
+        # Button that turns off the background song
+        self.backgroundOffButton = QPushButton()
+        self.backgroundOffButton.setText("ON")
+        self.backgroundOffButton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 80 em;"
+                                        "max-width: 80 em;"
+                                        "padding: 6 px;")
+        self.backgroundOffButton.clicked.connect(self.backgroundSoundOff)
+
+        # Button that turns off all sounds
+        self.soundOffButton = QPushButton()
+        self.soundOffButton.setText("ON")
+        self.soundOffButton.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 80 em;"
+                                        "max-width: 80 em;"
+                                        "padding: 6 px;")
+        self.soundOffButton.clicked.connect(self.soundsOff)
+
+        self.volumeOffLayout.addWidget(self.soundOffButton)
+        self.volumeOffLayout.addWidget(self.backgroundOffButton)
+
+        self.offOnLabel = QLabel()
+        self.offOnLabel.setText("Sounds ON/OFF | Background Sound ON/OFF")
+        self.offOnLabel.setFont(QFont("Times", 10, QFont.Weight.Bold))
+        self.offOnLabel.setStyleSheet(  "color: white;" )
+        self.offOnLabel.setTextFormat(Qt.TextFormat.PlainText)
+
+        self.muteLabel = QLabel()
+        self.muteLabel.setText("Mute All ON/OFF")
+        self.muteLabel.setFont(QFont("Times", 10, QFont.Weight.Bold))
+        self.muteLabel.setStyleSheet(  "color: white;" )
+        self.muteLabel.setTextFormat(Qt.TextFormat.PlainText)
+
+        self.volumeLevelLabel = QLabel()
+        self.volumeLevelLabel.setText("Volume Level")
+        self.volumeLevelLabel.setFont(QFont("Times", 10, QFont.Weight.Bold))
+        self.volumeLevelLabel.setStyleSheet(  "color: white;" )
+        self.volumeLevelLabel.setTextFormat(Qt.TextFormat.PlainText)
+
+        self.buttonLayout.addWidget(self.muteLabel)
+        self.buttonLayout.addWidget(self.muteButton)
+        self.buttonLayout.addWidget(self.offOnLabel)
+        self.buttonLayout.addLayout(self.volumeOffLayout)
+        self.buttonLayout.addWidget(self.volumeLevelLabel)
+        self.buttonLayout.addLayout(self.volumeLayout)
+        self.buttonLayout.addWidget(self.returnButton)
         self.mainLayout.addLayout(self.buttonLayout)
 
     def returnClicked(self):
@@ -476,20 +528,42 @@ class SettingsWindow(MenuWindow):
     def setLow(self):
         pygame.mixer.music.set_volume(0.1)
         main.currentVolume = 0.1
+        main.soundVolume = 0.1
 
     def setNormal(self):
         pygame.mixer.music.set_volume(0.4)
         main.currentVolume = 0.4
+        main.soundVolume = 0.4
 
     def setHigh(self):
         pygame.mixer.music.set_volume(0.8)
         main.currentVolume = 0.8
+        main.soundVolume = 0.8
+
+    def backgroundSoundOff(self):
+        if main.currentVolume == 0:
+            main.currentVolume = 0.4
+            main.StartMusic(pygame.mixer)
+            self.backgroundOffButton.setText("ON")
+
+        else:
+            main.currentVolume = 0
+            main.StopMusic(pygame.mixer)
+            self.backgroundOffButton.setText("OFF")
+
+    def soundsOff(self):
+        if main.soundVolume == 0:
+            main.soundVolume = 0.4
+            self.soundOffButton.setText("ON")
+        else:
+            main.soundVolume = 0
+            self.soundOffButton.setText("OFF")
 
     def muteClicked(self):
         if main.globalIsMuted == False:
             main.globalIsMuted = True
             main.StopMusic(pygame.mixer)
-            self.muteButton.setText("UnMute")
+            self.muteButton.setText("Unmute")
         else:
             main.globalIsMuted = False
             main.StartMusic(pygame.mixer)
