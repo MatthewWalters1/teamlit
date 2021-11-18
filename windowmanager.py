@@ -492,6 +492,19 @@ class SettingsWindow(MenuWindow):
                                         "padding: 6 px;")
         self.soundOffButton.clicked.connect(self.soundsOff)
 
+        # Button that turns off all sounds
+        self.nextShip = QPushButton()
+        self.nextShip.setText(">")
+        self.nextShip.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 40 em;"
+                                        "max-width: 40 em;"
+                                        "padding: 6 px;")
+        self.nextShip.clicked.connect(self.selectNextShip)
+
         if main.soundVolume != 0:
             self.soundOffButton.setText("ON")
         else:
@@ -499,6 +512,11 @@ class SettingsWindow(MenuWindow):
 
         self.volumeOffLayout.addWidget(self.soundOffButton)
         self.volumeOffLayout.addWidget(self.backgroundOffButton)
+
+        # Add the Game Over graphic
+        self.shipLabel = QLabel()
+        self.shipGraphic = QPixmap(main.currentShip)
+        self.shipLabel.setPixmap(self.shipGraphic)
 
         self.offOnLabel = QLabel()
         self.offOnLabel.setText("Sound ON/OFF | Music ON/OFF")
@@ -524,6 +542,8 @@ class SettingsWindow(MenuWindow):
         self.buttonLayout.addLayout(self.volumeOffLayout)
         self.buttonLayout.addWidget(self.volumeLevelLabel)
         self.buttonLayout.addLayout(self.volumeLayout)
+        self.buttonLayout.addWidget(self.shipLabel)
+        self.buttonLayout.addWidget(self.nextShip)
         self.buttonLayout.addWidget(self.returnButton)
         self.mainLayout.addLayout(self.buttonLayout)
 
@@ -532,6 +552,23 @@ class SettingsWindow(MenuWindow):
 
         self.window = MainMenuWindow()
         self.window.show()
+
+    def selectNextShip(self):
+        selectShip = 0
+
+        for c in main.shipList:
+            if selectShip == 1:
+                main.currentShip = c
+                self.shipGraphic = QPixmap(c)
+                self.shipLabel.setPixmap(self.shipGraphic)
+                selectShip = 0
+            elif c == main.currentShip:
+                selectShip = 1
+                if c == "Images/fighter-yellow.png":
+                    c = main.shipList[0]
+                    main.currentShip = c
+                    self.shipGraphic = QPixmap(c)
+                    self.shipLabel.setPixmap(self.shipGraphic)
 
     def setLow(self):
         pygame.mixer.music.set_volume(0.1)

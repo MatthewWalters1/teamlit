@@ -14,6 +14,11 @@ globalIsMuted = False
 currentVolume = 0.4
 soundVolume = 0.4
 
+shipList = ["Images/fighter.png", "Images/fighter-cyan.png", "Images/fighter-black.png", "Images/fighter-blue.png", "Images/fighter-green.png", "Images/fighter-purple.png",
+    "Images/fighter-red.png", "Images/fighter-yellow.png",]
+
+currentShip = "Images/fighter.png"
+
 class Timer(QWidget): # Manages the game timer
     def __init__(self):
         super().__init__()

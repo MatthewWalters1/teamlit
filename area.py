@@ -193,7 +193,7 @@ class Window(QGraphicsScene):
 
 
         # Add player to the screen
-        self.player = player.player("Images/fighter.png")
+        self.player = player.player(main.currentShip)
         self.player.setPos(self.width()/2-68, self.height()-100)
         self.addItem(self.player)
         
