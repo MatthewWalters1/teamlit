@@ -50,8 +50,8 @@ class MenuWindow(QMainWindow):
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
-                                        "min-width: 60 em;"
-                                        "max-width: 60 em;"
+                                        "min-width: 70 em;"
+                                        "max-width: 70 em;"
                                         "padding: 6 px;")
         self.menuButton.clicked.connect(self.restartGame)
 
@@ -477,7 +477,7 @@ class SettingsWindow(MenuWindow):
                                         "padding: 6 px;")
         self.backgroundOffButton.clicked.connect(self.backgroundSoundOff)
 
-        if main.soundVolume != 0:
+        if main.currentVolume != 0:
             self.backgroundOffButton.setText("ON")
         else:
             self.backgroundOffButton.setText("OFF")
@@ -493,6 +493,11 @@ class SettingsWindow(MenuWindow):
                                         "max-width: 80 em;"
                                         "padding: 6 px;")
         self.soundOffButton.clicked.connect(self.soundsOff)
+
+        if main.soundVolume != 0:
+            self.soundOffButton.setText("ON")
+        else:
+            self.soundOffButton.setText("OFF")
 
         # Button that goes to the next ship image
         self.nextShip = QPushButton()
@@ -519,11 +524,6 @@ class SettingsWindow(MenuWindow):
                                         "max-width: 40 em;"
                                         "padding: 6 px;")
         self.prevShip.clicked.connect(self.selectPreviousShip)
-
-        if main.soundVolume != 0:
-            self.soundOffButton.setText("ON")
-        else:
-            self.soundOffButton.setText("OFF")
 
         self.volumeOffLayout.addWidget(self.soundOffButton)
         self.volumeOffLayout.addWidget(self.backgroundOffButton)
@@ -635,7 +635,6 @@ class SettingsWindow(MenuWindow):
             main.currentVolume = 0.4
             main.StartMusic(pygame.mixer)
             self.backgroundOffButton.setText("ON")
-
         else:
             main.currentVolume = 0
             main.StopMusic(pygame.mixer)
