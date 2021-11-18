@@ -12,6 +12,7 @@ Instructions for Use:
 * To move the player: use the arrow keys or w, a, s, and d
 * To shoot, press the space bar
 * The shortcut key for pause is p
+* In PvP mode, Player 1 uses the arrow keys to move and space bar to shoot, and Player 2 uses w, a, s, and d to move and 0 to shoot
 
 Notes:
 
