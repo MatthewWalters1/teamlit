@@ -494,7 +494,7 @@ class SettingsWindow(MenuWindow):
                                         "padding: 6 px;")
         self.soundOffButton.clicked.connect(self.soundsOff)
 
-        # Button that turns off all sounds
+        # Button that goes to the next ship image
         self.nextShip = QPushButton()
         self.nextShip.setText(">")
         self.nextShip.setStyleSheet("background-color: lightGray;"
@@ -507,7 +507,7 @@ class SettingsWindow(MenuWindow):
                                         "padding: 6 px;")
         self.nextShip.clicked.connect(self.selectNextShip)
 
-        # Button that turns off all sounds
+        # Button that goes to previous ship image
         self.prevShip = QPushButton()
         self.prevShip.setText("<")
         self.prevShip.setStyleSheet("background-color: lightGray;"
@@ -528,10 +528,13 @@ class SettingsWindow(MenuWindow):
         self.volumeOffLayout.addWidget(self.soundOffButton)
         self.volumeOffLayout.addWidget(self.backgroundOffButton)
 
-        # Add the Game Over graphic
         self.shipLabel = QLabel()
         self.shipGraphic = QPixmap(main.currentShip)
         self.shipLabel.setPixmap(self.shipGraphic)
+
+        self.settingsLabel = QLabel()
+        self.settingsGraphic = QPixmap("Images/settings.png")
+        self.settingsLabel.setPixmap(self.settingsGraphic)
 
         self.offOnLabel = QLabel()
         self.offOnLabel.setText("Sound ON/OFF | Music ON/OFF")
