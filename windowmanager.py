@@ -458,14 +458,13 @@ class SettingsWindow(MenuWindow):
                                         "border-style: outset;"
                                         "border-width: 1px;"
                                         "border-color: black;"
-                                        "min-width: 80 em;"
-                                        "max-width: 80 em;"
+                                        "min-width: 100 em;"
+                                        "max-width: 100 em;"
                                         "padding: 6 px;")
         self.returnButton.clicked.connect(self.returnClicked)
 
         # Button that turns off the background song
         self.backgroundOffButton = QPushButton()
-        self.backgroundOffButton.setText("ON")
         self.backgroundOffButton.setStyleSheet("background-color: lightGray;"
                                         "color: black;"
                                         "border-style: outset;"
@@ -476,9 +475,13 @@ class SettingsWindow(MenuWindow):
                                         "padding: 6 px;")
         self.backgroundOffButton.clicked.connect(self.backgroundSoundOff)
 
+        if main.soundVolume != 0:
+            self.backgroundOffButton.setText("ON")
+        else:
+            self.backgroundOffButton.setText("OFF")
+
         # Button that turns off all sounds
         self.soundOffButton = QPushButton()
-        self.soundOffButton.setText("ON")
         self.soundOffButton.setStyleSheet("background-color: lightGray;"
                                         "color: black;"
                                         "border-style: outset;"
@@ -489,11 +492,16 @@ class SettingsWindow(MenuWindow):
                                         "padding: 6 px;")
         self.soundOffButton.clicked.connect(self.soundsOff)
 
+        if main.soundVolume != 0:
+            self.soundOffButton.setText("ON")
+        else:
+            self.soundOffButton.setText("OFF")
+
         self.volumeOffLayout.addWidget(self.soundOffButton)
         self.volumeOffLayout.addWidget(self.backgroundOffButton)
 
         self.offOnLabel = QLabel()
-        self.offOnLabel.setText("Sounds ON/OFF | Background Sound ON/OFF")
+        self.offOnLabel.setText("Sound ON/OFF | Music ON/OFF")
         self.offOnLabel.setFont(QFont("Times", 10, QFont.Weight.Bold))
         self.offOnLabel.setStyleSheet(  "color: white;" )
         self.offOnLabel.setTextFormat(Qt.TextFormat.PlainText)
@@ -541,7 +549,7 @@ class SettingsWindow(MenuWindow):
         main.soundVolume = 0.8
 
     def backgroundSoundOff(self):
-        if main.currentVolume == 0:
+        if main.currentVolume == 0 and main.globalIsMuted == False:
             main.currentVolume = 0.4
             main.StartMusic(pygame.mixer)
             self.backgroundOffButton.setText("ON")
@@ -552,7 +560,7 @@ class SettingsWindow(MenuWindow):
             self.backgroundOffButton.setText("OFF")
 
     def soundsOff(self):
-        if main.soundVolume == 0:
+        if main.soundVolume == 0 and main.globalIsMuted == False:
             main.soundVolume = 0.4
             self.soundOffButton.setText("ON")
         else:
@@ -564,7 +572,13 @@ class SettingsWindow(MenuWindow):
             main.globalIsMuted = True
             main.StopMusic(pygame.mixer)
             self.muteButton.setText("Unmute")
+            self.backgroundOffButton.setText("OFF")
+            self.soundOffButton.setText("OFF")
         else:
             main.globalIsMuted = False
+            main.soundVolume = 0.4
+            main.currentVolume = 0.4
             main.StartMusic(pygame.mixer)
             self.muteButton.setText("Mute")
+            self.backgroundOffButton.setText("ON")
+            self.soundOffButton.setText("ON")
