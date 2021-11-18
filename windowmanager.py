@@ -380,11 +380,13 @@ class SettingsWindow(MenuWindow):
         self.buttonLayout = QVBoxLayout()
         self.volumeLayout = QHBoxLayout()
         self.volumeOffLayout = QHBoxLayout()
+        self.shipLayout = QHBoxLayout()
 
         # Align layouts
         self.buttonLayout.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
         self.volumeLayout.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignHCenter)
         self.volumeOffLayout.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignCenter)
+        self.shipLayout.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignCenter)
 
         self.titleLabel = QLabel()
         self.titleImage = QPixmap("Images/settings.png")
@@ -505,6 +507,19 @@ class SettingsWindow(MenuWindow):
                                         "padding: 6 px;")
         self.nextShip.clicked.connect(self.selectNextShip)
 
+        # Button that turns off all sounds
+        self.prevShip = QPushButton()
+        self.prevShip.setText("<")
+        self.prevShip.setStyleSheet("background-color: lightGray;"
+                                        "color: black;"
+                                        "border-style: outset;"
+                                        "border-width: 1px;"
+                                        "border-color: black;"
+                                        "min-width: 40 em;"
+                                        "max-width: 40 em;"
+                                        "padding: 6 px;")
+        self.prevShip.clicked.connect(self.selectPreviousShip)
+
         if main.soundVolume != 0:
             self.soundOffButton.setText("ON")
         else:
@@ -536,14 +551,24 @@ class SettingsWindow(MenuWindow):
         self.volumeLevelLabel.setStyleSheet(  "color: white;" )
         self.volumeLevelLabel.setTextFormat(Qt.TextFormat.PlainText)
 
+        self.shipChangeLabel = QLabel()
+        self.shipChangeLabel.setText("Select Ship")
+        self.shipChangeLabel.setFont(QFont("Times", 10, QFont.Weight.Bold))
+        self.shipChangeLabel.setStyleSheet(  "color: white;" )
+        self.shipChangeLabel.setTextFormat(Qt.TextFormat.PlainText)
+
+        self.shipLayout.addWidget(self.prevShip)
+        self.shipLayout.addWidget(self.shipLabel)
+        self.shipLayout.addWidget(self.nextShip)
+
         self.buttonLayout.addWidget(self.muteLabel)
         self.buttonLayout.addWidget(self.muteButton)
         self.buttonLayout.addWidget(self.offOnLabel)
         self.buttonLayout.addLayout(self.volumeOffLayout)
         self.buttonLayout.addWidget(self.volumeLevelLabel)
         self.buttonLayout.addLayout(self.volumeLayout)
-        self.buttonLayout.addWidget(self.shipLabel)
-        self.buttonLayout.addWidget(self.nextShip)
+        self.buttonLayout.addWidget(self.shipChangeLabel)
+        self.buttonLayout.addLayout(self.shipLayout)
         self.buttonLayout.addWidget(self.returnButton)
         self.mainLayout.addLayout(self.buttonLayout)
 
@@ -566,6 +591,23 @@ class SettingsWindow(MenuWindow):
                 selectShip = 1
                 if c == "Images/fighter-yellow.png":
                     c = main.shipList[0]
+                    main.currentShip = c
+                    self.shipGraphic = QPixmap(c)
+                    self.shipLabel.setPixmap(self.shipGraphic)
+
+    def selectPreviousShip(self):
+        selectShip = 0
+
+        for c in reversed(main.shipList):
+            if selectShip == 1:
+                main.currentShip = c
+                self.shipGraphic = QPixmap(c)
+                self.shipLabel.setPixmap(self.shipGraphic)
+                selectShip = 0
+            elif c == main.currentShip:
+                selectShip = 1
+                if c == "Images/fighter.png":
+                    c = "Images/fighter-yellow.png"
                     main.currentShip = c
                     self.shipGraphic = QPixmap(c)
                     self.shipLabel.setPixmap(self.shipGraphic)
