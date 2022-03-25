@@ -1,4 +1,4 @@
-Team Name: Teamlit
+Team Name: Teamlit  
 Members: Jacob Page, Matthew Walters, Lillian Sharpe, and Victor Hanset
 
 Project Description:
